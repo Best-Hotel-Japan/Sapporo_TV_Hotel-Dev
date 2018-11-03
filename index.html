@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <meta charset="utf-8">
 <div id="toast" hidden></div>
+<html>
 
 <head>
     <style rel="stylesheet" type="text/css">
@@ -135,29 +136,29 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
     <script type="text/javascript">
 
-        var debug = 0;
         var $body = $('body');
-        var pasteStr = "";
-        var pasteStrJTB = "";
-        var report_summary;
-        var HnameSummary = "sapporo1";
-
-
-        var gName1;                 // 用于JTB氏名報告
-        var gName = new Array();    // 用于存放所有客人姓名，从入住人1开始
-        gName[0] = "";
-        var gNameShow = "";         // 把所有名字显示成一行
-        debug = 1;
+        var gName1;                 // JTB氏名報告
+        var report_summary;         // 集計草稿
         
         /* 此处设置120ms延迟，防止线程竞争造成异常 */
         setTimeout(function(){
 
-            debug = 1.81;               // 问题就出在这里，剪贴板里是undefined
+            //debug = 1.81;               // 问题就出在这里，剪贴板里是undefined
             navigator.clipboard.readText()
             .then(text => {
                 
-                debug = 1.9;
-                pasteStr = text;        // 此处开始引入ctripOrderInfo的处理
+                var pasteStr = text;
+                var debug = 0;
+                var pasteStrJTB = "";
+
+                var gName = new Array();    // 用于存放所有客人姓名，从入住人1开始
+                gName[0] = "";
+                var gNameShow = "";         // 把所有名字显示成一行
+
+                var HnameSummary = "sapporo1";
+                debug = 1;
+
+                //pasteStr = text;        // 此处开始引入ctripOrderInfo的处理
                 //log('Text pasted.');
                 debug = 2;
 
@@ -565,3 +566,4 @@
 
     </script>
 </body>
+</html>

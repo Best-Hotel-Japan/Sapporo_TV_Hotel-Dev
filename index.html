@@ -93,7 +93,7 @@
             <label class="control-label" id=txt_guest1></label><button id="btn_All_of_Names" class="btn btn-primary" style="font-size:12px;font-family:Meiryo;float:right"><strong>　所有人　</strong></button><br/><br/>
             <label class="control-label" id=txt_request style="font-size:14px"></label><br/><br/>
             
-            <label class="control-label" id=txt_show_OK style="font-weight:bold;font-style:oblique;font-size:20px;color:rgb(9, 15, 68)"></label>
+            <label class="control-label" id=txt_show_OK style="font-weight:bold;font-style:oblique;font-size:24px;color:rgb(9, 15, 68)"></label>
             <button id="btn_make_bookingID" class="btn btn-primary" style="font-size:11px;font-family:Microsoft YaHei;float:right"><strong>済画面提取
             <img hight="32" width="53" style="float:right" src="https://raw.githubusercontent.com/Best-Hotel-Japan/Sapporo_TV_Hotel-Dev/gh-pages/JTB.jpg" alt="JTB" /><br/>　确认号　</strong></button>
             <br/>
@@ -473,18 +473,17 @@
                                 .catch(() => {
                                     //log('Failed to write clipboard');
                                 });
-                                document.getElementById("txt_show_OK").innerHTML = "　　　　　OK!";
+                                document.getElementById("txt_show_OK").innerHTML = "　　　　　　OK!";
+                                setTimeout(function(){
+                                    document.getElementById("txt_show_OK").innerHTML = "";
+                                }, 1200);
 
                             }, 160);
 
 
-
-
-
-
                         })
                         .catch(() => {
-                            log(' JTB_Info Failed ! v1103a debug = ' + debug);
+                            log(' JTB_Info Failed ! debug = ' + debug);
                         });
                         
                     }); 
@@ -494,7 +493,7 @@
 
             })
             .catch(() => {
-                log(' MAIN Failed ! v1103a debug = ' + debug);
+                log(' MAIN Failed ! v1104a debug = ' + debug);
             });
 
         }, 120);
@@ -529,12 +528,9 @@
 
         // 按钮 "JTB完成"
         $('#btn_JTB_confirmed').on('click', function () {
-            //alert(" 饿丝了啊 ")
-            //$('.my-modal').fadeOut();
-            //$body.removeClass('no-scroll');
-
-            //log('PPPPPPpied.');
-            navigator.clipboard.writeText(" 难道是这里？！ ")   // debug:   ctripOrderThing[9]
+            
+            //log(' btn_JTB_confirmed writing ');
+            navigator.clipboard.writeText(report_summary)   // debug: report_summary
             .then(() => {
                 //log('Text copied.');
             })
@@ -542,7 +538,7 @@
                 //log('Failed to write clipboard');
             });
 
-            $('#btn_JTB_confirmed').delay(35).queue(function(){
+            $('#btn_JTB_confirmed').delay(60).queue(function(){
                 window.close();
             });
 

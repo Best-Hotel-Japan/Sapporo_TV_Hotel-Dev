@@ -142,7 +142,7 @@
         var report_summary;         // 集計草稿
         
         /* 此处设置90ms延迟，防止线程竞争造成异常 */
-        setTimeout(function(){
+        //setTimeout(function(){
 
             debug = 0.81;               // 问题就出在这里，剪贴板里是undefined
             navigator.clipboard.readText()
@@ -511,12 +511,17 @@
                 }, 320);
 
 
+                //
+
+
+
+
             })
             .catch(() => {
                 log(' MAIN Failed ! v1104b debug = ' + debug);
             });
 
-        }, 90);
+        //}, 90);
 
 
         // modal 的 Close 按钮            
@@ -549,14 +554,14 @@
         });
 
 
-        /* Watch for pastes */
+        /* Watch for pastes *
         navigator.clipboard.addEventListener('clipboardchange', e => {
             navigator.clipboard.getText().then( text => {
             log('Updated clipboard contents: '+text)
             })
-        });
+        }); */
 
-        /* Since Chrome only allows clipboard access when a tab is the current active, here's a trick: */
+        /* Since Chrome only allows clipboard access when a tab is the current active, here's a trick: *
         function log(value) {
             clearTimeout(log.timer);
             if (toast.hidden) toast.textContent = value;
@@ -564,7 +569,7 @@
             toast.className = String(value).match(/error/i) ? 'error' : '';
             toast.hidden = false;
             log.timer = setTimeout( () => { toast.hidden = true; }, 3000);
-        }
+        } */
 
     </script>
 </body>

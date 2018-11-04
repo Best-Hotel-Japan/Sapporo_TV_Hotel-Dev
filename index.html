@@ -75,7 +75,7 @@
             
             <a style="font-size:15px">REF#: </a><label class="control-label" id=txt_ref style="font-size:18px;font-family:verdana;color:rgb(23, 94, 248)"></label>
             <button id="btn_JTB_confirmed" class="btn btn-primary" style="font-size:14px;font-family:Meiryo;float:right"><strong>ＪＴＢ完成</strong><br><em>(去填集計草稿)</em></button><br/>
-            <a style="font-size:16px">★0.31 </a><label class="control-label" id=txt_type style="font-size:15px"></label><br/>
+            <a style="font-size:16px">★0.32 </a><label class="control-label" id=txt_type style="font-size:15px"></label><br/>
             
             <img hight="15%" width="100%" class="img-rounded" src="https://raw.githubusercontent.com/Best-Hotel-Japan/Sapporo_TV_Hotel-Dev/gh-pages/background.jpg" alt="" /><br/>
             <!--https://raw.githubusercontent.com/fpga2033/TVtower/0609769e290f5f11ccf79624a39f594c03a2a4eb/mildseven-hill-winter.jpg-->
@@ -92,7 +92,7 @@
             <br/>
             
             <label class="control-label" id=txt_guest1></label><button id="btn_All_of_Names" class="btn btn-primary" style="font-size:12px;font-family:Meiryo;float:right"><strong>　所有人　</strong></button><br/><br/>
-            <label class="control-label" id=txt_request style="font-size:14px"></label><br/><br/>
+            <label class="control-label" id=txt_request style="font-weight:bold;font-size:12px"></label><br/><br/>
             
             <label class="control-label" id=txt_show_OK style="font-weight:bold;font-style:oblique;font-size:24px;color:rgb(9, 15, 68)"></label>
             <button id="btn_make_bookingID" class="btn btn-primary" style="font-size:11px;font-family:Microsoft YaHei;float:right"><strong>済画面提取
@@ -344,6 +344,7 @@
                     SPshow = SPshow.replace("Prefer ","*Prefer ");
                     SPshow = SPshow.replace(";"," ");
                     SPshow = SPshow.replace("。"," ");
+                    SPshow = SPshow.replace("please"," ");      // please
                     if ( SPshow == "" ) { SPshow = "null"; }
                     
                     /* if ( GuestnameList.length != ctripOrderPeoples ){

@@ -4,6 +4,7 @@
 <html>
 
 <head>
+
     <style rel="stylesheet" type="text/css">
 
         a:hover {color: rgb(0, 0, 216)}
@@ -66,6 +67,14 @@
 
     </style>
 
+    <script language="JavaScript">
+    
+        function fxwin(){window.resizeTo(330,675);}
+        window.onload=fxwin;
+        window.onresize=fxwin;
+    
+    </script>
+
 </head>
 
 <body>
@@ -98,6 +107,7 @@
             <button id="btn_make_bookingID" class="btn btn-primary" style="font-size:11px;font-family:Microsoft YaHei;float:right"><strong>済画面提取
             <img hight="32" width="53" style="float:right" src="https://raw.githubusercontent.com/Best-Hotel-Japan/Sapporo_TV_Hotel-Dev/gh-pages/JTB.jpg" alt="JTB" /><br/>　确认号　</strong></button>
             <br/>
+            <label class="control-label" id=txt_show_profit style="font-family:Meiryo;font-weight:normal;font-size:18px;color:rgb(9, 15, 68)"></label>
 
         </section>
         <!--<div class="bg"></div>   这是BackGround图片 -->
@@ -150,7 +160,6 @@
             .then(text => {
                 
                 var pasteStr = text;
-                
                 var pasteStrJTB = "";
 
                 var gName = new Array();    // 用于存放所有客人姓名，从入住人1开始
@@ -159,6 +168,7 @@
 
                 var HnameSummary = "sapporo1";
                 var JTBTotalPrice = "";
+                var orderProfit = 0;
                 debug = 1;
 
                 //pasteStr = text;        // 此处开始引入ctripOrderInfo的处理
@@ -452,6 +462,8 @@
 
                                 JTBTotalPrice = JTBSougaku;
                                 //alert(JTBTotalPrice);  OK!!
+                                orderProfit = 1 - ( JTBTotalPrice * 0.9 / ctripOrderPrice );
+                                var orderProfitShow = orderProfit.toFixed(3) * 100;
                                 report_summary = ctripOrderRef +'\t'+ HnameSummary +'\t'+ gName1 +'\t'+ repo4 +'\t'+ repo5 +'\t'+ repo6 +'\t'+ repo7 
                                     +'\t'+ ctripOrderNights +'\t'+ numEachRoom +'\t'+ ctripOrderRooms +'\t'+ ctripOrderPrice +'\t'+ JTBTotalPrice;
                                 
@@ -469,6 +481,7 @@
                                     //log('Failed to write clipboard');
                                 });
                                 document.getElementById("txt_show_OK").innerHTML = "　　　　　OK!";
+                                document.getElementById("txt_show_profit").innerHTML = "　　利益大約 " + orderProfitShow + " ％";
                                 setTimeout(function(){
                                     document.getElementById("txt_show_OK").innerHTML = "";
                                 }, 3600);
@@ -498,9 +511,11 @@
                         if ( HHHHname.match(thisHotelInfo[0]) ){ HnameSummary = thisHotelInfo[1]; break; } 
                     }
                     if ( HnameSummary == "" ){ window.close(); }
-                    //report_summary = ctripOrderRef +'\t'+ HnameSummary +'\t'+ gName1 +'\t'+ repo4 +'\t'+ repo5 +'\t'+ repo6 +'\t'+ repo7 
-                    //    +'\t'+ ctripOrderNights +'\t'+ numEachRoom +'\t'+ ctripOrderRooms +'\t'+ ctripOrderPrice +'\t'+ JTBTotalPrice;
-
+                    
+                    if ( pasteStrJTB == "" ){   // 如果没有使用提取确认号按钮，就在这里生成 report_summary
+                        report_summary = ctripOrderRef +'\t'+ HnameSummary +'\t'+ gName1 +'\t'+ repo4 +'\t'+ repo5 +'\t'+ repo6 +'\t'+ repo7 
+                            +'\t'+ ctripOrderNights +'\t'+ numEachRoom +'\t'+ ctripOrderRooms +'\t'+ ctripOrderPrice;
+                    }
                     debug = 6;
                 }    
 

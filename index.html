@@ -7,7 +7,7 @@
 
     <script language="JavaScript">
     
-        function fxwin(){ window.resizeTo(330,676); window.moveTo(1037,0); }
+        function fxwin(){ window.resizeTo(330,676); window.moveTo(1036,0); }
         //window.onload = fxwin;
         window.onresize = fxwin;
     
@@ -466,7 +466,8 @@
                                 var orderProfitShow = orderProfit.toFixed(3) * 100;
                                 orderProfitShow = orderProfitShow.toFixed(1);
                                 report_summary = ctripOrderRef +'\t'+ HnameSummary +'\t'+ gName1 +'\t'+ repo4 +'\t'+ repo5 +'\t'+ repo6 +'\t'+ repo7 
-                                    +'\t'+ ctripOrderNights +'\t'+ numEachRoom +'\t'+ ctripOrderRooms +'\t'+ ctripOrderPrice +'\t'+ JTBTotalPrice;
+                                    +'\t'+ ctripOrderNights +'\t'+ numEachRoom +'\t'+ ctripOrderRooms +'\t'+ ctripOrderPrice 
+                                    +'\t'+ RoomConfirmShow +'\t'+ JTBTotalPrice;
                                 
                             }
                             
@@ -486,7 +487,7 @@
                                 setTimeout(function(){
                                     document.getElementById("txt_show_OK").innerHTML = "";
                                     document.getElementById("txt_show_profit").innerHTML = "";
-                                }, 5000);
+                                }, 7500);
 
                             }, 160);
 

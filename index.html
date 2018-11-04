@@ -75,7 +75,7 @@
             
             <a style="font-size:15px">REF#: </a><label class="control-label" id=txt_ref style="font-size:18px;font-family:verdana;color:rgb(23, 94, 248)"></label>
             <button id="btn_JTB_confirmed" class="btn btn-primary" style="font-size:14px;font-family:Meiryo;float:right"><strong>ＪＴＢ完成</strong><br><em>(去填集計草稿)</em></button><br/>
-            <a style="font-size:16px">★0.3 </a><label class="control-label" id=txt_type style="font-size:15px"></label><br/>
+            <a style="font-size:16px">★0.31 </a><label class="control-label" id=txt_type style="font-size:15px"></label><br/>
             
             <img hight="15%" width="100%" class="img-rounded" src="https://raw.githubusercontent.com/Best-Hotel-Japan/Sapporo_TV_Hotel-Dev/gh-pages/background.jpg" alt="" /><br/>
             <!--https://raw.githubusercontent.com/fpga2033/TVtower/0609769e290f5f11ccf79624a39f594c03a2a4eb/mildseven-hill-winter.jpg-->
@@ -126,7 +126,7 @@
                 </form>
             </div>
             
-            <br/><br/>
+            <br/><br/><br/>
             <a style="font-family:Microsoft YaHei;font-size:16px">　</a>
             <button id="btn_modal_confirmed" class="btn btn-primary" style="font-family:Microsoft YaHei;font-size:15px">　Close　</button>            
 
@@ -140,6 +140,7 @@
         var $body = $('body');
         var gName1;                 // JTB氏名報告
         var report_summary;         // 集計草稿
+        
         
         /* 此处设置 300 ms延迟，防止线程竞争造成异常? */
         setTimeout(function(){
@@ -157,6 +158,7 @@
                 var gNameShow = "";         // 把所有名字显示成一行
 
                 var HnameSummary = "sapporo1";
+                var JTBTotalPrice = "";
                 debug = 1;
 
                 //pasteStr = text;        // 此处开始引入ctripOrderInfo的处理
@@ -382,23 +384,6 @@
                     debug = 5;
                     
                 }
-                
-                report_summary_editing_block: {
-
-                    var repo4 = 1 + d1.getMonth();
-                    var repo5 = d1.getDate();
-                    var repo6 = 1 + d2.getMonth();
-                    var repo7 = d2.getDate();
-
-                    for ( var Hcheck=0; Hcheck<90; Hcheck++ ){
-                        var thisHotelInfo = HnameTable[Hcheck];
-                        if ( HHHHname.match(thisHotelInfo[0]) ){ HnameSummary = thisHotelInfo[1]; break; } 
-                    }
-                    if ( HnameSummary == "" ){ window.close(); }
-                    report_summary = ctripOrderRef +'\t'+ HnameSummary +'\t'+ gName1 +'\t'+ repo4 +'\t'+ repo5 +'\t'+ repo6 +'\t'+ repo7 +'\t'+ ctripOrderNights +'\t'+ numEachRoom +'\t'+ ctripOrderRooms +'\t'+ ctripOrderPrice;
-
-                    debug = 6;
-                }    
 
                 modal_content_display_block: { 
 
@@ -464,6 +449,12 @@
                                 }                        
                                 RoomConfirmShow = RoomConfirmShow.slice(1);
 
+                                JTBTotalPrice = JTBSougaku;
+                                //alert(JTBTotalPrice);  OK!!
+                    report_summary = ctripOrderRef +'\t'+ HnameSummary +'\t'+ gName1 +'\t'+ repo4 +'\t'+ repo5 +'\t'+ repo6 +'\t'+ repo7 
+                        +'\t'+ ctripOrderNights +'\t'+ numEachRoom +'\t'+ ctripOrderRooms +'\t'+ ctripOrderPrice +'\t'+ JTBTotalPrice;
+                                
+
                             }
                             
                             debug = 7.4;
@@ -490,9 +481,30 @@
                             log(' JTB_Info Failed ! debug = ' + debug);
                         });
                         debug = 8;
+                        //alert(JTBTotalPrice);   bad!!
                     }); 
                     
                 }
+
+                
+                report_summary_editing_block: {
+
+                    var repo4 = 1 + d1.getMonth();
+                    var repo5 = d1.getDate();
+                    var repo6 = 1 + d2.getMonth();
+                    var repo7 = d2.getDate();
+
+                    for ( var Hcheck=0; Hcheck<90; Hcheck++ ){
+                        var thisHotelInfo = HnameTable[Hcheck];
+                        if ( HHHHname.match(thisHotelInfo[0]) ){ HnameSummary = thisHotelInfo[1]; break; } 
+                    }
+                    if ( HnameSummary == "" ){ window.close(); }
+                    //report_summary = ctripOrderRef +'\t'+ HnameSummary +'\t'+ gName1 +'\t'+ repo4 +'\t'+ repo5 +'\t'+ repo6 +'\t'+ repo7 
+                    //    +'\t'+ ctripOrderNights +'\t'+ numEachRoom +'\t'+ ctripOrderRooms +'\t'+ ctripOrderPrice +'\t'+ JTBTotalPrice;
+
+                    debug = 6;
+                }    
+
 
                 /* 此处设置320ms延迟，防止readText和writeText同时相应造成异常 */
                 setTimeout(function(){

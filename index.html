@@ -84,7 +84,7 @@
             
             <a style="font-size:15px">REF# </a><label class="control-label" id=txt_ref style="font-size:16px;font-family:verdana;color:rgb(23, 94, 248)"></label>
             <button id="btn_JTB_confirmed" class="btn btn-primary" style="font-size:14px;font-family:Meiryo;float:right"><strong>ＪＴＢ完成</strong><br><em>(去填集計草稿)</em></button><br/>
-            <a style="font-size:16px">★0.36 </a><label class="control-label" id=txt_type style="font-size:15px"></label><br/>
+            <a style="font-size:16px">★0.37 </a><label class="control-label" id=txt_type style="font-size:15px"></label><br/>
             
             <img hight="15%" width="100%" class="img-rounded" src="https://raw.githubusercontent.com/Best-Hotel-Japan/Sapporo_TV_Hotel-Dev/gh-pages/background.jpg" alt="" /><br/>
             <!--https://raw.githubusercontent.com/fpga2033/TVtower/0609769e290f5f11ccf79624a39f594c03a2a4eb/mildseven-hill-winter.jpg-->
@@ -175,8 +175,8 @@
                 //log('Text pasted.');
                 debug = 2;
 
-                // HnameTable酒店资料数组初始化
-                Hotel_information: {
+                
+                Hotel_information: {    // HnameTable酒店资料数组初始化
 
                     var HnameTable = new Array();
                     for( var hi=0; hi<90; hi++ ){        //一维长度为3
@@ -453,15 +453,17 @@
                                 JTBbookedThing[3] = pasteStrJTB.match(regExp_JTBNitteiInfo);      
                                 var JTBNitteiInfo = JTBbookedThing[3];      // 日程数组，每个元素是一行日程
 
-                                var regExp_RoomConfirm = /(\w{5}H-01)/;     // 不用正则也行
-                                for ( var j = 0 ; j < JTBNitteiInfo.length ; j++ ){
-                                    RoomConfirm[1+j] = JTBNitteiInfo[j].slice(-9);
-                                    RoomConfirmShow = RoomConfirmShow + "，" + RoomConfirm[1+j];                
-                                }                        
-                                RoomConfirmShow = RoomConfirmShow.slice(1);
+                                if ( JTBNitteiInfo != null ){
+                                    var regExp_RoomConfirm = /(\w{5}H-01)/;     // 不用正则也行
+                                    for ( var j = 0 ; j < JTBNitteiInfo.length ; j++ ){
+                                        RoomConfirm[1+j] = JTBNitteiInfo[j].slice(-9);
+                                        RoomConfirmShow = RoomConfirmShow + "，" + RoomConfirm[1+j];                
+                                    }                        
+                                    RoomConfirmShow = RoomConfirmShow.slice(1); 
+                                }
 
                                 JTBTotalPrice = JTBSougaku;
-                                //alert(JTBTotalPrice);  OK!!
+                                
                                 orderProfit = 1 - ( parseFloat(JTBTotalPrice) * 0.9 / parseFloat(ctripOrderPrice) );
                                 var orderProfitShow = orderProfit.toFixed(3) * 100;
                                 orderProfitShow = orderProfitShow.toFixed(1);
@@ -482,7 +484,14 @@
                                 .catch(() => {
                                     //log('Failed to write clipboard');
                                 });
-                                document.getElementById("txt_show_OK").innerHTML = "　　　　 OK!";
+
+                                if ( JTBNitteiInfo != null ){
+                                    document.getElementById("txt_show_OK").innerHTML = "　　　　 OK!";
+                                }
+                                else {
+                                    document.getElementById("txt_show_OK").innerHTML = "　　 未手配?";
+                                }
+                                
                                 document.getElementById("txt_show_profit").innerHTML = "　利益大約 " + orderProfitShow + " %";
                                 setTimeout(function(){
                                     document.getElementById("txt_show_OK").innerHTML = "";
@@ -490,7 +499,6 @@
                                 }, 7500);
 
                             }, 160);
-
 
                         })
                         .catch(() => {
@@ -563,19 +571,26 @@
 
         // 按钮 "JTB完成"
         $('#btn_JTB_confirmed').on('click', function () {
-            
-            //log(' btn_JTB_confirmed writing ');
-            navigator.clipboard.writeText(report_summary)   // debug: report_summary
-            .then(() => {
-                //log('Text copied.');
-            })
-            .catch(() => {
-                //log('Failed to write clipboard');
-            });
 
-            $('#btn_JTB_confirmed').delay(60).queue(function(){
-                window.close();
-            });
+            /*if ( pasteStrJTB == "" ){   // 如果没有使用提取确认号按钮，就提示
+                //log(" 辛苦了！ 现在 JTB済画面提取 还没完成！");
+                debug = 9.5;
+            }
+            else {*/
+            
+                //log(' btn_JTB_confirmed writing ');
+                navigator.clipboard.writeText(report_summary)   // debug: report_summary
+                .then(() => {
+                    //log('Text copied.');
+                })
+                .catch(() => {
+                    //log('Failed to write clipboard');
+                });
+
+                $('#btn_JTB_confirmed').delay(60).queue(function(){
+                    window.close();
+                });
+            //}
 
         });
 

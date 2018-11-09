@@ -367,8 +367,8 @@
                     SPshow = SPshow.replace(";"," ");
                     SPshow = SPshow.replace("。"," ");
                     SPshow = SPshow.replace("please","");      // please
-                    if ( ctripOrderRooms > 2 ){ SPshow = SPshow + " *同じ階層でお願いします!"; }
-                    if ( childA_info != "" ){ SPshow = SPshow + " *子供同行なし:可能"; }
+                    if ( ctripOrderRooms > 2 ){ SPshow = SPshow + " *同じ階層でお願いします!"; SPshow = SPshow.replace("null",""); }
+                    if ( childA_info != "" ){ SPshow = SPshow + " *子供同行なし:可能"; SPshow = SPshow.replace("null",""); }
                     if ( SPshow == "" ) { SPshow = "null"; }
                     
                     for ( var i = 0 ; i < GuestnameList.length ; i++ ){
@@ -641,7 +641,7 @@
                     var dateStamp = now_month + "-" + now_date;
                     var now_hh = now.getHours();
                     var now_mm = now.getMinutes();
-                    var timeStamp = now_hh + ":" + now_mm;
+                    var timeStamp = now_mm < 10 ? (now_hh + ":0" + now_mm) : (now_hh + ":" + now_mm);
 
                     //report_summary = ctripOrderRef +'\t'+ HnameSummary +'\t'+ gName1 +'\t'+ repo4 +'\t'+ repo5 +'\t'+ repo6 +'\t'+ repo7 
                     //+'\t'+ ctripOrderNights +'\t'+ numEachRoom +'\t'+ ctripOrderRooms +'\t'+ ctripOrderPrice +'\t'+ dateStamp +'\t'+ timeStamp;

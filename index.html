@@ -163,7 +163,7 @@
         var report_summary;         // 集計草稿
         
         
-        /* 此处设置 300 ms延迟，防止线程竞争造成异常? */
+        /* 此处设置 90 ms延迟，防止线程竞争造成异常? */
         setTimeout(function(){
 
             debug = 0.81;               // 问题就出在这里，剪贴板里是undefined
@@ -402,12 +402,24 @@
                     debug = 5;
                     
                     if ( ctripOrderType.match(/修改/) ){
-                    
-                        myWindow=window.open('', '', 'width=320, height=200, top=185, left=500, toolbar=no, menubar=no, scrollbars=no, resizable=no, location=no, status=no');
+                        myWindow=window.open('', '', 'width=325, height=240, top=185, left=500, toolbar=no, menubar=no, scrollbars=no, resizable=no, location=no, status=no');
                         myWindow.document.write("<h3>　您辛苦啦！~</h3><h3>　这是一个修改单！一定要先查清楚此单之前所有的关联单号，是否已经在JTB上有过房间预订。</h3><h3>　关联单号可能不止一个！</h3>");
                         myWindow.focus();
-
                     }
+
+                    if ( ctripOrderType.match(/取消/) ){
+                        myWindow=window.open('', '', 'width=325, height=240, top=185, left=500, toolbar=no, menubar=no, scrollbars=no, resizable=no, location=no, status=no');
+                        myWindow.document.write("<h3>　您辛苦啦！~</h3><h3>　这是一个取消单！一定要先看清楚此单的原始订单通知时间。</h3><h3>　JTB上的取消操作要做记录！</h3><h3>　最后记得把集計表涂红。</h3>");
+                        myWindow.focus();
+                        setTimeout(function(){ window.close(); }, 700);
+                    }
+
+                    if ( ctripOrderType.match(/无效/) ){
+                        myWindow=window.open('', '', 'width=325, height=240, top=185, left=500, toolbar=no, menubar=no, scrollbars=no, resizable=no, location=no, status=no');
+                        myWindow.document.write("<h3>　您辛苦啦！~</h3><h3>　这是一个无效订单呀！</h3><h3>　为什么要打开接单小窗口呢？</h3><h3>　搜索一下关联订单和相关邮件吧。</h3>");
+                        myWindow.focus();
+                        setTimeout(function(){ window.close(); }, 700);
+                    }                    
                 }
 
                 modal_content_display_block: { 
@@ -843,7 +855,7 @@
                 log(' MAIN Failed ! v1106c debug = ' + debug);
             });
 
-        }, 150);
+        }, 90);
 
 
         // modal 的 Close 按钮            

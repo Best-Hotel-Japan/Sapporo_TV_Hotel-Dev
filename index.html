@@ -85,7 +85,7 @@
             
             <a style="font-size:15px">REF# </a><span><label class="control-label" id=txt_ref style="font-size:16px;font-family:verdana;color:rgb(23, 94, 248)"></label></span>
             <button id="btn_JTB_confirmed" class="btn btn-primary" style="font-size:14px;font-family:Meiryo;float:right"><strong>ＪＴＢ完成</strong><br><em>(去填集計草稿)</em></button><br/>
-            <a style="font-size:16px">★s11 </a><label class="control-label" id=txt_type style="font-size:15px"></label><br/>
+            <a style="font-size:16px">★s12 </a><label class="control-label" id=txt_type style="font-size:15px"></label><br/>
             
             <img hight="15%" width="100%" class="img-rounded" src="https://raw.githubusercontent.com/Best-Hotel-Japan/Sapporo_TV_Hotel-Dev/gh-pages/background.jpg" alt="" /><br/>
             <!--https://raw.githubusercontent.com/fpga2033/TVtower/0609769e290f5f11ccf79624a39f594c03a2a4eb/mildseven-hill-winter.jpg-->
@@ -425,6 +425,7 @@
                 modal_content_display_block: { 
 
                     var MS_report = "";
+                    var MS_report_finish = 1;
                     var ctripOrderNames = GuestnameList.length;     // 姓名个数 ≤ 订单通知人数 ≤ 实际入住人数 ≤ 预订可住人数
                     ctripOrderNames = ctripOrderNames.toString();
 
@@ -590,9 +591,7 @@
 
                     default: {
                         MS_report = '番' + ctripOrderRef + '　' + gNameShow; 
-                        myWindow=window.open('', '', 'width=325, height=240, top=185, left=500, toolbar=no, menubar=no, scrollbars=no, resizable=no, location=no, status=no');
-                        myWindow.document.write("<h3>　您辛苦啦！~</h3><h3>　这个订单预订房间数太多了！也可能是通知的姓名不规范，无法自动处理。</h3><h3>　请您自己手动编辑MS报告！</h3>");
-                        myWindow.focus();
+                        MS_report_finish = 0;
                         } break;      
                     }
                     
@@ -618,18 +617,22 @@
 
                         setTimeout(function(){
 
-                            debug = 6.9
                             // 按下所有人按钮，向 clipboard 写入 MS报告
                             navigator.clipboard.writeText( MS_report )    
                             .then(() => {
                                 //log('Text copied.');
+                                if ( MS_report_finish == 0 ){
+                                    myWindow=window.open('', '', 'width=325, height=240, top=185, left=500, toolbar=no, menubar=no, scrollbars=no, resizable=no, location=no, status=no');
+                                    myWindow.document.write("<h3>　您辛苦啦！~</h3><h3>　这个订单预订房间数太多了！也有可能是通知的姓名不规范，无法自动处理。</h3><h3>　请您自己手动编辑MS报告！</h3>");
+                                    myWindow.focus();
+                                }
                             })
                             .catch(() => {
                                 //log('Failed to write clipboard');
                             });
 
                         }, 120);
-                        
+
                     }); 
                     debug = 7;
                 }

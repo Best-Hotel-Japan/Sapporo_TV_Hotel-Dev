@@ -163,7 +163,7 @@
         var report_summary;         // 集計草稿
         
         
-        /* 此处设置 90 ms延迟，防止线程竞争造成异常? */
+        /* 此处设置 若干延迟，防止线程竞争造成异常? */
         setTimeout(function(){
 
             debug = 0.81;               // 问题就出在这里，剪贴板里是undefined
@@ -588,7 +588,12 @@
                                     } break;                                     
                             } break;
 
-                    default: MS_report = '番' + ctripOrderRef + '　' + gNameShow; break;      
+                    default: {
+                        MS_report = '番' + ctripOrderRef + '　' + gNameShow; 
+                        myWindow=window.open('', '', 'width=325, height=240, top=185, left=500, toolbar=no, menubar=no, scrollbars=no, resizable=no, location=no, status=no');
+                        myWindow.document.write("<h3>　您辛苦啦！~</h3><h3>　这个订单预订房间数太多了！也可能是通知的姓名不规范，无法自动处理。</h3><h3>　请您自己手动编辑MS报告！</h3>");
+                        myWindow.focus();
+                        } break;      
                     }
                     
                     // case 嵌套，用default会变很奇怪的效果。。结果证明只是内层的break漏掉了而已。
@@ -855,7 +860,7 @@
                 log(' MAIN Failed ! v1106c debug = ' + debug);
             });
 
-        }, 90);
+        }, 160);
 
 
         // modal 的 Close 按钮            

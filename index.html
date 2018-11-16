@@ -593,9 +593,7 @@
 
                     default: {
                         MS_report = '番' + ctripOrderRef + '　' + gNameShow; 
-                        myWindow=window.open('', '', 'width=325, height=240, top=185, left=500, toolbar=no, menubar=no, scrollbars=no, resizable=no, location=no, status=no');
-                        myWindow.document.write("<h3>　您辛苦啦！~</h3><h3>　这个订单预订房间数太多了！也可能是通知的姓名不规范，无法自动处理。</h3><h3>　请您自己手动编辑MS报告！</h3>");
-                        myWindow.focus();
+                        MS_report_finish = 0;
                         } break;      
                     }
                     
@@ -621,17 +619,21 @@
 
                         setTimeout(function(){
 
-                            debug = 6.9
                             // 按下所有人按钮，向 clipboard 写入 MS报告
                             navigator.clipboard.writeText( MS_report )    
                             .then(() => {
                                 //log('Text copied.');
+                                if ( MS_report_finish == 0 ){
+                                    myWindow=window.open('', '', 'width=325, height=240, top=185, left=500, toolbar=no, menubar=no, scrollbars=no, resizable=no, location=no, status=no');
+                                    myWindow.document.write("<h3>　您辛苦啦！~</h3><h3>　这个订单预订房间数太多了！也有可能是通知的姓名不规范，无法自动处理。</h3><h3>　请您自己手动编辑MS报告！</h3>");
+                                    myWindow.focus();
+                                }
                             })
                             .catch(() => {
                                 //log('Failed to write clipboard');
                             });
 
-                        }, 120);
+                        }, 150);
                         
                     }); 
                     debug = 7;
@@ -881,7 +883,7 @@
 
             })
             .catch(() => {
-                log(' MAIN Failed ! v1116 debug = ' + debug);
+                log(' MAIN Failed ! v1117 debug = ' + debug);
             });
 
         }, 500);

@@ -85,7 +85,7 @@
             <a style="font-size:15px">REF# </a><span><label class="control-label" id=txt_ref style="font-size:16px;font-family:verdana;color:rgb(23, 94, 248)"></label></span>
             <button id="btn_JTB_confirmed" class="btn btn-primary" style="font-size:14px;font-family:Meiryo;float:right"><strong>ＪＴＢ完成</strong><br><em>(去填集計草稿)</em></button><br/>
             <label class="control-label" id=APIsignIn style="font-size:16px" onclick="handleSignInClick()">★</label>
-            <a style="font-size:16px">s24.1　</a><label class="control-label" id=txt_type style="font-size:15px"></label><br/>
+            <a style="font-size:16px">s24.2　</a><label class="control-label" id=txt_type style="font-size:15px"></label><br/>
             
             <img hight="15%" width="100%" class="img-rounded" src="https://raw.githubusercontent.com/Best-Hotel-Japan/Sapporo_TV_Hotel-Dev/gh-pages/background.jpg" alt="" /><br/>
             <!--https://raw.githubusercontent.com/fpga2033/TVtower/0609769e290f5f11ccf79624a39f594c03a2a4eb/mildseven-hill-winter.jpg-->
@@ -167,6 +167,7 @@
         for ( var col = 0; col < 20; col++ ){ running_water_record[0][col] = "###"; }
 
         $(document).ready(function(){
+        setTimeout(function(){
 
             debug = 0.81;               // 问题就出在这里，剪贴板里是undefined
             navigator.clipboard.readText()
@@ -250,6 +251,10 @@
                     var regExp_ctripOrderRef=/订单号\s+(\d{10})/;
                     ctripOrderThing[0]=pasteStr.match(regExp_ctripOrderRef);
                     var ctripOrderRef=RegExp.$1;
+
+                    var regExp_ctripOrderReserv=/订单号\s+\d{10}.+保留房/;
+                    var reserv_Order = false;
+                    if ( pasteStr.match(regExp_ctripOrderReserv) ){ reserv_Order = true; }
 
                     var regExp_ctripOrderType=/订单类型\s+(..)/;
                     ctripOrderThing[1]=pasteStr.match(regExp_ctripOrderType);
@@ -419,7 +424,8 @@
                         myWindow.document.write("<h3>　您辛苦啦！~</h3><h3>　这是一个无效订单呀！</h3><h3>　为什么要打开接单小窗口呢？</h3><h3>　搜索一下关联订单和相关邮件吧。</h3>");
                         myWindow.focus();
                         setTimeout(function(){ window.close(); }, 700);
-                    }                    
+                    }   
+              
                 }
 
                 modal_content_display_block: { 
@@ -810,7 +816,13 @@
                     debug = 8.01
                     navigator.clipboard.writeText(JTBinputDate)    
                     .then(() => {
-                        //log('Text copied.');
+
+                        if ( reserv_Order == true ){
+                            myWindow=window.open('', '', 'width=325, height=240, top=185, left=500, toolbar=no, menubar=no, scrollbars=no, resizable=no, location=no, status=no');
+                            myWindow.document.write("<h3>　您辛苦啦！~</h3><h3>　这是一个 <span style=\"background-color:#32cd32;\"><font color=\"#fffff0\">&#8201保留房&#8201</font></span> 订单！</h3><h3>　若JTB有房，请先改回: <font color=\"#CC0033\">余量=１</font></h3><h3>　若真的要用押房，就顺便清查一下相关日期还剩几间保留房吧 &#9825</h3>");
+                            myWindow.focus();                        
+                        }   
+
                     })
                     .catch(() => {
                         alert("debug = " + debug);
@@ -885,6 +897,7 @@
                 log(' MAIN Failed ! v1117 debug = ' + debug);
             });
 
+        }, 100);
         });
 
         /* 此处必须设置 若干延迟，防止小窗口读不到clipboard 

@@ -85,7 +85,7 @@
             <a style="font-size:15px">REF# </a><span><label class="control-label" id=txt_ref style="font-size:16px;font-family:verdana;color:rgb(23, 94, 248)"></label></span>
             <button id="btn_JTB_confirmed" class="btn btn-primary" style="font-size:14px;font-family:Meiryo;float:right"><strong>ＪＴＢ完成</strong><br><em>(去填集計草稿)</em></button><br/>
             <label class="control-label" id=APIsignIn style="font-size:16px" onclick="handleSignInClick()">★</label>
-            <a style="font-size:16px">s24.2　</a><label class="control-label" id=txt_type style="font-size:15px"></label><br/>
+            <a style="font-size:16px">s24.3　</a><label class="control-label" id=txt_type style="font-size:15px"></label><br/>
             
             <img hight="15%" width="100%" class="img-rounded" src="https://raw.githubusercontent.com/Best-Hotel-Japan/Sapporo_TV_Hotel-Dev/gh-pages/background.jpg" alt="" /><br/>
             <!--https://raw.githubusercontent.com/fpga2033/TVtower/0609769e290f5f11ccf79624a39f594c03a2a4eb/mildseven-hill-winter.jpg-->
@@ -719,7 +719,7 @@
                             var JTBSougaku = RegExp.$1;
                             JTBSougaku = JTBSougaku.replace(",","");
 
-                            var regExp_JTBNitteiInfo = /(20\d\d\/\d\d\/\d\d.+済.+H-01)/g;
+                            var regExp_JTBNitteiInfo = /(20\d\d\/\d\d\/\d\d.+約済.+H-01)/g;
                             JTBbookedThing[3] = pasteStrJTB.match(regExp_JTBNitteiInfo);      
                             var JTBNitteiInfo = JTBbookedThing[3];      // 日程数组，每个元素是一行日程
 
@@ -820,7 +820,10 @@
                         if ( reserv_Order == true ){
                             myWindow=window.open('', '', 'width=325, height=240, top=185, left=500, toolbar=no, menubar=no, scrollbars=no, resizable=no, location=no, status=no');
                             myWindow.document.write("<h3>　您辛苦啦！~</h3><h3>　这是一个 <span style=\"background-color:#32cd32;\"><font color=\"#fffff0\">&#8201保留房&#8201</font></span> 订单！</h3><h3>　若JTB有房，请先改回: <font color=\"#CC0033\">余量=１</font></h3><h3>　若真的要用押房，就顺便清查一下相关日期还剩几间保留房吧 &#9825</h3>");
-                            myWindow.focus();                        
+                            myWindow.focus();    
+                            myWindow.onclick = function(){
+                                myWindow.close();
+                            }                    
                         }   
 
                     })

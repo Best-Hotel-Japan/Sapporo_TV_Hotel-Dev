@@ -85,7 +85,7 @@
             <a style="font-size:15px">REF# </a><span><label class="control-label" id=txt_ref style="font-size:16px;font-family:verdana;color:rgb(23, 94, 248)"></label></span>
             <button id="btn_JTB_confirmed" class="btn btn-primary" style="font-size:14px;font-family:Meiryo;float:right"><strong>ＪＴＢ完成</strong><br><em>(去填集計草稿)</em></button><br/>
             <label class="control-label" id=APIsignIn style="font-size:16px" onclick="handleSignInClick()">★</label>
-            <a style="font-size:16px">s26　</a><label class="control-label" id=txt_type style="font-size:15px"></label><br/>
+            <a style="font-size:16px">s26*1　</a><label class="control-label" id=txt_type style="font-size:15px"></label><br/>
             
             <img id=faceImg hight="15%" width="100%" class="img-rounded" src="https://raw.githubusercontent.com/Best-Hotel-Japan/Sapporo_TV_Hotel-Dev/gh-pages/background.jpg" alt="" /><br/>
             <!--file:///C:/Apps/background.jpg-->
@@ -453,7 +453,7 @@
                     var JTBinputDate = DATEshow.replace(/-/g,"");
                     DATEshow = DATEshow.replace("2018","18");
                     DATEshow = DATEshow.replace("2019","19");
-                    var periodDays = ctripOrderNights + 1;
+                    var periodDays = parseInt(ctripOrderNights) + 1;
 
                     var numEachRoom = "";
                     if (ctripOrderEachRoom.match(/[单一]人/)) { numEachRoom = "1"; }

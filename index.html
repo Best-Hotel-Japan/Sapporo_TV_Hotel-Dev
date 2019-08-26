@@ -266,9 +266,9 @@
                         ctripOrderThing[3]=pasteStr.match(regExp_ctripOrderHotel);
                         var ctripOrderHotel=RegExp.$1;
                         
-                        // [\w：]{1,3}([- 是为了对应类似于「床型 DW：和洋室房-带露天」 的情况
+                        // [\w：]{0,3}([- 是为了对应类似于「床型 DW：和洋室房-带露天」 的情况
                         var regExp_ctripOrderRoomtype=
-    /房型\/间数\/床型\s+[\w：]{1,3}([-\u4E00-\u9FFF]+).+([\u4e00-\u9fa5]早|早\+晚餐).+\s+(\d+)\s+间\s+房型ID.+ (\d+) .+\s+入离日期\s+(20\d\d\W\d\d\W\d\d).+(20\d\d\W\d\d\W\d\d).+(\d+)\s*晚/;
+    /房型\/间数\/床型\s+[\w：]{0,3}([-\u4E00-\u9FFF]+).+([\u4e00-\u9fa5]早|早\+晚餐).+\s+(\d+)\s+间\s+房型ID.+ (\d+) .+\s+入离日期\s+(20\d\d\W\d\d\W\d\d).+(20\d\d\W\d\d\W\d\d).+(\d+)\s*晚/;
                         ctripOrderThing[4]=pasteStr.match(regExp_ctripOrderRoomtype);
                         var ctripOrderRoomtype=RegExp.$1;    //房型
                         var ctripOrderMeals=RegExp.$2;       //餐食

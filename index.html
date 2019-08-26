@@ -104,10 +104,10 @@
             <span><label class="control-label" id=txt_hotel style="font-weight:normal;font-size:18px"></label></span><label class="control-label" id=txt_roomtype></label><br/><br/>
             <label class="control-label" id=txt_eachroom></label><label class="control-label" id=txt_meal></label><br/>
             
-            <br/><a style="font-size:10px">　-------------------------------------------------------------　</a><br/>
+            <br/><a style="font-size:10px">　--------------------------------------------------------------　</a><br/>
             <a style="font-size:12px">　建议房型：　 </a><label class="control-label" id=txt_roomCodeAdvise style="font-weight:bold;font-size:22px;color:rgb(90, 0, 53)"></label><a style="font-size:12px">　禁煙優先 </a><br/>
             
-            <br/><a style="font-size:10px">　-------------------------------------------------------------　</a><br/>
+            <br/><a style="font-size:10px">　--------------------------------------------------------------　</a><br/>
             <a style="font-size:12px">　</a><span><label class="control-label" id=txt_guest1 style="font-weight:normal;font-size:18px"></span></label><button id="btn_All_of_Names" class="btn btn-primary" style="font-size:12px;font-family:Meiryo;float:right"><strong> 编辑ＭＳ报告 </strong></button><br/><br/>
             <a style="font-size:12px">　</a><label class="control-label" id=txt_request style="font-weight:bold;font-size:12px"></label><br/><br/>
             
@@ -366,6 +366,7 @@
                     HHHHname = HHHHname.replace("Tomamu","");
 
                     ctripOrderRoomtype = ctripOrderRoomtype.replace("浴池","");
+                    ctripOrderRoomtype = ctripOrderRoomtype.replace("风吕付","");
                     
                     var DATEshow = ctripOrderDate1;
                     var JTBinputDate = DATEshow.replace(/-/g,"");
@@ -481,7 +482,7 @@
                     document.getElementById("txt_roomCodeAdvise").innerHTML = JTBRoomTypecode;
 
                     // if ( HnameSummary == "" ){ window.close(); }
-                    if ( HnameSummary == "" ){ HnameSummary = "未知酒店"; }     //大阪订单
+                    if ( HnameSummary == "" ){ HnameSummary = "未知"; }     //大阪订单
                     
                     var now = new Date();
                     var now_month = 1 + now.getMonth();
@@ -491,6 +492,9 @@
                     var now_hh = now.getHours();
                     var now_mm = now.getMinutes();
                     var timeStamp = now_mm < 10 ? (now_hh + ":0" + now_mm) : (now_hh + ":" + now_mm);
+
+                    repo4 = repo4 < 10 ? ("0" + repo4) : (repo4);
+                    repo5 = repo5 < 10 ? ("0" + repo5) : (repo5);
 
                     // report_summary = ctripOrderRef +'\t'+ dateStamp +'\t'+ timeStamp +'\t'+ HnameSummary +'\t'+ gName1 +'\t'+'\t'+ ctripOrderRoomtype +'\t'+ 
                     // repo4 +'\t'+ repo5 +'\t'+ repo6 +'\t'+ repo7 +'\t'+ ctripOrderNights +'\t'+ numEachRoom +'\t'+ ctripOrderRooms +'\t'+ ctripOrderPrice; 
@@ -822,8 +826,9 @@
 
                             // Ver2019 抽取核对表中 核対项所需的信息
                             // regexr.com/ List验证：$1 ■ $2 ■ $3 ■ $4 ■ $5 ■ $6 ■ $7 ■ $8 ■ $9 \n
+                            // 两种情况： ■取消料は予約情報詳細にて確認してください    ■取消料収受....
                             var regExp_JTB_Info3 = 
-    /  ([^w]{1,5})\s+\w{6}-01\s+.+\s+■.+■(男性\w+名).+料金\s[￥\\]([\d,*]+)\s.*■取消料収受.+[2|に][0|て][\d|確][\d|認][\/|し][\d|て][\d|く][\/|だ][\d|さ][\d|い]\s+＜日程情報.+\s+(20\d\d\/\d\d\/\d\d)\s\sA\)([^ ]+)\s\s([^ ]+.*)\s\s([\w]{3})\s\s([^ ]+\s+[^ ]+).+..[待済]\s{2,3}(\w{5}H)-01/g;
+    /  ([^w]{1,5})\s+\w{6}-01\s+.+\s+■.+■(男性\w+名).+料金\s[￥\\]([\d,*]+)\s.*■取消料.+[2|に][0|て][\d|確][\d|認][\/|し][\d|て][\d|く][\/|だ][\d|さ][\d|い]\s+＜日程情報.+\s+(20\d\d\/\d\d\/\d\d)\s\sA\)([^ ]+)\s\s([^ ]+.*)\s\s([\w]{3})\s\s([^ ]+\s+[^ ]+).+..[待済]\s{2,3}(\w{5}H)-01/g;
                             var HakouZumi_list = new Array();         //発行済  
                             var MenNumbers_list = new Array();        //男性X名   
                             var roomFee_list = new Array();           // ■合計料金、日程料金
@@ -905,7 +910,7 @@
 
                         if ( indexD !== indexT ){
                             myWindow=window.open('', '', 'width=325, height=240, top=185, left=500, toolbar=no, menubar=no, scrollbars=no, resizable=no, location=no, status=no');
-                            myWindow.document.write("<h3>　您辛苦啦！~</h3><h3>　系统检测到问题： <span style=\"background-color:#32cd32;\"><font color=\"#fffff0\">&#8201天数不相等&#8201</font></span> ！</h3><h3>　请检查携程订单中要求的天数， <font color=\"#CC0033\"></font></h3><h3>　是否和JTB预约頁面中实际的天数一致? &#9825</h3>");
+                            myWindow.document.write("<h3>　您辛苦啦！~</h3><h3>　系统检测到问题： <span style=\"background-color:#32cd32;\"><font color=\"#ff8826\">&#8201天数不相等&#8201</font></span> ！</h3><h3>　请检查携程订单中要求的天数， <font color=\"#CC0033\"></font></h3><h3>　是否和JTB预约頁面中实际的天数一致? </h3>");
                             myWindow.focus();    
                             myWindow.onclick = function(){
                                 myWindow.close();

@@ -84,7 +84,7 @@
             <title> ♪ JPH Sapporo Hotel ♪ </title>
             
             <button id="btn_JTB_confirmed" class="btn btn-primary" style="font-size:14px;font-family:Microsoft YaHei;float:right"><strong>订单处理完成</strong><br><em>(点此关闭窗口，去填写核対表)</em></button>
-            <br/><br/><br/>
+            <br/><br/>
             <a style="font-size:15px">REF# </a><span><label class="control-label" id=txt_ref style="font-size:16px;font-family:verdana;color:rgb(23, 94, 248)"></label></span>
             
             <label class="control-label" id=APIsignIn style="font-size:16px" onclick="handleSignInClick()">★</label>
@@ -104,15 +104,15 @@
             <span><label class="control-label" id=txt_hotel style="font-weight:normal;font-size:18px"></label></span><label class="control-label" id=txt_roomtype></label><br/><br/>
             <label class="control-label" id=txt_eachroom></label><label class="control-label" id=txt_meal></label><br/>
             
-            <br/><a style="font-size:10px">　------------------------------------------　</a><br/>
+            <br/><a style="font-size:10px">　-------------------------------------------------------------　</a><br/>
             <a style="font-size:12px">　建议房型：　 </a><label class="control-label" id=txt_roomCodeAdvise style="font-weight:bold;font-size:22px;color:rgb(90, 0, 53)"></label><a style="font-size:12px">　禁煙優先 </a><br/>
             
-            <br/><a style="font-size:10px">　------------------------------------------　</a><br/>
-            <a style="font-size:12px">　</a><span><label class="control-label" id=txt_guest1 style="font-weight:normal;font-size:18px"></span></label><button id="btn_All_of_Names" class="btn btn-primary" style="font-size:12px;font-family:Meiryo;float:right"><strong>　编辑ＭＳ报告　</strong></button><br/><br/>
+            <br/><a style="font-size:10px">　-------------------------------------------------------------　</a><br/>
+            <a style="font-size:12px">　</a><span><label class="control-label" id=txt_guest1 style="font-weight:normal;font-size:18px"></span></label><button id="btn_All_of_Names" class="btn btn-primary" style="font-size:12px;font-family:Meiryo;float:right"><strong> 编辑ＭＳ报告 </strong></button><br/><br/>
             <a style="font-size:12px">　</a><label class="control-label" id=txt_request style="font-weight:bold;font-size:12px"></label><br/><br/>
             
             <label class="control-label" id=txt_show_OK style="font-weight:bold;font-style:oblique;font-size:24px;color:rgb(9, 15, 68)"></label>
-            <button id="btn_make_bookingID" class="btn btn-primary" style="font-size:14px;font-family:Microsoft YaHei;float:right"><strong>　COPY预约完成頁面　
+            <button id="btn_make_bookingID" class="btn btn-primary" style="font-size:14px;font-family:Microsoft YaHei;float:right"><strong> COPY预约完成頁面 
             <img hight="32" width="53" style="float:right" src="https://raw.githubusercontent.com/Best-Hotel-Japan/Sapporo_TV_Hotel-Dev/gh-pages/JTB.jpg" alt="JTB" /></strong><br/><em>(去填写确认号)</em></button>
             <br/>
             <label class="control-label" id=txt_show_profit style="font-family:Meiryo;font-weight:bold;font-size:18px;color:rgb(9, 15, 68)"></label>
@@ -210,9 +210,14 @@
                     HnameTable["Riso"]=["北海道星野Tomamu Risonare大酒店","5436026","星野リゾートリゾナーレトマム","1578020","en",[""]];
                     HnameTable["日航"]=["JR札幌日航酒店","6464536","JRタワーホテル日航","1529113","en",[""]];
 
+                    HnameTable["旅亭花"]=["旅亭花由良","19455731","登別温泉旅亭花ゆら","1558018","en",[""]];
+                    HnameTable["玉乃汤"]=["登別玉乃湯","19865427","滝乃家別館玉乃湯","1558019","en",[""]];
+                    HnameTable["汤本"]=["登别汤本温泉酒店","19865420","ホテルゆもと登別","1558017","en",[""]];
+                    HnameTable["登别格兰"]=["登别格兰酒店","6527760","登別グランドホテル","1558002","en",[""]];
+
+                    HnameTable["未知酒店"]=["未知酒店名","未知Cid","未知","未知Jid","en",[""]];
+
                     HnameTable[45]=["奥入濑","奥入瀬渓流","星野リゾート奥入瀬渓流ホテル","en","2120007",""];
-                    HnameTable[46]=["旅亭花","旅亭花由良","登別温泉旅亭花ゆら","en","1558018",""];
-                    HnameTable[47]=["玉乃汤","登別玉乃湯","滝乃家別館玉乃湯","en","1558019",""];
                     HnameTable[48]=["津轻","星野界津軽","星野リゾート界津軽","en","2144011",""];
                     
                 }
@@ -224,6 +229,9 @@
 
                     HnameTable["Riso"][5]["双人间套房"]=["205308064","03"];
                     HnameTable["Riso"][5]["四人间套房"]=["586756234","04"];
+
+                    HnameTable["汤本"][5]["日式房"]=["569488243","07禁, 01"];
+                    HnameTable["汤本"][5]["和洋式房"]=["569488657","04禁, 05"];
 
                     HnameTable["日航"][5]["中等双床房"]=["331766732","08"];
                     
@@ -258,8 +266,9 @@
                         ctripOrderThing[3]=pasteStr.match(regExp_ctripOrderHotel);
                         var ctripOrderHotel=RegExp.$1;
                         
+                        // [\w：]{1,3}([- 是为了对应类似于「床型 DW：和洋室房-带露天」 的情况
                         var regExp_ctripOrderRoomtype=
-    /房型\/间数\/床型\s+([\u4E00-\u9FFF]+).+([\u4e00-\u9fa5]早|早\+晚餐).+\s+(\d+)\s+间\s+房型ID.+ (\d+) .+\s+入离日期\s+(20\d\d\W\d\d\W\d\d).+(20\d\d\W\d\d\W\d\d).+(\d+)\s*晚/;
+    /房型\/间数\/床型\s+[\w：]{1,3}([-\u4E00-\u9FFF]+).+([\u4e00-\u9fa5]早|早\+晚餐).+\s+(\d+)\s+间\s+房型ID.+ (\d+) .+\s+入离日期\s+(20\d\d\W\d\d\W\d\d).+(20\d\d\W\d\d\W\d\d).+(\d+)\s*晚/;
                         ctripOrderThing[4]=pasteStr.match(regExp_ctripOrderRoomtype);
                         var ctripOrderRoomtype=RegExp.$1;    //房型
                         var ctripOrderMeals=RegExp.$2;       //餐食
@@ -345,6 +354,7 @@
 
                     // 显示内容的前处理     
                     var HHHHname = ctripOrderHotel;     // HHHHname是酒店的简短名称，用于小窗口显示
+                    HHHHname = HHHHname.replace(" ","");
                     HHHHname = HHHHname.replace("北海道","");
                     HHHHname = HHHHname.replace("度假村","");
                     HHHHname = HHHHname.replace("度假","");
@@ -354,6 +364,8 @@
                     HHHHname = HHHHname.replace("饭店","");
                     HHHHname = HHHHname.replace("TOMAMU","");
                     HHHHname = HHHHname.replace("Tomamu","");
+
+                    ctripOrderRoomtype = ctripOrderRoomtype.replace("浴池","");
                     
                     var DATEshow = ctripOrderDate1;
                     var JTBinputDate = DATEshow.replace(/-/g,"");
@@ -718,7 +730,7 @@
                     debug = 7;
                 }
 
-                // "JTB済画面提取"按钮
+                // "JTB确认号提取"按钮
                 $('#btn_make_bookingID').on('click', function () {
                     debug = 7.1;
                     var RoomConfirm = new Array();    // 用于存放所有房间确认号，从第一晚开始
@@ -793,7 +805,7 @@
                             // Ver2019 核对表中 订单记录的首行的 Ctrip部分 + JTB部分
                             report_summary = now_date +'\t'+ "札幌" +'\t'+ "呉旭輝" +'\t'+ "CTRIP" +'\t'+ ctripOrderRef +'\t'+ "ホテル" +'\t'+ HnameTable[Hx][2] 
                             +'\t\t'+ repo4+"月" +'\t'+ repo5 +'\t'+ repo6+"月" +'\t'+ repo7 +'\t'+ ctripOrderNights +'\t'+ totalPeopleAllow*ctripOrderNights +'\t'+ ctripOrderRooms*ctripOrderNights 
-                            +'\t'+ ctripOrderPrice +'\t'+ parseFloat(JTBTotalPrice)*0.9 +'\t'+ priceProfit +'\t'+ orderProfit +'\t'+ gName1 +'\t\t\t\t\t\t\t'
+                            +'\t'+ ctripOrderPrice +'\t'+ parseFloat(JTBTotalPrice)*0.9 +'\t'+ priceProfit +'\t'+ orderProfitShow+"%" +'\t'+ gName1 +'\t\t\t\t\t\t\t'
                             + Hx +'\t'+ ctripOrderRoomtype +'\t'+ ctripOrderSaleTypeID +'\t'+ ctripOrderEachRoom +'\t'+ numEachRoom +'\t'+ ctripOrderRooms +'\t'+ (indexD) +'\t'+ "-- " +'\t'+ "-- "
                             +'\t\t'+ JTBKannriRef +'\t'+ JTBKanaName +'\t'+ (j) +'\t'+ "-- " +'\t'+ JTBTotalPrice +'\t'+ "-- " +'\t'+ "-- " +'\t'+ "-- " +'\t'+ "-- "
                             +'\t'+ dateStamp +'\t'+ timeStamp +'\n';
@@ -881,8 +893,8 @@
                                 
                                 NitteConfirmLog[j] = now_date +'\t'+ "札幌" +'\t'+ "--" +'\t'+ "第 "+j+" 项" +'\t'+ "尾号："+ctripOrderRef.slice(-4) +'\t'+ "核対项" +'\t'+ HnameTable[Hx][0] 
                                 +'\t\t'+ repo4+"月" +'\t'+ repo5 +'\t'+ ctripOrderRoomtype +'\t\t'+ ctripOrderEachRoom +'\t\t'+ ctripOrderRooms+" 间" +'\t'+ "每间 "+DailyPrice_list[j] +'\t'+ "原价 "+roomFee_list[j]
-                                +'\t'+ "-- " +'\t'+ "第 "+j+" 晚" +'\t'+ RevNum_list[j] +'\t\t\t\t\t\t'+ ctripOrderType
-                                + Hx +'\t'+ TYPEx +'\t'+ ctripOrderSaleTypeID +'\t'+ ctripOrderEachRoom +'\t'+ numEachRoom +'\t'+ ctripOrderRooms +'\t'+ j+" ("+ctripOrderNights+")" +'\t'+ DailyDate_list[j] +'\t'+ DailyPrice_list[j] 
+                                +'\t'+ "-- " +'\t'+ "第 "+j+" 晚" +'\t'+ RevNum_list[j] +'\t\t\t\t\t\t'+ ctripOrderType 
+                                +'\t'+ Hx +'\t'+ TYPEx +'\t'+ ctripOrderSaleTypeID +'\t'+ ctripOrderEachRoom +'\t'+ numEachRoom +'\t'+ ctripOrderRooms +'\t'+ j+" ("+ctripOrderNights+")" +'\t'+ DailyDate_list[j] +'\t'+ DailyPrice_list[j] 
                                 +'\t\t'+ RevNum_list[j] +'\t'+ HakouZumi_list[j] +'\t'+ date_list[j] +'\t'+ MenNumbers_list[j] +'\t'+ roomFee_list[j] +'\t'+ hotelName_list[j] +'\t'+ roomType_list[j] +'\t'+ planCode_list[j] +'\t'+ peopleInfo_list[j] 
                                 +'\t'+ "-- " +'\t'+ JTBTerminalID;
                                 NitteConfirmReport = NitteConfirmReport + NitteConfirmLog[j] +'\n';     
@@ -891,6 +903,14 @@
 
                         }
 
+                        if ( indexD !== indexT ){
+                            myWindow=window.open('', '', 'width=325, height=240, top=185, left=500, toolbar=no, menubar=no, scrollbars=no, resizable=no, location=no, status=no');
+                            myWindow.document.write("<h3>　您辛苦啦！~</h3><h3>　系统检测到问题： <span style=\"background-color:#32cd32;\"><font color=\"#fffff0\">&#8201天数不相等&#8201</font></span> ！</h3><h3>　请检查携程订单中要求的天数， <font color=\"#CC0033\"></font></h3><h3>　是否和JTB预约頁面中实际的天数一致? &#9825</h3>");
+                            myWindow.focus();    
+                            myWindow.onclick = function(){
+                                myWindow.close();
+                            }                    
+                        }
                         report_summary = report_summary + NitteConfirmReport;
                         debug = 7.4;
                         setTimeout(function(){

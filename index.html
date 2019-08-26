@@ -83,12 +83,13 @@
         <section>
             <title> ♪ JPH Sapporo Hotel ♪ </title>
             
-            <button id="btn_JTB_confirmed" class="btn btn-primary" style="font-size:14px;font-family:Microsoft YaHei;float:right"><strong>订单处理完成</strong><br><em>(点此关闭窗口，去填写核対表)</em></button><br/>
+            <button id="btn_JTB_confirmed" class="btn btn-primary" style="font-size:14px;font-family:Microsoft YaHei;float:right"><strong>订单处理完成</strong><br><em>(点此关闭窗口，去填写核対表)</em></button>
+            <br/><br/><br/>
             <a style="font-size:15px">REF# </a><span><label class="control-label" id=txt_ref style="font-size:16px;font-family:verdana;color:rgb(23, 94, 248)"></label></span>
             
             <label class="control-label" id=APIsignIn style="font-size:16px" onclick="handleSignInClick()">★</label>
-            <a style="font-size:16px">s81　</a><label class="control-label" id=txt_orderType style="font-size:15px"></label><br/>
-            <a>总额:　JPY </a><label class="control-label" id=txt_price style="font-size:22px;font-family:verdana;color:rgb(23, 94, 248)"></label><br/>
+            <a style="font-size:12px">s81 </a><label class="control-label" id=txt_orderType style="font-size:15px"></label><br/>
+            <a>携程総額:　JPY </a><label class="control-label" id=txt_price style="font-size:18px;font-family:verdana;color:rgb(4, 21, 58)"></label><br/>
 
             <img id=faceImg hight="15%" width="100%" class="img-rounded" src="https://raw.githubusercontent.com/Best-Hotel-Japan/Sapporo_TV_Hotel-Dev/gh-pages/background.png" alt="" /><br/>
             <!--file:///C:/Apps/background.jpg-->
@@ -104,7 +105,7 @@
             <label class="control-label" id=txt_eachroom></label><label class="control-label" id=txt_meal></label><br/>
             
             <br/><a style="font-size:10px">　------------------------------------------　</a><br/>
-            <a style="font-size:12px">　建议房型：　 </a><label class="control-label" id=txt_roomCodeAdvise style="font-weight:bold;font-size:22px;color:rgb(65, 0, 90)"></label><a style="font-size:12px">　禁煙優先 </a><br/>
+            <a style="font-size:12px">　建议房型：　 </a><label class="control-label" id=txt_roomCodeAdvise style="font-weight:bold;font-size:22px;color:rgb(90, 0, 53)"></label><a style="font-size:12px">　禁煙優先 </a><br/>
             
             <br/><a style="font-size:10px">　------------------------------------------　</a><br/>
             <a style="font-size:12px">　</a><span><label class="control-label" id=txt_guest1 style="font-weight:normal;font-size:18px"></span></label><button id="btn_All_of_Names" class="btn btn-primary" style="font-size:12px;font-family:Meiryo;float:right"><strong>　编辑ＭＳ报告　</strong></button><br/><br/>
@@ -142,7 +143,7 @@
                     <br/><br/><br/>
                     <b style="font-family:Microsoft YaHei;font-size:16px;color:rgb(221, 121, 90)">　订单通知了"入住人数"是　</b>
                     <label class="control-label" id=txt_modal_4 style="font-family:Meiryo;font-weight:bold;font-size:22px;color:rgb(221, 121, 90)"></label>
-                    <b style="font-family:Microsoft YaHei;font-size:16px;color:rgb(221, 121, 90)"> 耶!</b><br/>
+                    <b style="font-family:Microsoft YaHei;font-size:16px;color:rgb(221, 121, 90)">　人</b><br/>
                     <b style="font-family:Microsoft YaHei;font-size:16px;color:rgb(221, 121, 90)">　编辑「MS報告」如下：</b>
 
                     <br/><br/><br/>
@@ -408,6 +409,7 @@
                     document.getElementById("txt_days").innerHTML = periodDays;
                     document.getElementById("txt_guest1").innerHTML = gName1 + ' ';
                     document.getElementById("txt_request").innerHTML = SPshow;
+                    
                     // label#提醒有备注').text('' + recipText)
                     debug = 5;
                     
@@ -432,6 +434,72 @@
                     }   
               
                 }
+
+                report_summary_editing_block: {
+
+                    var repo4 = 1 + d1.getMonth();
+                    var repo5 = d1.getDate();
+                    var repo6 = 1 + d2.getMonth();
+                    var repo7 = d2.getDate();
+
+                    /// ver2018
+                    // for ( var Hcheck=0; Hcheck<90; Hcheck++ ){
+                    //     var thisHotelInfo = HnameTable[Hcheck];
+                    //     if ( HHHHname.match(thisHotelInfo[0]) ){ 
+                    //         HnameSummary = thisHotelInfo[1];        //HnameSummary仅为了适用于集計草稿，在2019版中更改为中文名全称
+                    //         HnameJTBcode = thisHotelInfo[4];
+                    //         break; 
+                    //     } 
+                    // }
+                    /// ver2018 over
+                    for (var Hx in HnameTable) {            // Hx 是酒店识别名称
+                        if ( ctripOrderHotel.match(Hx) ){ 
+                            for (var TYPEx in HnameTable[Hx][5]) { 
+                                if ( ctripOrderRoomtype.match(TYPEx) ){ 
+                                    //alert("　订单要求 :　" + Hx + " 酒店  ➔  " + TYPEx + " 房型\n　建议使用 :　JTB室タイプ　" + HnameTable[Hx][5][TYPEx][1]); 
+                                    HnameSummary = HnameTable[Hx][0];
+                                    HnameJTBcode = HnameTable[Hx][3];
+                                    JTBRoomTypecode = HnameTable[Hx][5][TYPEx][1];
+                                    break;     
+                                }
+                            }
+                            break; 
+                        } 
+                    }          
+                    document.getElementById("txt_roomCodeAdvise").innerHTML = JTBRoomTypecode;
+
+                    // if ( HnameSummary == "" ){ window.close(); }
+                    if ( HnameSummary == "" ){ HnameSummary = "未知酒店"; }     //大阪订单
+                    
+                    var now = new Date();
+                    var now_month = 1 + now.getMonth();
+                    var now_date = now.getDate();
+                    if ( now_date < 10 ){ now_date = "0" + now_date; }
+                    var dateStamp = now_month + "-" + now_date;
+                    var now_hh = now.getHours();
+                    var now_mm = now.getMinutes();
+                    var timeStamp = now_mm < 10 ? (now_hh + ":0" + now_mm) : (now_hh + ":" + now_mm);
+
+                    // report_summary = ctripOrderRef +'\t'+ dateStamp +'\t'+ timeStamp +'\t'+ HnameSummary +'\t'+ gName1 +'\t'+'\t'+ ctripOrderRoomtype +'\t'+ 
+                    // repo4 +'\t'+ repo5 +'\t'+ repo6 +'\t'+ repo7 +'\t'+ ctripOrderNights +'\t'+ numEachRoom +'\t'+ ctripOrderRooms +'\t'+ ctripOrderPrice; 
+                    
+                    // Ver2019 核对表中 订单记录的首行的 Ctrip部分
+                    // 如果不用JTB接单，report_summary编辑到这里就足够了
+                    report_summary = now_date +'\t'+ "札幌" +'\t'+ "呉旭輝" +'\t'+ "CTRIP" +'\t'+ ctripOrderRef +'\t'+ "ホテル" +'\t'+ HnameTable[Hx][2] 
+                    +'\t\t'+ repo4+"月" +'\t'+ repo5 +'\t'+ repo6+"月" +'\t'+ repo7 +'\t'+ ctripOrderNights +'\t'+ totalPeopleAllow*ctripOrderNights +'\t'+ ctripOrderRooms*ctripOrderNights 
+                    +'\t'+ ctripOrderPrice +'\t'+ '\t'+ '\t'+ '\t'+ gName1 +'\t\t\t\t\t\t\t'
+
+
+                    // 编辑 google sheet 云端记录（不带JTB信息）
+                    running_water_record[0][0] = report_summary;
+                    running_water_record[0][1] = ctripOrderRef;
+                    running_water_record[0][2] = dateStamp;
+                    running_water_record[0][3] = timeStamp;
+                    running_water_record[0][4] = HnameSummary;
+                    running_water_record[0][5] = gName1;
+                    running_water_record[0][6] = ctripOrderPrice;
+
+                }    
 
                 modal_content_display_block: { 
 
@@ -649,71 +717,6 @@
                     }); 
                     debug = 7;
                 }
-
-                report_summary_editing_block: {
-
-                    var repo4 = 1 + d1.getMonth();
-                    var repo5 = d1.getDate();
-                    var repo6 = 1 + d2.getMonth();
-                    var repo7 = d2.getDate();
-
-                    /// ver2018
-                    // for ( var Hcheck=0; Hcheck<90; Hcheck++ ){
-                    //     var thisHotelInfo = HnameTable[Hcheck];
-                    //     if ( HHHHname.match(thisHotelInfo[0]) ){ 
-                    //         HnameSummary = thisHotelInfo[1];        //HnameSummary仅为了适用于集計草稿，在2019版中更改为中文名全称
-                    //         HnameJTBcode = thisHotelInfo[4];
-                    //         break; 
-                    //     } 
-                    // }
-                    /// ver2018 over
-                    for (var Hx in HnameTable) {            // Hx 是酒店识别名称
-                        if ( ctripOrderHotel.match(Hx) ){ 
-                            for (var TYPEx in HnameTable[Hx][5]) { 
-                                if ( ctripOrderRoomtype.match(TYPEx) ){ 
-                                    //alert("　订单要求 :　" + Hx + " 酒店  ➔  " + TYPEx + " 房型\n　建议使用 :　JTB室タイプ　" + HnameTable[Hx][5][TYPEx][1]); 
-                                    HnameSummary = HnameTable[Hx][0];
-                                    HnameJTBcode = HnameTable[Hx][3];
-                                    JTBRoomTypecode = HnameTable[Hx][5][TYPEx][1];
-                                    break;     
-                                }
-                            }
-                            break; 
-                        } 
-                    }          
-
-                    // if ( HnameSummary == "" ){ window.close(); }
-                    if ( HnameSummary == "" ){ HnameSummary = "未知酒店"; }     //大阪订单
-                    
-                    var now = new Date();
-                    var now_month = 1 + now.getMonth();
-                    var now_date = now.getDate();
-                    if ( now_date < 10 ){ now_date = "0" + now_date; }
-                    var dateStamp = now_month + "-" + now_date;
-                    var now_hh = now.getHours();
-                    var now_mm = now.getMinutes();
-                    var timeStamp = now_mm < 10 ? (now_hh + ":0" + now_mm) : (now_hh + ":" + now_mm);
-
-                    // report_summary = ctripOrderRef +'\t'+ dateStamp +'\t'+ timeStamp +'\t'+ HnameSummary +'\t'+ gName1 +'\t'+'\t'+ ctripOrderRoomtype +'\t'+ 
-                    // repo4 +'\t'+ repo5 +'\t'+ repo6 +'\t'+ repo7 +'\t'+ ctripOrderNights +'\t'+ numEachRoom +'\t'+ ctripOrderRooms +'\t'+ ctripOrderPrice; 
-                    
-                    // Ver2019 核对表中 订单记录的首行的 Ctrip部分
-                    // 如果不用JTB接单，report_summary编辑到这里就足够了
-                    report_summary = now_date +'\t'+ "札幌" +'\t'+ "呉旭輝" +'\t'+ "CTRIP" +'\t'+ ctripOrderRef +'\t'+ "ホテル" +'\t'+ HnameTable[Hx][2] 
-                    +'\t\t'+ repo4+"月" +'\t'+ repo5 +'\t'+ repo6+"月" +'\t'+ repo7 +'\t'+ ctripOrderNights +'\t'+ totalPeopleAllow*ctripOrderNights +'\t'+ ctripOrderRooms*ctripOrderNights 
-                    +'\t'+ ctripOrderPrice +'\t'+ '\t'+ '\t'+ '\t'+ gName1 +'\t\t\t\t\t\t\t'
-
-
-                    // 编辑 google sheet 云端记录（不带JTB信息）
-                    running_water_record[0][0] = report_summary;
-                    running_water_record[0][1] = ctripOrderRef;
-                    running_water_record[0][2] = dateStamp;
-                    running_water_record[0][3] = timeStamp;
-                    running_water_record[0][4] = HnameSummary;
-                    running_water_record[0][5] = gName1;
-                    running_water_record[0][6] = ctripOrderPrice;
-
-                }    
 
                 // "JTB済画面提取"按钮
                 $('#btn_make_bookingID').on('click', function () {

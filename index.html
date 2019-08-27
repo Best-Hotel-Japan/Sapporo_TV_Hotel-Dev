@@ -88,7 +88,7 @@
             <a style="font-size:15px">REF# </a><span><label class="control-label" id=txt_ref style="font-size:16px;font-family:verdana;color:rgb(23, 94, 248)"></label></span>
             
             <label class="control-label" id=APIsignIn style="font-size:16px" onclick="handleSignInClick()">★</label>
-            <a style="font-size:12px">s83 </a><label class="control-label" id=txt_orderType style="font-size:15px"></label><br/>
+            <a style="font-size:12px">s85 </a><label class="control-label" id=txt_orderType style="font-size:15px"></label><br/>
             <a>携程総額:　JPY </a><label class="control-label" id=txt_price style="font-size:18px;font-family:verdana;color:rgb(4, 21, 58)"></label><br/>
 
             <img id=faceImg hight="15%" width="100%" class="img-rounded" src="https://raw.githubusercontent.com/Best-Hotel-Japan/Sapporo_TV_Hotel-Dev/gh-pages/background.png" alt="" /><br/>
@@ -98,8 +98,8 @@
             <a style="font-size:12px">　男性　</a><label class="control-label" id=txt_male_female style="font-weight:bold;font-size:22px;color:rgb(65, 0, 90)"></label><a style="font-size:12px">名 </a><br/><br/>
             
             <span><label class="control-label" id=txt_checkin style="font-weight:bold;font-size:18px;"></label></span>
-            <a style="font-size:12px">より </a><label class="control-label" id=txt_days style="font-weight:bold;font-size:22px;color:rgb(65, 0, 90)"></label><a style="font-size:12px"> 日間　　</a>
-            <label class="control-label" id=txt_rooms style="font-weight:bold;font-size:22px;color:rgb(65, 0, 90)"></label><a style="font-size:12px"> 室</a><br/><br/>
+            <a style="font-size:12px">より </a><label class="control-label" id=txt_days style="font-weight:bold;font-size:22px;color:rgb(65, 0, 90)"></label><a style="font-size:12px">  日間　　</a>
+            <label class="control-label" id=txt_rooms style="font-weight:bold;font-size:22px;color:rgb(65, 0, 90)"></label><a style="font-size:12px">  室</a><br/><br/>
             
             <span><label class="control-label" id=txt_hotel style="font-weight:normal;font-size:18px"></label></span><label class="control-label" id=txt_roomtype></label><br/><br/>
             <label class="control-label" id=txt_eachroom></label><label class="control-label" id=txt_meal></label><br/>
@@ -278,6 +278,11 @@
                         var ctripOrderDate2=RegExp.$6;       //离店日期
                         var ctripOrderNights=RegExp.$7;      //晚数
 
+                        var ctripOrderRoomtypeSub = "";
+                        if ( pasteStr.match(/(\([\u4E00-\u9FFF]{1,3}[馆楼塔]\))/) ){
+                            ctripOrderRoomtypeSub = RegExp.$1;
+                        }
+
                         var d1 = new Date(ctripOrderDate1);
                         var d2 = new Date(ctripOrderDate2);
                         //var ctripOrderNights = parseInt((d2 - d1) / (1000 * 3600 * 24)); 
@@ -413,12 +418,12 @@
                     document.getElementById("txt_orderType").innerHTML = ctripOrderType;
                     document.getElementById("txt_price").innerHTML = ctripOrderPrice;
                     document.getElementById("txt_hotel").innerHTML = HHHHname + '　　';
-                    document.getElementById("txt_roomtype").innerHTML = ctripOrderRoomtype;
+                    document.getElementById("txt_roomtype").innerHTML = ctripOrderRoomtype + ' ' + ctripOrderRoomtypeSub;
                     document.getElementById("txt_eachroom").innerHTML = ctripOrderEachRoom + '　　';
                     document.getElementById("txt_meal").innerHTML = ctripOrderMeals;
                     document.getElementById("txt_rooms").innerHTML = ctripOrderRooms;
                     document.getElementById("txt_male_female").innerHTML = totalPeopleAllow + '　　' + childA_info;
-                    document.getElementById("txt_checkin").innerHTML = DATEshow + '　' + Date1_dayName + '　';
+                    document.getElementById("txt_checkin").innerHTML = DATEshow + ' ' + Date1_dayName + ' ';
                     document.getElementById("txt_days").innerHTML = periodDays;
                     document.getElementById("txt_guest1").innerHTML = gName1 + ' ';
                     document.getElementById("txt_request").innerHTML = SPshow;
@@ -910,7 +915,7 @@
 
                         if ( indexD !== indexT ){
                             myWindow=window.open('', '', 'width=325, height=240, top=185, left=500, toolbar=no, menubar=no, scrollbars=no, resizable=no, location=no, status=no');
-                            myWindow.document.write("<h3>　您辛苦啦！~</h3><h3>　系统检测到问题： <span style=\"background-color:#ff8826;\"><font color=\"#ffffff\">&#8201天数不相等&#8201</font></span> ！</h3><h3>　请检查携程订单中要求的天数， <font color=\"#CC0033\"></font></h3><h3>　是否和JTB预约頁面中实际的天数一致? </h3>");
+                            myWindow.document.write("<h3>　您辛苦啦！~</h3><h3>　发现问题： <span style=\"background-color:#ff8826;\"><font color=\"#ffffff\">&#8201天数不相等&#8201</font></span> ！！</h3><h3>　请检查携程订单中要求的天数， <font color=\"#CC0033\"></font></h3><h3>　是否和JTB预约頁面中实际处理的天数一致? </h3>");
                             myWindow.focus();    
                             myWindow.onclick = function(){
                                 myWindow.close();
@@ -935,7 +940,7 @@
                                 document.getElementById("txt_show_OK").innerHTML = "　　 未手配?";
                             }
                             
-                            document.getElementById("txt_show_profit").innerHTML = "　利益大約 " + orderProfitShow + " %";
+                            document.getElementById("txt_show_profit").innerHTML = "　利益率 " + orderProfitShow + " %";
                             setTimeout(function(){
                                 document.getElementById("txt_show_OK").innerHTML = "";
                                 document.getElementById("txt_show_profit").innerHTML = "";
@@ -979,7 +984,7 @@
 
                         if ( reserv_Order == true ){
                             myWindow=window.open('', '', 'width=325, height=240, top=185, left=500, toolbar=no, menubar=no, scrollbars=no, resizable=no, location=no, status=no');
-                            myWindow.document.write("<h3>　您辛苦啦！~</h3><h3>　这是一个 <span style=\"background-color:#32cd32;\"><font color=\"#fffff0\">&#8201保留房&#8201</font></span> 订单！</h3><h3>　若JTB有房，请先改回: <font color=\"#CC0033\">余量=１</font></h3><h3>　( 若真的使用押房接单，就需要清查一下相关日期还剩几间保留房 )</h3>");
+                            myWindow.document.write("<h3>　您辛苦啦！~</h3><h3>　这是一个 <span style=\"background-color:#32cd32;\"><font color=\"#fffff0\">&#8201保留房&#8201</font></span> 订单！</h3><h3>　若JTB有房，请先改回: <font color=\"#CC0033\">余量=１</font></h3><h3>( 若真的使用押房接单，需要先清查一下相关日期保留房的间数 )</h3>");
                             myWindow.focus();    
                             myWindow.onclick = function(){
                                 myWindow.close();

@@ -88,7 +88,7 @@
             <a style="font-size:15px">REF# </a><span><label class="control-label" id=txt_ref style="font-size:16px;font-family:verdana;color:rgb(23, 94, 248)"></label></span>
             
             <label class="control-label" id=APIsignIn style="font-size:16px" onclick="handleSignInClick()">★</label>
-            <a style="font-size:12px">s81 </a><label class="control-label" id=txt_orderType style="font-size:15px"></label><br/>
+            <a style="font-size:12px">s82 </a><label class="control-label" id=txt_orderType style="font-size:15px"></label><br/>
             <a>携程総額:　JPY </a><label class="control-label" id=txt_price style="font-size:18px;font-family:verdana;color:rgb(4, 21, 58)"></label><br/>
 
             <img id=faceImg hight="15%" width="100%" class="img-rounded" src="https://raw.githubusercontent.com/Best-Hotel-Japan/Sapporo_TV_Hotel-Dev/gh-pages/background.png" alt="" /><br/>
@@ -195,9 +195,9 @@
                 var gNameShow = "";         // 把所有名字显示成一行
 
                 var HnameSummary = "sapporo1";
-                var HnameJTBcode = "";
-                var JTBRoomTypecode = "";
-                var JTBTotalPrice = "";
+                var HnameJTBcode = "??????";
+                var JTBRoomTypecode = "??";
+                var JTBTotalPrice = "$$$";
                 var priceProfit = 0;
                 var orderProfit = 0;
                 
@@ -467,11 +467,11 @@
                     /// ver2018 over
                     for (var Hx in HnameTable) {            // Hx 是酒店识别名称
                         if ( ctripOrderHotel.match(Hx) ){ 
+                            HnameSummary = HnameTable[Hx][0];
+                            HnameJTBcode = HnameTable[Hx][3];
                             for (var TYPEx in HnameTable[Hx][5]) { 
                                 if ( ctripOrderRoomtype.match(TYPEx) ){ 
                                     //alert("　订单要求 :　" + Hx + " 酒店  ➔  " + TYPEx + " 房型\n　建议使用 :　JTB室タイプ　" + HnameTable[Hx][5][TYPEx][1]); 
-                                    HnameSummary = HnameTable[Hx][0];
-                                    HnameJTBcode = HnameTable[Hx][3];
                                     JTBRoomTypecode = HnameTable[Hx][5][TYPEx][1];
                                     break;     
                                 }
@@ -482,7 +482,7 @@
                     document.getElementById("txt_roomCodeAdvise").innerHTML = JTBRoomTypecode;
 
                     // if ( HnameSummary == "" ){ window.close(); }
-                    if ( HnameSummary == "" ){ HnameSummary = "未知"; }     //大阪订单
+                    if ( HnameSummary == "" ){ HnameSummary = "未知地域"; }     //大阪订单
                     
                     var now = new Date();
                     var now_month = 1 + now.getMonth();

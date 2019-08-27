@@ -83,12 +83,12 @@
         <section>
             <title> ♪ JPH Sapporo Hotel ♪ </title>
             
-            <button id="btn_JTB_confirmed" class="btn btn-primary" style="font-size:14px;font-family:Microsoft YaHei;float:right"><strong>订单处理完成</strong><br><em>(点此关闭窗口，去填写核対表)</em></button>
+            <button id="btn_JTB_confirmed" class="btn btn-primary" style="font-size:14px;font-family:Microsoft JhengHei;float:right"><strong>订单处理完成</strong><br><em>(点此关闭窗口，去填写核対表)</em></button>
             <br/><br/>
             <a style="font-size:15px">REF# </a><span><label class="control-label" id=txt_ref style="font-size:16px;font-family:verdana;color:rgb(23, 94, 248)"></label></span>
             
             <label class="control-label" id=APIsignIn style="font-size:16px" onclick="handleSignInClick()">★</label>
-            <a style="font-size:12px">s82 </a><label class="control-label" id=txt_orderType style="font-size:15px"></label><br/>
+            <a style="font-size:12px">s83 </a><label class="control-label" id=txt_orderType style="font-size:15px"></label><br/>
             <a>携程総額:　JPY </a><label class="control-label" id=txt_price style="font-size:18px;font-family:verdana;color:rgb(4, 21, 58)"></label><br/>
 
             <img id=faceImg hight="15%" width="100%" class="img-rounded" src="https://raw.githubusercontent.com/Best-Hotel-Japan/Sapporo_TV_Hotel-Dev/gh-pages/background.png" alt="" /><br/>
@@ -108,14 +108,14 @@
             <a style="font-size:12px">　建议房型：　 </a><label class="control-label" id=txt_roomCodeAdvise style="font-weight:bold;font-size:22px;color:rgb(90, 0, 53)"></label><a style="font-size:12px">　禁煙優先 </a><br/>
             
             <br/><a style="font-size:10px">　--------------------------------------------------------------　</a><br/>
-            <a style="font-size:12px">　</a><span><label class="control-label" id=txt_guest1 style="font-weight:normal;font-size:18px"></span></label><button id="btn_All_of_Names" class="btn btn-primary" style="font-size:12px;font-family:Meiryo;float:right"><strong> 编辑ＭＳ报告 </strong></button><br/><br/>
+            <a style="font-size:12px">　</a><span><label class="control-label" id=txt_guest1 style="font-weight:normal;font-size:18px"></span></label><button id="btn_All_of_Names" class="btn btn-primary" style="font-size:12px;font-family:Microsoft JhengHei;float:right"><strong> 编辑 MS 報告 </strong></button><br/><br/>
             <a style="font-size:12px">　</a><label class="control-label" id=txt_request style="font-weight:bold;font-size:12px"></label><br/><br/>
             
-            <label class="control-label" id=txt_show_OK style="font-weight:bold;font-style:oblique;font-size:24px;color:rgb(9, 15, 68)"></label>
-            <button id="btn_make_bookingID" class="btn btn-primary" style="font-size:14px;font-family:Microsoft YaHei;float:right"><strong> COPY预约完成頁面 
-            <img hight="32" width="53" style="float:right" src="https://raw.githubusercontent.com/Best-Hotel-Japan/Sapporo_TV_Hotel-Dev/gh-pages/JTB.jpg" alt="JTB" /></strong><br/><em>(去填写确认号)</em></button>
+            <label class="control-label" id=txt_show_OK style="font-weight:bold;font-style:oblique;font-size:15px;color:rgb(9, 15, 68)"></label>
+            <button id="btn_make_bookingID" class="btn btn-primary" style="font-size:14px;font-family:Microsoft JhengHei;float:right"><strong> COPY"発行済"的頁面 
+            </strong><br/><em>(去填写确认号)</em></button>
             <br/>
-            <label class="control-label" id=txt_show_profit style="font-family:Meiryo;font-weight:bold;font-size:18px;color:rgb(9, 15, 68)"></label>
+            <label class="control-label" id=txt_show_profit style="font-family:Meiryo;font-weight:bold;font-size:16px;color:rgb(9, 15, 68)"></label>
 
         </section>
         <!--<div class="bg"></div>   这是BackGround图片 -->
@@ -201,7 +201,7 @@
                 var priceProfit = 0;
                 var orderProfit = 0;
                 
-                Hotel_information: {        // HnameTable酒店资料数组初始化
+                Hotel_information: {                            // HnameTable酒店资料数组初始化
 
                     var HnameTable = new Array();
                     debug = 2.1;
@@ -221,7 +221,7 @@
                     HnameTable[48]=["津轻","星野界津軽","星野リゾート界津軽","en","2144011",""];
                     
                 }
-                Hotel_RoomType_information: {        // 各酒店房型资料数组初始化
+                Hotel_RoomType_information: {                   // 各酒店房型资料数组初始化
                     
                     HnameTable["塔娃"][5]["家庭双床房"]=["247269138","08"];
                     HnameTable["塔娃"][5]["家庭三人房"]=["247730310","09"];
@@ -407,7 +407,7 @@
 
                 }
 
-                beside_content_display_block: { 
+                beside_content_display_block: {                 // 根据订单类型，弹出对话框
 
                     document.getElementById("txt_ref").innerHTML = ctripOrderRef + '　　';
                     document.getElementById("txt_orderType").innerHTML = ctripOrderType;
@@ -448,7 +448,7 @@
               
                 }
 
-                report_summary_editing_block: {
+                report_summary_editing_block: {                 // 酒店索引的搜索
 
                     var repo4 = 1 + d1.getMonth();
                     var repo5 = d1.getDate();
@@ -910,7 +910,7 @@
 
                         if ( indexD !== indexT ){
                             myWindow=window.open('', '', 'width=325, height=240, top=185, left=500, toolbar=no, menubar=no, scrollbars=no, resizable=no, location=no, status=no');
-                            myWindow.document.write("<h3>　您辛苦啦！~</h3><h3>　系统检测到问题： <span style=\"background-color:#32cd32;\"><font color=\"#ff8826\">&#8201天数不相等&#8201</font></span> ！</h3><h3>　请检查携程订单中要求的天数， <font color=\"#CC0033\"></font></h3><h3>　是否和JTB预约頁面中实际的天数一致? </h3>");
+                            myWindow.document.write("<h3>　您辛苦啦！~</h3><h3>　系统检测到问题： <span style=\"background-color:#ff8826;\"><font color=\"#ffffff\">&#8201天数不相等&#8201</font></span> ！</h3><h3>　请检查携程订单中要求的天数， <font color=\"#CC0033\"></font></h3><h3>　是否和JTB预约頁面中实际的天数一致? </h3>");
                             myWindow.focus();    
                             myWindow.onclick = function(){
                                 myWindow.close();
@@ -979,7 +979,7 @@
 
                         if ( reserv_Order == true ){
                             myWindow=window.open('', '', 'width=325, height=240, top=185, left=500, toolbar=no, menubar=no, scrollbars=no, resizable=no, location=no, status=no');
-                            myWindow.document.write("<h3>　您辛苦啦！~</h3><h3>　这是一个 <span style=\"background-color:#32cd32;\"><font color=\"#fffff0\">&#8201保留房&#8201</font></span> 订单！</h3><h3>　若JTB有房，请先改回: <font color=\"#CC0033\">余量=１</font></h3><h3>　若真的要用押房，就顺便清查一下相关日期还剩几间保留房吧 &#9825</h3>");
+                            myWindow.document.write("<h3>　您辛苦啦！~</h3><h3>　这是一个 <span style=\"background-color:#32cd32;\"><font color=\"#fffff0\">&#8201保留房&#8201</font></span> 订单！</h3><h3>　若JTB有房，请先改回: <font color=\"#CC0033\">余量=１</font></h3><h3>　( 若真的使用押房接单，就需要清查一下相关日期还剩几间保留房 )</h3>");
                             myWindow.focus();    
                             myWindow.onclick = function(){
                                 myWindow.close();
@@ -1070,7 +1070,7 @@
 
                 if ( gName1 == "" ){
                     myWindow=window.open('', '', 'width=365, height=635, top=15, left=700, toolbar=no, menubar=no, scrollbars=no, resizable=no, location=no, status=no');
-                    myWindow.document.write("<br/><h2>　小伙伴们辛苦啦！~</h2><h2>　　<span style=\"background-color:#31cccc;\"><font color=\"#cc317e\">&#8201去夏威夷吧！靠我们自己&#8201</font></span> </h2><br/><h3>　<font color=\"#0c0c33\">本小小窗口特别鸣个谢：</font></h3><br/><h3>　&#9825 流程创意 &#9825　美蘭小姐姐</h3><h3>　&#9825 原案策划 &#9825　北海道・旭</h3><h3>　&#9825 界面设计 &#9825　NTD-coding猿</h3><h3>　&#9825 开发管理 &#9825　爱做饭的芋头SAMA</h3><h3>　&#9825 产品主试 &#9825　有澤さん桑</h3><h3>　&#9825 产品副试 &#9825　ホテルKk</h3><h3>　&#9825 黏合创屎 &#9825　北海道・旭</h3><br/><a style=\"font-size:12px;font-family:Meiryo;font-style:oblique;color:rgb(100, 100, 248)\">　　　　　　　　　　　　　　　　　　　　　♪ 未完待续 ♫</a>");
+                    myWindow.document.write("<br/><h2>　小伙伴们辛苦啦！~</h2><h2>　　<span style=\"background-color:#31cccc;\"><font color=\"#cc317e\">&#8201去欧罗巴！靠我们自己&#8201</font></span> </h2><br/><h3>　<font color=\"#0c0c33\">本视窗特别鸣谢：</font></h3><br/><h3>　&#9825 流程创意 &#9825　美蘭小姐</h3><h3>　&#9825 原案策划 &#9825　北海道・旭</h3><h3>　&#9825 界面设计 &#9825　NTD-coding猿</h3><h3>　&#9825 开发管理 &#9825　爱大蒜SAMA</h3><h3>　&#9825 产品主试 &#9825　有澤さん</h3><h3>　&#9825 产品副试 &#9825　ホテルKk</h3><h3>　&#9825 黏合创艺 &#9825　Rick</h3><br/><a style=\"font-size:12px;font-family:Meiryo;font-style:oblique;color:rgb(100, 100, 248)\">　　　　　　　　　　　　　　　　　　　　　♪ 未完待续 ♫</a>");
                     myWindow.focus();    
                     myWindow.onclick = function(){
                         myWindow.close();

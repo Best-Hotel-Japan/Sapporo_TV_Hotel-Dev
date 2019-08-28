@@ -102,13 +102,13 @@
             <a style="font-size:12px">より 　 </a><label class="control-label" id=txt_days style="font-weight:bold;font-size:22px;color:rgb(65, 0, 90)"></label><a style="font-size:12px">  日間　　</a>
             <label class="control-label" id=txt_rooms style="font-weight:bold;font-size:22px;color:rgb(65, 0, 90)"></label><a style="font-size:12px">  室</a><br/><br/>
             
-            <span><label class="control-label" id=txt_hotel style="font-weight:normal;font-size:18px"></label></span><label class="control-label" id=txt_meal></label><br/><br/>
+            <span><label class="control-label" id=txt_hotel style="font-weight:bold;font-size:20px;font-family:Microsoft JhengHei"></label></span><label class="control-label" id=txt_meal style="font-weight:normal;font-size:18px;font-family:Microsoft JhengHei"></label><br/><br/>
                         
-            <br/><a style="font-size:10px">　---------------------------------------------------------------　</a><br/>
+            <br/><a style="font-size:10px">　-----------------------------------------------------------------　</a><br/>
             <a style="font-size:12px">　要求：　</a><label class="control-label" id=txt_roomtype></label><label class="control-label" id=txt_eachroom style="font-size:12px"></label><br/><br/>
             <a style="font-size:12px">　提案：　 </a><label class="control-label" id=txt_roomCodeAdvise style="font-weight:bold;font-size:22px;color:rgb(90, 0, 53)"></label><a style="font-size:12px">　　(禁煙優先) </a><br/>
             
-            <br/><a style="font-size:10px">　---------------------------------------------------------------　</a><br/>
+            <br/><a style="font-size:10px">　-----------------------------------------------------------------　</a><br/>
             <a style="font-size:12px">　</a><span><label class="control-label" id=txt_guest1 style="font-weight:normal;font-size:18px"></span></label><button id="btn_All_of_Names" class="btn btn-primary" style="font-size:12px;font-family:Microsoft JhengHei;float:right"><strong> 编辑 MS 報告 </strong></button><br/><br/>
             <a style="font-size:12px">　</a><a style="font-size:18px">㊕:</a><label class="control-label" id=txt_request style="font-weight:bold;font-size:12px"></label><br/><br/>
             
@@ -499,7 +499,7 @@
 
                 beside_content_display_block: {                 // 根据订单类型，弹出对话框
 
-                    document.getElementById("txt_ref").innerHTML = ctripOrderRef + '　　';
+                    document.getElementById("txt_ref").innerHTML = ctripOrderRef + '　　　　　';
                     document.getElementById("txt_orderType").innerHTML = ctripOrderType;
                     document.getElementById("txt_price").innerHTML = ctripOrderPrice;
                     document.getElementById("txt_hotel").innerHTML = HHHHname + '　　　';
@@ -586,7 +586,7 @@
                     var MS_report = "";
                     var ctripOrderNames = GuestnameList.length;     // 姓名个数 ≤ 订单通知人数 ≤ 实际入住人数 ≤ 预订可住人数
                     ctripOrderNames = ctripOrderNames.toString();
-
+                    var ctripOrder_1Ref = ctripOrderRef.slice(1);
                     // 编辑MS报告
 
                     // 依次判断： 预订间数，每间入住人数，实际报告的姓名个数    debug ctrip order: 7557303377 7725211919
@@ -595,25 +595,25 @@
                             switch( numEachRoom ){
                             case "1":
                                     switch( ctripOrderNames ){
-                                    case "1": MS_report = "客番号：" + ctripOrderRef + "　"; break;
+                                    case "1": MS_report = "客番号：" + ctripOrder_1Ref + "　"; break;
                                     } break;
                             case "2":
                                     switch( ctripOrderNames ){
-                                    case "1": MS_report = "客番号：" + ctripOrderRef + "　代表者：" + gName[1]; break;
-                                    case "2": MS_report = "客番号：" + ctripOrderRef + "　同行者：" + gName[2]; break;
+                                    case "1": MS_report = "客番号：" + ctripOrder_1Ref + "　代表者：" + gName[1]; break;
+                                    case "2": MS_report = "客番号：" + ctripOrder_1Ref + "　同行者：" + gName[2]; break;
                                     } break;
                             case "3":
                                     switch( ctripOrderNames ){
-                                    case "1": MS_report = "客番号：" + ctripOrderRef + "　代表者：" + gName[1]; break;
-                                    case "2": MS_report = "客番号：" + ctripOrderRef + "　代表者：" + gName[1] + "　" + gName[2]; break;
-                                    case "3": MS_report = "客番号：" + ctripOrderRef + "　同行者：" + gName[2] + "　" + gName[3]; break;
+                                    case "1": MS_report = "客番号：" + ctripOrder_1Ref + "　代表者：" + gName[1]; break;
+                                    case "2": MS_report = "客番号：" + ctripOrder_1Ref + "　代表者：" + gName[1] + "　" + gName[2]; break;
+                                    case "3": MS_report = "客番号：" + ctripOrder_1Ref + "　同行者：" + gName[2] + "　" + gName[3]; break;
                                     } break;                
                             case "4":
                                     switch( ctripOrderNames ){
-                                    case "1": MS_report = "客番号：" + ctripOrderRef + "　代表者：" + gName[1]; break;
-                                    case "2": MS_report = "客番号：" + ctripOrderRef + "　代表者：" + gName[1] + "　" + gName[2]; break;
-                                    case "3": MS_report = "番" + ctripOrderRef + "　代表者：" + gName[1] + "　" + gName[2] + "　" + gName[3]; break;
-                                    case "4": MS_report = "番" + ctripOrderRef + "　同行者：" + gName[2] + "　" + gName[3] + "　" + gName[4]; break;
+                                    case "1": MS_report = "客番号：" + ctripOrder_1Ref + "　代表者：" + gName[1]; break;
+                                    case "2": MS_report = "客番号：" + ctripOrder_1Ref + "　代表者：" + gName[1] + "　" + gName[2]; break;
+                                    case "3": MS_report = "番" + ctripOrder_1Ref + "　代表者：" + gName[1] + "　" + gName[2] + "　" + gName[3]; break;
+                                    case "4": MS_report = "番" + ctripOrder_1Ref + "　同行者：" + gName[2] + "　" + gName[3] + "　" + gName[4]; break;
                                     } break;
                             } break;
 
@@ -621,35 +621,35 @@
                             switch( numEachRoom ){                  //　*1 AA/AA　BB/BB　*2 CC/CC　DD/DD  
                             case "1":
                                     switch( ctripOrderNames ){
-                                    case "1": MS_report = "客番号：" + ctripOrderRef + "　代表者：" + gName[1]; break;
-                                    case "2": MS_report = "客番号：" + ctripOrderRef + "　名簿 *1 " + gName[1] + "　*2 " + gName[2]; break;
+                                    case "1": MS_report = "客番号：" + ctripOrder_1Ref + "　代表者：" + gName[1]; break;
+                                    case "2": MS_report = "客番号：" + ctripOrder_1Ref + "　名簿 *1 " + gName[1] + "　*2 " + gName[2]; break;
                                     } break;
                             case "2":
                                     switch( ctripOrderNames ){
-                                    case "1": MS_report = "客番号：" + ctripOrderRef + "　代表者：" + gName[1]; break;
-                                    case "2": MS_report = "客番号：" + ctripOrderRef + "　代表者 *1 " + gName[1] + "　*2 " + gName[2]; break;
-                                    case "3": MS_report = "客番号：" + ctripOrderRef + "　代表者 *1 " + gName[1] + "　*2 " + gName[2] + "　" + gName[3]; break;
-                                    case "4": MS_report = "番" + ctripOrderRef + "　名簿 *1 " + gName[1] + "　" + gName[2] + "　*2 " + gName[3] + "　" + gName[4]; break;
+                                    case "1": MS_report = "客番号：" + ctripOrder_1Ref + "　代表者：" + gName[1]; break;
+                                    case "2": MS_report = "客番号：" + ctripOrder_1Ref + "　代表者 *1 " + gName[1] + "　*2 " + gName[2]; break;
+                                    case "3": MS_report = "客番号：" + ctripOrder_1Ref + "　代表者 *1 " + gName[1] + "　*2 " + gName[2] + "　" + gName[3]; break;
+                                    case "4": MS_report = "番" + ctripOrder_1Ref + "　名簿 *1 " + gName[1] + "　" + gName[2] + "　*2 " + gName[3] + "　" + gName[4]; break;
                                     } break;
                             case "3":
                                     switch( ctripOrderNames ){
-                                    case "1": MS_report = "客番号：" + ctripOrderRef + "　代表者：" + gName[1]; break;
-                                    case "2": MS_report = "客番号：" + ctripOrderRef + "　代表者 *1 " + gName[1] + "　*2 " + gName[2]; break;
-                                    case "3": MS_report = "客番号：" + ctripOrderRef + "　代表者 *1 " + gName[1] + "　*2 " + gName[2] + "　" + gName[3]; break;
-                                    case "4": MS_report = "番" + ctripOrderRef + "　代表者 *1 " + gName[1] + "　" + gName[2] + "　*2 " + gName[3] + "　" + gName[4]; break;
-                                    case "5": MS_report = "番" + ctripOrderRef + "　代表者 *1 " + gName[1] + "　" + gName[2] + "　*2 " + gName[3] + "　" + gName[4] + "　" + gName[5]; break;
-                                    case "6": MS_report = "番" + ctripOrderRef + "　名簿 *1 " + gName[1] + "　" + gName[2] + "　" + gName[3] + "　*2 " + gName[4] + "　" + gName[5] + "　" + gName[6]; break;
+                                    case "1": MS_report = "客番号：" + ctripOrder_1Ref + "　代表者：" + gName[1]; break;
+                                    case "2": MS_report = "客番号：" + ctripOrder_1Ref + "　代表者 *1 " + gName[1] + "　*2 " + gName[2]; break;
+                                    case "3": MS_report = "客番号：" + ctripOrder_1Ref + "　代表者 *1 " + gName[1] + "　*2 " + gName[2] + "　" + gName[3]; break;
+                                    case "4": MS_report = "番" + ctripOrder_1Ref + "　代表者 *1 " + gName[1] + "　" + gName[2] + "　*2 " + gName[3] + "　" + gName[4]; break;
+                                    case "5": MS_report = "番" + ctripOrder_1Ref + "　代表者 *1 " + gName[1] + "　" + gName[2] + "　*2 " + gName[3] + "　" + gName[4] + "　" + gName[5]; break;
+                                    case "6": MS_report = "番" + ctripOrder_1Ref + "　名簿 *1 " + gName[1] + "　" + gName[2] + "　" + gName[3] + "　*2 " + gName[4] + "　" + gName[5] + "　" + gName[6]; break;
                                     } break;                
                             case "4":
                                     switch( ctripOrderNames ){
-                                    case "1": MS_report = "客番号：" + ctripOrderRef + "　代表者：" + gName[1]; break;
-                                    case "2": MS_report = "客番号：" + ctripOrderRef + "　代表者 *1 " + gName[1] + "　*2 " + gName[2]; break;
-                                    case "3": MS_report = "客番号：" + ctripOrderRef + "　代表者 *1 " + gName[1] + "　*2 " + gName[2] + "　" + gName[3]; break;
-                                    case "4": MS_report = "番" + ctripOrderRef + "　代表者 *1 " + gName[1] + "　" + gName[2] + "　*2 " + gName[3] + "　" + gName[4]; break;
-                                    case "5": MS_report = "番" + ctripOrderRef + "　代表者 *1 " + gName[1] + "　" + gName[2] + "　*2 " + gName[3] + "　" + gName[4] + "　" + gName[5]; break;
-                                    case "6": MS_report = "番" + ctripOrderRef + "　代表者 *1 " + gName[1] + "　" + gName[2] + "　" + gName[3] + "　*2 " + gName[4] + "　" + gName[5] + "　" + gName[6]; break;
-                                    case "7": MS_report = "番" + ctripOrderRef + "　代表者 *1 " + gName[1] + "　" + gName[2] + "　" + gName[3] + "　*2 " + gName[4] + "　" + gName[5] + "　" + gName[6] + "　" + gName[7]; break;
-                                    case "8": MS_report = "番" + ctripOrderRef + "　名簿 *1 " + gName[1] + "　" + gName[2] + "　" + gName[3] + "　" + gName[4] + "　*2 " + gName[5] + "　" + gName[6]+ "　" + gName[7] + "　" + gName[8]; break;
+                                    case "1": MS_report = "客番号：" + ctripOrder_1Ref + "　代表者：" + gName[1]; break;
+                                    case "2": MS_report = "客番号：" + ctripOrder_1Ref + "　代表者 *1 " + gName[1] + "　*2 " + gName[2]; break;
+                                    case "3": MS_report = "客番号：" + ctripOrder_1Ref + "　代表者 *1 " + gName[1] + "　*2 " + gName[2] + "　" + gName[3]; break;
+                                    case "4": MS_report = "番" + ctripOrder_1Ref + "　代表者 *1 " + gName[1] + "　" + gName[2] + "　*2 " + gName[3] + "　" + gName[4]; break;
+                                    case "5": MS_report = "番" + ctripOrder_1Ref + "　代表者 *1 " + gName[1] + "　" + gName[2] + "　*2 " + gName[3] + "　" + gName[4] + "　" + gName[5]; break;
+                                    case "6": MS_report = "番" + ctripOrder_1Ref + "　代表者 *1 " + gName[1] + "　" + gName[2] + "　" + gName[3] + "　*2 " + gName[4] + "　" + gName[5] + "　" + gName[6]; break;
+                                    case "7": MS_report = "番" + ctripOrder_1Ref + "　代表者 *1 " + gName[1] + "　" + gName[2] + "　" + gName[3] + "　*2 " + gName[4] + "　" + gName[5] + "　" + gName[6] + "　" + gName[7]; break;
+                                    case "8": MS_report = "番" + ctripOrder_1Ref + "　名簿 *1 " + gName[1] + "　" + gName[2] + "　" + gName[3] + "　" + gName[4] + "　*2 " + gName[5] + "　" + gName[6]+ "　" + gName[7] + "　" + gName[8]; break;
                                     } break;                
                             } break;
 
@@ -657,40 +657,40 @@
                             switch( numEachRoom ){                  //　*1 AA/AA　BB/BB　*2 CC/CC　DD/DD　*3 EE/EE　FF/FF  
                             case "1":
                                     switch( ctripOrderNames ){
-                                    case "1": MS_report = "客番号：" + ctripOrderRef + "　代表者：" + gName[1]; break;
-                                    case "2": MS_report = "客番号：" + ctripOrderRef + "　代表者：" + gName[1] + gName[2]; break;
-                                    case "3": MS_report = "客番号：" + ctripOrderRef + "　名簿 *1 " + gName[1] + "　*2 " + gName[2] + "　*3 " + gName[3]; break;
+                                    case "1": MS_report = "客番号：" + ctripOrder_1Ref + "　代表者：" + gName[1]; break;
+                                    case "2": MS_report = "客番号：" + ctripOrder_1Ref + "　代表者：" + gName[1] + gName[2]; break;
+                                    case "3": MS_report = "客番号：" + ctripOrder_1Ref + "　名簿 *1 " + gName[1] + "　*2 " + gName[2] + "　*3 " + gName[3]; break;
                                     } break;
                             case "2":
                                     switch( ctripOrderNames ){
-                                    case "1": MS_report = "客番号：" + ctripOrderRef + "　代表者：" + gName[1]; break;
-                                    case "2": MS_report = "客番号：" + ctripOrderRef + "　代表者 *1 " + gName[1] + "　*2 " + gName[2]; break;
-                                    case "3": MS_report = "客番号：" + ctripOrderRef + "　代表者 *1 " + gName[1] + "　*2 " + gName[2] + "　*3 " + gName[3]; break;
-                                    case "4": MS_report = "番" + ctripOrderRef + "　代表者 *1 " + gName[1] + "　*2 " + gName[2] + "　*3 " + gName[3] + "　" + gName[4]; break;
-                                    case "5": MS_report = "番" + ctripOrderRef + "　代表者 *1 " + gName[1] + "　*2 " + gName[2] + "　" + gName[3] + "　*3 " + gName[4] + "　" + gName[5]; break;
-                                    case "6": MS_report = "番" + ctripOrderRef + "　名簿 *1 " + gName[1] + "　" + gName[2] + "　*2 " + gName[3] + "　" + gName[4] + "　*3 " + gName[5] + "　" + gName[6]; break;
+                                    case "1": MS_report = "客番号：" + ctripOrder_1Ref + "　代表者：" + gName[1]; break;
+                                    case "2": MS_report = "客番号：" + ctripOrder_1Ref + "　代表者 *1 " + gName[1] + "　*2 " + gName[2]; break;
+                                    case "3": MS_report = "客番号：" + ctripOrder_1Ref + "　代表者 *1 " + gName[1] + "　*2 " + gName[2] + "　*3 " + gName[3]; break;
+                                    case "4": MS_report = "番" + ctripOrder_1Ref + "　代表者 *1 " + gName[1] + "　*2 " + gName[2] + "　*3 " + gName[3] + "　" + gName[4]; break;
+                                    case "5": MS_report = "番" + ctripOrder_1Ref + "　代表者 *1 " + gName[1] + "　*2 " + gName[2] + "　" + gName[3] + "　*3 " + gName[4] + "　" + gName[5]; break;
+                                    case "6": MS_report = "番" + ctripOrder_1Ref + "　名簿 *1 " + gName[1] + "　" + gName[2] + "　*2 " + gName[3] + "　" + gName[4] + "　*3 " + gName[5] + "　" + gName[6]; break;
                                     } break;
                             case "3":
                                     switch( ctripOrderNames ){
-                                    case "1": MS_report = "客番号：" + ctripOrderRef + "　代表者：" + gName[1]; break;
-                                    case "2": MS_report = "客番号：" + ctripOrderRef + "　代表者 *1 " + gName[1] + "　*2 " + gName[2]; break;
-                                    case "3": MS_report = "客番号：" + ctripOrderRef + "　代表者 *1 " + gName[1] + "　*2 " + gName[2] + "　*3 " + gName[3]; break;
-                                    case "4": MS_report = "番" + ctripOrderRef + "　代表者 *1 " + gName[1] + "　*2 " + gName[2] + "　*3 " + gName[3] + "　" + gName[4]; break;
-                                    case "5": MS_report = "番" + ctripOrderRef + "　代表者 *1 " + gName[1] + "　*2 " + gName[2] + "　" + gName[3] + "　*3 " + gName[4] + "　" + gName[5]; break;
-                                    case "6": MS_report = "番" + ctripOrderRef + "　代表者 *1 " + gName[1] + "　" + gName[2] + "　*2 " + gName[3] + "　" + gName[4] + "　*3 " + gName[5] + "　" + gName[6]; break;
-                                    case "7": MS_report = "番" + ctripOrderRef + "　代表者 *1 " + gName[1] + "　" + gName[2] + "　*2 " + gName[3] + "　" + gName[4] + "　*3 " + gName[5] + "　" + gName[6] + "　" + gName[7]; break;
-                                    case "8": MS_report = "番" + ctripOrderRef + "　代表者 *1 " + gName[1] + "　" + gName[2] + "　*2 " + gName[3] + "　" + gName[4] + "　" + gName[5] + "　*3 " + gName[6] + "　" + gName[7] + "　" + gName[8]; break;
-                                    case "9": MS_report = "番" + ctripOrderRef + "　名簿 *1 " + gName[1] + "　" + gName[2] + "　" + gName[3] + "　*2 " + gName[4] + "　" + gName[5] + "　" + gName[6] + "　*3 " + gName[7] + "　" + gName[8] + "　" + gName[9]; break;
+                                    case "1": MS_report = "客番号：" + ctripOrder_1Ref + "　代表者：" + gName[1]; break;
+                                    case "2": MS_report = "客番号：" + ctripOrder_1Ref + "　代表者 *1 " + gName[1] + "　*2 " + gName[2]; break;
+                                    case "3": MS_report = "客番号：" + ctripOrder_1Ref + "　代表者 *1 " + gName[1] + "　*2 " + gName[2] + "　*3 " + gName[3]; break;
+                                    case "4": MS_report = "番" + ctripOrder_1Ref + "　代表者 *1 " + gName[1] + "　*2 " + gName[2] + "　*3 " + gName[3] + "　" + gName[4]; break;
+                                    case "5": MS_report = "番" + ctripOrder_1Ref + "　代表者 *1 " + gName[1] + "　*2 " + gName[2] + "　" + gName[3] + "　*3 " + gName[4] + "　" + gName[5]; break;
+                                    case "6": MS_report = "番" + ctripOrder_1Ref + "　代表者 *1 " + gName[1] + "　" + gName[2] + "　*2 " + gName[3] + "　" + gName[4] + "　*3 " + gName[5] + "　" + gName[6]; break;
+                                    case "7": MS_report = "番" + ctripOrder_1Ref + "　代表者 *1 " + gName[1] + "　" + gName[2] + "　*2 " + gName[3] + "　" + gName[4] + "　*3 " + gName[5] + "　" + gName[6] + "　" + gName[7]; break;
+                                    case "8": MS_report = "番" + ctripOrder_1Ref + "　代表者 *1 " + gName[1] + "　" + gName[2] + "　*2 " + gName[3] + "　" + gName[4] + "　" + gName[5] + "　*3 " + gName[6] + "　" + gName[7] + "　" + gName[8]; break;
+                                    case "9": MS_report = "番" + ctripOrder_1Ref + "　名簿 *1 " + gName[1] + "　" + gName[2] + "　" + gName[3] + "　*2 " + gName[4] + "　" + gName[5] + "　" + gName[6] + "　*3 " + gName[7] + "　" + gName[8] + "　" + gName[9]; break;
                                     } break;                
                             case "4":
                                     switch( ctripOrderNames ){
-                                    case "3": MS_report = "客番号：" + ctripOrderRef + "　代表者 *1 " + gName[1] + "　*2 " + gName[2] + "　*3 " + gName[3]; break;
-                                    case "4": MS_report = "番" + ctripOrderRef + "　代表者 *1 " + gName[1] + "　*2 " + gName[2] + "　*3 " + gName[3] + "　" + gName[4]; break;
-                                    case "5": MS_report = "番" + ctripOrderRef + "　代表者 *1 " + gName[1] + "　*2 " + gName[2] + "　" + gName[3] + "　*3 " + gName[4] + "　" + gName[5]; break;
-                                    case "6": MS_report = "番" + ctripOrderRef + "　代表者 *1 " + gName[1] + "　" + gName[2] + "　*2 " + gName[3] + "　" + gName[4] + "　*3 " + gName[5] + "　" + gName[6]; break;
-                                    case "7": MS_report = "番" + ctripOrderRef + "　代表者 *1 " + gName[1] + "　" + gName[2] + "　*2 " + gName[3] + "　" + gName[4] + "　*3 " + gName[5] + "　" + gName[6] + "　" + gName[7]; break;
-                                    case "8": MS_report = "番" + ctripOrderRef + "　代表者 *1 " + gName[1] + "　" + gName[2] + "　*2 " + gName[3] + "　" + gName[4] + "　" + gName[5] + "　*3 " + gName[6] + "　" + gName[7] + "　" + gName[8]; break;
-                                    case "9": MS_report = "番" + ctripOrderRef + "　代表者 *1 " + gName[1] + "　" + gName[2] + "　" + gName[3] + "　*2 " + gName[4] + "　" + gName[5] + "　" + gName[6] + "　*3 " + gName[7] + "　" + gName[8] + "　" + gName[9]; break;
+                                    case "3": MS_report = "客番号：" + ctripOrder_1Ref + "　代表者 *1 " + gName[1] + "　*2 " + gName[2] + "　*3 " + gName[3]; break;
+                                    case "4": MS_report = "番" + ctripOrder_1Ref + "　代表者 *1 " + gName[1] + "　*2 " + gName[2] + "　*3 " + gName[3] + "　" + gName[4]; break;
+                                    case "5": MS_report = "番" + ctripOrder_1Ref + "　代表者 *1 " + gName[1] + "　*2 " + gName[2] + "　" + gName[3] + "　*3 " + gName[4] + "　" + gName[5]; break;
+                                    case "6": MS_report = "番" + ctripOrder_1Ref + "　代表者 *1 " + gName[1] + "　" + gName[2] + "　*2 " + gName[3] + "　" + gName[4] + "　*3 " + gName[5] + "　" + gName[6]; break;
+                                    case "7": MS_report = "番" + ctripOrder_1Ref + "　代表者 *1 " + gName[1] + "　" + gName[2] + "　*2 " + gName[3] + "　" + gName[4] + "　*3 " + gName[5] + "　" + gName[6] + "　" + gName[7]; break;
+                                    case "8": MS_report = "番" + ctripOrder_1Ref + "　代表者 *1 " + gName[1] + "　" + gName[2] + "　*2 " + gName[3] + "　" + gName[4] + "　" + gName[5] + "　*3 " + gName[6] + "　" + gName[7] + "　" + gName[8]; break;
+                                    case "9": MS_report = "番" + ctripOrder_1Ref + "　代表者 *1 " + gName[1] + "　" + gName[2] + "　" + gName[3] + "　*2 " + gName[4] + "　" + gName[5] + "　" + gName[6] + "　*3 " + gName[7] + "　" + gName[8] + "　" + gName[9]; break;
                                     case "10": MS_report = "*1 " + gName[1] + "　" + gName[2] + "　" + gName[3] + "　*2 " + gName[4] + "　" + gName[5] + "　" + gName[6] + "　*3 " + gName[7] + "　" + gName[8] + "　" + gName[9] + "　" + gName[10]; break;
                                     case "11": MS_report = "*1 " + gName[1] + "　" + gName[2] + "　" + gName[3] + "　*2 " + gName[4] + "　" + gName[5] + "　" + gName[6] + "　" + gName[7] + "　*3 " + gName[8] + "　" + gName[9] + "　" + gName[10] + "　" + gName[11]; break;
                                     case "12": MS_report = "*1 " + gName[1] + "　" + gName[2] + "　" + gName[3] + "　" + gName[4] + "　*2 " + gName[5] + "　" + gName[6] + "　" + gName[7] + "　" + gName[8] + "　*3 " + gName[9] + "　" + gName[10] + "　" + gName[11] + "　" + gName[12]; break;
@@ -701,19 +701,19 @@
                             switch( numEachRoom ){                  //　*1 AA/AA　BB/BB　*2 CC/CC　DD/DD　*3 EE/EE　FF/FF　*4 GG/GG　HH/HH  
                             case "2":
                                     switch( ctripOrderNames ){
-                                    case "4": MS_report = "番" + ctripOrderRef + "　代表者 *1 " + gName[1] + "　*2 " + gName[2] + "　*3 " + gName[3] + "　*4 " + gName[4]; break;
-                                    case "5": MS_report = "番" + ctripOrderRef + "　代表者 *1 " + gName[1] + "　*2 " + gName[2] + "　*3 " + gName[3] + "　*4 " + gName[4] + "　" + gName[5]; break;
-                                    case "6": MS_report = "番" + ctripOrderRef + "　代表者 *1 " + gName[1] + "　*2 " + gName[2] + "　*3 " + gName[3] + "　" + gName[4] + "　*4 " + gName[5] + "　" + gName[6]; break;
-                                    case "7": MS_report = "番" + ctripOrderRef + "　代表者 *1 " + gName[1] + "　*2 " + gName[2] + "　" + gName[3] + "　*3 " + gName[4] + "　" + gName[5] + "　*4 " + gName[6] + "　" + gName[7]; break;
-                                    case "8": MS_report = "番" + ctripOrderRef + "　名簿 *1 " + gName[1] + "　" + gName[2] + "　*2 " + gName[3] + "　" + gName[4] + "　*3 " + gName[5] + "　" + gName[6] + "　*4 " + gName[7] + "　" + gName[8]; break;
+                                    case "4": MS_report = "番" + ctripOrder_1Ref + "　代表者 *1 " + gName[1] + "　*2 " + gName[2] + "　*3 " + gName[3] + "　*4 " + gName[4]; break;
+                                    case "5": MS_report = "番" + ctripOrder_1Ref + "　代表者 *1 " + gName[1] + "　*2 " + gName[2] + "　*3 " + gName[3] + "　*4 " + gName[4] + "　" + gName[5]; break;
+                                    case "6": MS_report = "番" + ctripOrder_1Ref + "　代表者 *1 " + gName[1] + "　*2 " + gName[2] + "　*3 " + gName[3] + "　" + gName[4] + "　*4 " + gName[5] + "　" + gName[6]; break;
+                                    case "7": MS_report = "番" + ctripOrder_1Ref + "　代表者 *1 " + gName[1] + "　*2 " + gName[2] + "　" + gName[3] + "　*3 " + gName[4] + "　" + gName[5] + "　*4 " + gName[6] + "　" + gName[7]; break;
+                                    case "8": MS_report = "番" + ctripOrder_1Ref + "　名簿 *1 " + gName[1] + "　" + gName[2] + "　*2 " + gName[3] + "　" + gName[4] + "　*3 " + gName[5] + "　" + gName[6] + "　*4 " + gName[7] + "　" + gName[8]; break;
                                     } break;
                             case "3":
                                     switch( ctripOrderNames ){
-                                    case "4": MS_report = "番" + ctripOrderRef + "　代表者 *1 " + gName[1] + "　*2 " + gName[2] + "　*3 " + gName[3] + "　*4 " + gName[4]; break;
-                                    case "5": MS_report = "番" + ctripOrderRef + "　代表者 *1 " + gName[1] + "　*2 " + gName[2] + "　*3 " + gName[3] + "　*4 " + gName[4] + "　" + gName[5]; break;
-                                    case "6": MS_report = "番" + ctripOrderRef + "　代表者 *1 " + gName[1] + "　*2 " + gName[2] + "　*3 " + gName[3] + "　" + gName[4] + "　*4 " + gName[5] + "　" + gName[6]; break;
-                                    case "7": MS_report = "番" + ctripOrderRef + "　代表者 *1 " + gName[1] + "　*2 " + gName[2] + "　" + gName[3] + "　*3 " + gName[4] + "　" + gName[5] + "　*4 " + gName[6] + "　" + gName[7]; break;
-                                    case "8": MS_report = "番" + ctripOrderRef + "　代表者 *1 " + gName[1] + "　" + gName[2] + "　*2 " + gName[3] + "　" + gName[4] + "　*3 " + gName[5] + "　" + gName[6] + "　*4 " + gName[7] + "　" + gName[8]; break;
+                                    case "4": MS_report = "番" + ctripOrder_1Ref + "　代表者 *1 " + gName[1] + "　*2 " + gName[2] + "　*3 " + gName[3] + "　*4 " + gName[4]; break;
+                                    case "5": MS_report = "番" + ctripOrder_1Ref + "　代表者 *1 " + gName[1] + "　*2 " + gName[2] + "　*3 " + gName[3] + "　*4 " + gName[4] + "　" + gName[5]; break;
+                                    case "6": MS_report = "番" + ctripOrder_1Ref + "　代表者 *1 " + gName[1] + "　*2 " + gName[2] + "　*3 " + gName[3] + "　" + gName[4] + "　*4 " + gName[5] + "　" + gName[6]; break;
+                                    case "7": MS_report = "番" + ctripOrder_1Ref + "　代表者 *1 " + gName[1] + "　*2 " + gName[2] + "　" + gName[3] + "　*3 " + gName[4] + "　" + gName[5] + "　*4 " + gName[6] + "　" + gName[7]; break;
+                                    case "8": MS_report = "番" + ctripOrder_1Ref + "　代表者 *1 " + gName[1] + "　" + gName[2] + "　*2 " + gName[3] + "　" + gName[4] + "　*3 " + gName[5] + "　" + gName[6] + "　*4 " + gName[7] + "　" + gName[8]; break;
                                     case "9": MS_report = "*1 " + gName[1] + "　" + gName[2] + "　*2 " + gName[3] + "　" + gName[4] + "　*3 " + gName[5] + "　" + gName[6] + "　*4 " + gName[7] + "　" + gName[8] + "　" + gName[9]; break;
                                     case "10": MS_report = "*1 " + gName[1] + "　" + gName[2] + "　*2 " + gName[3] + "　" + gName[4] + "　*3 " + gName[5] + "　" + gName[6] + "　" + gName[7] + "　*4 " + gName[8] + "　" + gName[9] + "　" + gName[10]; break;
                                     case "11": MS_report = "*1 " + gName[1] + "　" + gName[2] + "　*2 " + gName[3] + "　" + gName[4] + "　" + gName[5] + "　*3 " + gName[6] + "　" + gName[7] + "　" + gName[8] + "　*4 " + gName[9] + "　" + gName[10] + "　" + gName[11]; break;
@@ -750,7 +750,7 @@
                             } break;
 
                     default: {
-                        MS_report = '番' + ctripOrderRef + '　' + gNameShow; 
+                        MS_report = '番' + ctripOrder_1Ref + '　' + gNameShow; 
                         MS_report_finish = 0;
                         } break;      
                     }

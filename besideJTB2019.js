@@ -292,6 +292,8 @@ setTimeout(function(){
             if ( HnameSummary == "未知中文名" ){ window.close(); }
             //if ( HnameSummary == "未知中文名" ){ HnameSummary = "酒店数据未知"; }     //大阪订单
 
+            var reserv_Order_Tips = ( reserv_Order == true )? 1 : 0;
+
             // 显示内容的前处理     
             var HHHHname = ctripOrderHotel;         // HHHHname是酒店的简短名称，用于小窗口显示
             HHHHname = HHHHname.replace(" ","");
@@ -873,27 +875,19 @@ setTimeout(function(){
         }); 
 
         // "JTB完成去填集計"按钮
-        var reserv_Order_Tips = ( reserv_Order == true )? 1 : 0;
         $('#btn_JTB_confirmed').on('click', function () {
 
-            $('#btn_JTB_confirmed').delay(240).queue(function(){        //原因不明：
-                if ( reserv_Order_Tips == 0 ){                          //似乎是在 queue(function(){ 里面放了 if 之后，window.close()就失效了
-                    window.close();
-                }
-            });
-
-            
             navigator.clipboard.writeText(report_summary)   // debug: report_summary
             .then(() => {
                 //log('Text copied.');
 
-                if ( reserv_Order_Tips == 1 ){        // EBK后台操作提示
-                    
+                if ( reserv_Order_Tips == 1 ){        // 关于保留房订单的EBK后台操作提示
 
                     myWindow=window.open('', '提示', 'width=500, height=320, top=280, left=600, toolbar=no, menubar=no, scrollbars=no, resizable=no, location=no, status=no');
                     myWindow.document.write("<h3>　這是一個 <span style=\"background-color:#32cd32;\"><font color=\"#fffff0\">&#8201保留房&#8201</font></span> 訂單！</h3><h3>　請依據剛才記錄的JTB房型的<font color=\"#CC0033\">残室</font>数字，先回到携程訂單的房型頁面，完成設定：</h3><h3>　<font color=\"#CC0033\">現在残室 >= ３</font></br>　　　點選日期、立即确认房量、余量等于１、保存</h3><h3>　<font color=\"#CC0033\">現在残室 = ０</font></br>　　　點選日期、关房、保存</h3>");
                     myWindow.focus();    
                     myWindow.onclick = function(){
+
                         reserv_Order_Tips = 0;
 
                         // 在Chrome中，如果window.open()函数不是被鼠标键盘事件调用的，而是页面直接调用或通过定时器等调用的，则打开新窗口而非标签
@@ -904,6 +898,13 @@ setTimeout(function(){
                         myWindow.close();
                         
                     }    
+                } else {
+
+                    // 应该有一个正常结束的判断  // 在此加入向云端sheet存数据的处理：JTB running water records
+                    makeApiCall();
+
+                    window.close();
+
                 }
 
             })
@@ -911,9 +912,11 @@ setTimeout(function(){
                 //log('Failed to write clipboard');
             });
 
-            //在此加入向云端sheet存数据的处理：JTB running water records
-            // makeApiCall();
-
+            // $('#btn_JTB_confirmed').delay(240).queue(function(){        //原因不明：
+            //     if ( reserv_Order_Tips == 0 ){                          //似乎是在 queue(function(){ 里面放 if 是没有效果的
+            //         window.close();
+            //     }
+            // });
 
         });
 

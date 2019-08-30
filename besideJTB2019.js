@@ -888,13 +888,13 @@ setTimeout(function(){
                 //log('Text copied.');
 
                 if ( reserv_Order_Tips == 1 ){        // EBK后台操作提示
-                    reserv_Order_Tips = 0;
+                    
 
                     myWindow=window.open('', '提示', 'width=500, height=320, top=280, left=600, toolbar=no, menubar=no, scrollbars=no, resizable=no, location=no, status=no');
                     myWindow.document.write("<h3>　這是一個 <span style=\"background-color:#32cd32;\"><font color=\"#fffff0\">&#8201保留房&#8201</font></span> 訂單！</h3><h3>　請依據剛才記錄的JTB房型的<font color=\"#CC0033\">残室</font>数字，先回到携程訂單的房型頁面，完成設定：</h3><h3>　<font color=\"#CC0033\">現在残室 >= ３</font></br>　　　點選日期、立即确认房量、余量等于１、保存</h3><h3>　<font color=\"#CC0033\">現在残室 = ０</font></br>　　　點選日期、关房、保存</h3>");
                     myWindow.focus();    
                     myWindow.onclick = function(){
-                        
+                        reserv_Order_Tips = 0;
 
                         // 在Chrome中，如果window.open()函数不是被鼠标键盘事件调用的，而是页面直接调用或通过定时器等调用的，则打开新窗口而非标签
                         // 除了IE之外,浏览器不支持使用JS全屏.这是故意的：to avoid disorienting users.                        

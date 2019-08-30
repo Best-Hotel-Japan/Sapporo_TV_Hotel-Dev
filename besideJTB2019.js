@@ -903,10 +903,10 @@ setTimeout(function(){
             });
 
             //在此加入向云端sheet存数据的处理：JTB running water records
-            makeApiCall();
+            // makeApiCall();
 
-            $('#btn_JTB_confirmed').delay(240).queue(function(){        //原因不明：
-                if ( reserv_Order_Tips <= 0 ){                          //似乎是在 queue(function(){ 里面放了 if 之后，window.close()就失效了
+            $('#btn_JTB_confirmed').delay(540).queue(function(){        //原因不明：
+                if ( reserv_Order_Tips == 0 ){                          //似乎是在 queue(function(){ 里面放了 if 之后，window.close()就失效了
                     window.close();
                 }
             });

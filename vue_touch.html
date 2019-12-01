@@ -13,9 +13,11 @@
     
     <style type="text/css">
         #app{
-            height: 35rem;
+            height: 20rem;
             background-color: rgb(255, 187, 0);
             color: #fff;
+            padding: 5rem;
+            font-size: 40px;
             text-align: center;
             line-height: 5rem;
         }
@@ -134,12 +136,13 @@
         </script>
 
 
-		<div id="app" class="box" v-tap="vuetouch"
-		    v-longtap="{fn:vuetouch,name:'长按'}"
-		    v-swipeleft="{fn:vuetouch,name:'左滑'}"
-		    v-swiperight="{fn:vuetouch,name:'右滑'}"
-		    v-swipeup="{fn:vuetouch,name:'上滑'}"
-		    v-swipedown="{fn:vuetouch,name:'下滑'}"
+        <div id="app" class="box" 
+            v-tap="{fn:vuetouch,name:'点击 !!'}"
+		    v-longtap="{fn:vuetouch,name:'长 ~ 按'}"
+		    v-swipeleft="{fn:vuetouch,name:'左 ← 滑'}"
+		    v-swiperight="{fn:vuetouch,name:'右 → 滑'}"
+		    v-swipeup="{fn:vuetouch,name:'上 ↑ 滑'}"
+		    v-swipedown="{fn:vuetouch,name:'下 ↓ 滑'}"
 		>
 		{{ name }}
 		
@@ -149,7 +152,7 @@
 			new Vue({
 			    el:"#app",
 			    data:{
-			        name:"开始"
+			        name:"开始.."
 			    },
 			    methods:{
 			        vuetouch:function(s,e){

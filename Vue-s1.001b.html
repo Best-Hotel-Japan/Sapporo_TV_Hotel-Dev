@@ -2,7 +2,7 @@
 <meta charset="utf-8">
 <html>
 
-<style>
+<style> /* Checkbox */
     /* The container is Custom Checkbox */
     .container {
     display: block;
@@ -72,7 +72,7 @@
     }
 </style>
 
-<style rel="stylesheet" type="text/css">
+<style rel="stylesheet" type="text/css"> /* Main UI */
 
     body {
         background: #20262E;
@@ -125,6 +125,7 @@
         <span class="checkmark"></span>
     </label>
 
+    <a href="tel://0988681391">电话</a>
 
     <div id="app">
         <h2 style="font-family:Meiryo">合計:　大 25　小 9</h2>
@@ -134,12 +135,14 @@
                     <input type="checkbox"
                         v-on:change="toggle(todo)"
                         v-bind:checked="todo.done">
+                    <!-- <a v-bind:href="todo.tel"> -->
                     <del v-if="todo.done">
                         {{ todo.text }}
                     </del>
                     <span v-else>
                         {{ todo.text }}
                     </span>
+                    <!-- </a> -->
                     <span class="checkmark"></span>
                 </label>
             </li>
@@ -152,10 +155,10 @@
             el: "#app",
             data: {
                 todos: [
-                { text: "Learn JavaScript", done: false },
-                { text: "Vue00ooOO11LLllzz22", done: false },
-                { text: "Play around in JSFiddle", done: false },
-                { text: "Build something awesome", done: false }
+                { text: "Learn JavaScript", tel: "tel://13010002001", done: false },
+                { text: "Vue00ooOO11LLllzz22", tel: "tel://13010002002", done: false },
+                { text: "Play around in JSFiddle", tel: "tel://13010002003", done: false },
+                { text: "Build something awesome", tel: "tel://13010002004", done: false }
                 ]
             },
             methods: {

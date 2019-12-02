@@ -144,7 +144,7 @@
     <div id="app">
         <h2 style="font-family:Meiryo">合計:　大 25　小 9</h2>
         <ol>
-            <li v-for="todo in todos">
+            <li v-for="(todo, index) in todos">
                 <label class="container">
                     <input type="checkbox"
                         v-on:change="toggle(todo)"
@@ -166,14 +166,15 @@
         
     <script type="text/javascript">
 
-        var todos = new Array();
-        todos[0] = { "text": "WONG ASHLEY SHUI L...", "tel": "tel://13510002001", "people": "大2", "done": false };
-        todos[1] = { text: "CHEN TING YU", tel: "tel://13510002002", people: "大4 小2", done: false };
+        var todos = {};
+        todos[0] = { text: "WONG ASHLEY SHUI L...", tel: "tel://13510002001", people: "大2", done: true };
+        todos[1] = { text: "CHEN TING YU", tel: "tel://13510002002", people: "大4 小2", done: true };
         todos[2] = { text: "Chong Yook Foong", tel: "tel://+8613510002003", people: "大3", done: false };
         todos[3] = { text: "Chow Kit Man", tel: "tel://+85291251996", people: "大2 小1", done: false };
         todos[4] = { text: "WWWMMMWWWMMMWWW", tel: "tel://13510002001", people: "大2 小2", done: false };
+        todos[5] = { text: "WWWMMMWWWMM..", tel: "tel://13510002001", people: "大2 小2", done: false };
 
-        new Vue({
+        var nameList = new Vue({
             el: "#app",
             data: todos,
             methods: {
@@ -181,7 +182,7 @@
                     todo.done = !todo.done
                 }
             }
-        })
+        });
 
     </script>
 

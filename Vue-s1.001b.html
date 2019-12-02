@@ -2,7 +2,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
 <html>
-    
+
 <head>
     <title>旭山动物园一日游</title>
     <script src="https://cdn.jsdelivr.net/npm/vue"></script>
@@ -166,14 +166,15 @@
         
     <script type="text/javascript">
 
-        new Vue({
+        var nameList = new Vue({
             el: "#app",
             data: {
                 todos: [
                 { text: "WONG ASHLEY SHUI LING", tel: "tel://13510002001", people: "大2", done: false },
                 { text: "CHEN TING YU", tel: "tel://13510002002", people: "大4 小2", done: false },
                 { text: "Chong Yook Foong", tel: "tel://+8613510002003", people: "大3", done: false },
-                { text: "Chow Kit Man", tel: "tel://+85291251996", people: "大2 小1", done: false }
+                { text: "Chow Kit Man", tel: "tel://+85291251996", people: "大2 小1", done: false },
+                { text: "WWWMMMWWWMMMWWW", tel: "tel://13510002001", people: "大2 小2", done: false },
                 ]
             },
             methods: {
@@ -181,7 +182,7 @@
                     todo.done = !todo.done
                 }
             }
-        })
+        });
 
     </script>
 

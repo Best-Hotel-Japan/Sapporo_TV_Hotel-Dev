@@ -1,3 +1,4 @@
+<!-- Ver 2019.12.2 from 2019.11.30 -->
 <!DOCTYPE html>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
@@ -88,12 +89,12 @@
 <style rel="stylesheet" type="text/css"> /* Main UI */
 
     body {
-        background: #20262E;
+        background: rgb(231, 149, 83);
         font-family: Helvetica;
         margin-top: 2px;
         margin-bottom: 60px;
-        margin-right: 2px;
-        margin-left: 2px; padding-left: 2px;
+        margin-right: 3px; padding-right: 3px;
+        margin-left: 0px; padding-left: 0px;
     }
       
     #app {
@@ -122,11 +123,106 @@
 
 </style>
 
+<style rel="stylesheet" type="text/css"> /* Modal to display details */
+
+    body.no-scroll {
+        overflow: hidden;
+    }
+
+    .site {
+        max-width: 1200px;
+        margin: 0.2em;
+    }
+
+    .bg {
+        background-size: inherit;
+        background: url("https://raw.githubusercontent.com/fpga2033/TVtower/gh-pages/bg.jpg") center center;
+        height: 505px;
+        width: 100%;
+        margin-left: -0%;
+        margin-top: 3em;
+        margin-bottom: 0em;
+    }
+
+    .my-modal {
+        position: fixed;
+        background-color: rgba(255, 255, 255, 0.9);
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        display: none;
+        overflow: auto;
+    }
+
+    .my-modal-content {
+        position: fixed;
+        width: 285px;        /* 调整这个宽度，和JTB界面拼接在一起*/
+        height: 620px;
+        text-align: left;
+        padding: 1em;
+        background-color: white;
+        border-radius: 3px;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.29), 0 26px 52px rgba(0, 0, 0, 0.26);
+    }
+
+    @media only screen and (min-width: 300px) {
+        .my-modal-content {
+            right: 0%;
+            margin-right: -0px;
+        }
+    }
+    @media only screen and (min-height: 580px) {
+        .my-modal-content {
+            top: 0%;
+            margin-top: -0px;
+        }
+    }
+
+</style>
+
 <body>
 
-    <div style="font-family:Meiryo;font-size:20px;color:lightblue">
-        <h1>旭山動物園 Bus １</h1>
+    <div class="site" style="font-family:Meiryo; font-size:2.3rem">
+        <section>
+            <a id="btn_All_of_Buses">旭山動物園 Bus １</a>
+        </section>
     </div>
+
+    <div class="my-modal">
+        <div id="modal-window" class="my-modal-content">
+
+            <div class="modal-body">
+                <form>
+                    <div class="form-group">
+                    
+
+                    <a style="font-family:Microsoft YaHei;font-size:16px">　預訂 </a>
+                    <label class="control-label" id=txt_modal_1 style="font-family:Meiryo;font-weight:bold;font-size:22px"></label>
+                    <a style="font-family:Microsoft YaHei;font-size:16px"> 間房， 每間房：</a>
+                    <label class="control-label" id=txt_modal_2 style="font-family:Microsoft YaHei;font-weight:bold;font-size:16px"></label>
+
+                    <a style="font-family:Microsoft YaHei;font-size:16px">　該預訂最多可住　</a>
+                    <label class="control-label" id=txt_modal_3 style="font-family:Meiryo;font-weight:bold;font-size:22px"></label>
+                    <a style="font-family:Microsoft YaHei;font-size:16px"> 人。</a>
+
+                    <!-- <br><br><br>
+                    <b style="font-family:Microsoft YaHei;font-size:16px;color:rgb(221, 121, 90)">　訂單通知了"入住人数"是　</b>
+                    <label class="control-label" id=txt_modal_4 style="font-family:Meiryo;font-weight:bold;font-size:22px;color:rgb(221, 121, 90)"></label>
+                    <b style="font-family:Microsoft YaHei;font-size:16px;color:rgb(221, 121, 90)"> 人</b><br>
+                    <b style="font-family:Microsoft YaHei;font-size:16px;color:rgb(221, 121, 90)">　编辑「MS報告」如下：</b> -->
+                    
+                    </div>
+                </form>
+            </div>
+            
+            <!-- <br><br><br> -->
+            <a style="font-family:Microsoft YaHei;font-size:16px">　</a>
+            <button id="btn_modal_confirmed" class="btn btn-primary" style="font-family:Microsoft YaHei;font-size:15px">　Close　</button>            
+
+        </div>
+    </div>
+
     
     <label class="container">One
         <input type="checkbox" checked="checked">
@@ -138,11 +234,10 @@
     </label>
 
     <a href="tel://+8618977916644" onclick="event.returnValue=false">电话</a>
-
-    <span>tel://+8618977916644</span>
+    <br><br>
 
     <div id="app">
-        <h2 style="font-family:Meiryo">合計:　大 25　小 9</h2>
+        <h2 style="font-size:30px;font-family:Microsoft JhengHei">合計:　大 25　小 9</h2>
         <ol>
             <li v-for="(todo, index) in todos">
                 <label class="container">
@@ -157,7 +252,7 @@
                         </span>
                         <span class="checkmark"></span> 
                     <a class=telnumber onclick="event.returnValue=false" v-bind:href="todo.tel">
-                        {{ todo.people }}
+                        大{{ todo.people }} 小{{ todo.people }}
                     </a>
                 </label>
             </li>
@@ -167,8 +262,8 @@
     <script type="text/javascript">
 
         var todos = {};
-        todos[0] = { text: "WONG ASHLEY SHUI L...", tel: "tel://13510002001", people: "大2", done: true };
-        todos[1] = { text: "CHEN TING YU", tel: "tel://13510002002", people: "大4 小2", done: true };
+        todos[0] = { text: "WONG ASHLEY SHUI L...", tel: "tel://13510002001", people: "大2", done: false };
+        todos[1] = { text: "CHEN TING YU", tel: "tel://13510002002", people: "大4 小2", done: false };
         todos[2] = { text: "Chong Yook Foong", tel: "tel://+8613510002003", people: "大3", done: false };
         todos[3] = { text: "Chow Kit Man", tel: "tel://+85291251996", people: "大2 小1", done: false };
         todos[4] = { text: "WWWMMMWWWMMMWWW", tel: "tel://13510002001", people: "大2 小2", done: false };
@@ -185,6 +280,37 @@
         });
 
     </script>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    <script type="text/javascript">
+
+        var $body = $('body');
+
+        $('#btn_All_of_Buses').on('click', function () {
+
+            var modal = $('.my-modal')
+
+            modal.find('.modal-body label#txt_modal_1').text('　')    
+            modal.find('.modal-body label#txt_modal_2').text('　')    
+            modal.find('.modal-body label#txt_modal_3').text('　')    
+            // modal.find('.modal-body label#txt_modal_4').text(ctripOrderPeoples)
+            // modal.find('.modal-body label#txt_modal_content').text('　' + MS_report)
+
+            //modal.find('.modal-body label#提醒有备注').text('' + recipText)
+
+            $('.my-modal').fadeIn();
+            $body.addClass('no-scroll');
+            
+        });         
+
+        /// modal 的 Close 按钮            
+        $('#modal-window').on('click', function () {
+            $('.my-modal').fadeOut();
+            $body.removeClass('no-scroll');
+        });        
+
+    </script>
+
 
 </body>
 

@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
+<html>
+
+<head>
+    <title>旭山动物园一日游</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+</head>
+
+<style> /* Checkbox */
+    /* The container is Custom Checkbox */
+    .container {
+    display: block;
+    position: relative;
+    padding-left: 29px;     /* Space to the right of Checkbox */
+    margin-bottom: 12px;
+    font-size: 22px;
+    cursor: pointer;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    }
+
+    /* Hide the browser's default checkbox */
+    .container input {
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+    height: 0;
+    width: 0;
+    }
+
+    /* Create a custom checkbox */
+    .checkmark {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 22px;
+    width: 22px;
+    background-color: #eee;
+    }
+
+    /* On mouse-over, add a grey background color */
+    .container:hover input ~ .checkmark {
+    background-color: #ccc;
+    }
+
+    /* When the checkbox is checked, add a blue background */
+    .container input:checked ~ .checkmark {
+    background-color: #2196F3;
+    }
+
+    /* Create the checkmark/indicator (hidden when not checked) */
+    .checkmark:after {
+    content: "";
+    position: absolute;
+    display: none;
+    }
+
+    /* Show the checkmark when checked */
+    .container input:checked ~ .checkmark:after {
+    display: block;
+    }
+
+    /* Style the checkmark/indicator */
+    .container .checkmark:after {
+    left: 8px;
+    top: 4px;
+    width: 5px;
+    height: 10px;
+    border: solid white;
+    border-width: 0 3px 3px 0;
+    -webkit-transform: rotate(45deg);
+    -ms-transform: rotate(45deg);
+    transform: rotate(45deg);
+    }
+</style>
+
+<style> /* href link for telnumber */
+    .telnumber { TEXT-DECORATION:none; color:#000000 }
+    .telnumber hover { TEXT-DECORATION:none; color:#000000 }
+    .telnumber visited { TEXT-DECORATION:none; color:#000000 }
+    .telnumber active { TEXT-DECORATION:none; color:#000000 }  
+</style>
+
+<style rel="stylesheet" type="text/css"> /* Main UI */
+
+    body {
+        background: #20262E;
+        font-family: Helvetica;
+        margin-top: 2px;
+        margin-bottom: 60px;
+        margin-right: 2px;
+        margin-left: 2px; padding-left: 2px;
+    }
+      
+    #app {
+        background: #fff;
+        border-radius: 12px;
+        padding: 5px;
+        transition: all 0.2s;
+    }
+      
+    li {margin-left: 1px; padding-left: 1px;}
+
+    ol {margin-left: 9px; padding-left: 9px;}
+
+    h2 {
+        font-weight: bold;
+        margin-bottom: 15px;
+    }
+      
+    del {
+        color: rgba(0, 0, 0, 0.3);
+    }
+
+    span {
+        color: rgb(190, 13, 0);
+    }    
+
+</style>
+
+<body>
+
+    <div style="font-family:Meiryo;font-size:20px;color:lightblue">
+        <h1>旭山動物園 Bus １</h1>
+    </div>
+    
+    <label class="container">One
+        <input type="checkbox" checked="checked">
+        <span class="checkmark"></span>
+    </label>
+    <label class="container">Two
+        <input type="checkbox">
+        <span class="checkmark"></span>
+    </label>
+
+    <a href="tel://+8618977916644" onclick="event.returnValue=false">电话</a>
+
+    <span>tel://+8618977916644</span>
+
+    <div id="app">
+        <h2 style="font-family:Meiryo">合計:　大 25　小 9</h2>
+        <ol>
+            <li v-for="todo in todos">
+                <label class="container">
+                    <input type="checkbox"
+                        v-on:change="toggle(todo)"
+                        v-bind:checked="todo.done">
+                        <del v-if="todo.done">
+                            {{ todo.text }}
+                        </del>
+                        <span v-else>
+                            {{ todo.text }}
+                        </span>
+                        <span class="checkmark"></span> 
+                    <a class=telnumber onclick="event.returnValue=false" v-bind:href="todo.tel">
+                        {{ todo.people }}
+                    </a>
+                </label>
+            </li>
+        </ol>
+    </div>
+        
+    <script type="text/javascript">
+
+        var todos = new Array();
+        todos[0] = { "text": "WONG ASHLEY SHUI L...", "tel": "tel://13510002001", "people": "大2", "done": false };
+        todos[1] = { text: "CHEN TING YU", tel: "tel://13510002002", people: "大4 小2", done: false };
+        todos[2] = { text: "Chong Yook Foong", tel: "tel://+8613510002003", people: "大3", done: false };
+        todos[3] = { text: "Chow Kit Man", tel: "tel://+85291251996", people: "大2 小1", done: false };
+        todos[4] = { text: "WWWMMMWWWMMMWWW", tel: "tel://13510002001", people: "大2 小2", done: false };
+
+        new Vue({
+            el: "#app",
+            data: todos,
+            methods: {
+                toggle: function(todo){
+                    todo.done = !todo.done
+                }
+            }
+        })
+
+    </script>
+
+</body>
+
+</html>

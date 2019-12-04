@@ -1,0 +1,204 @@
+<!-- Ver 2019.12.2 from 2019.11.30 -->
+<!DOCTYPE html>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
+<html>
+
+<head>
+    <title>旭山动物园一日游</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+</head>
+
+<style> /* Checkbox */
+    /* The container is Custom Checkbox */
+    .container {
+    display: block;
+    position: relative;
+    padding-left: 29px;     /* Space to the right of Checkbox */
+    margin-bottom: 12px;
+    font-size: 22px;
+    cursor: pointer;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    }
+
+    /* Hide the browser's default checkbox */
+    .container input {
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+    height: 0;
+    width: 0;
+    }
+
+    /* Create a custom checkbox */
+    .checkmark {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 22px;
+    width: 22px;
+    background-color: #eee;
+    }
+
+    /* On mouse-over, add a grey background color */
+    .container:hover input ~ .checkmark {
+    background-color: #ccc;
+    }
+
+    /* When the checkbox is checked, add a blue background */
+    .container input:checked ~ .checkmark {
+    background-color: #2196F3;
+    }
+
+    /* Create the checkmark/indicator (hidden when not checked) */
+    .checkmark:after {
+    content: "";
+    position: absolute;
+    display: none;
+    }
+
+    /* Show the checkmark when checked */
+    .container input:checked ~ .checkmark:after {
+    display: block;
+    }
+
+    /* Style the checkmark/indicator */
+    .container .checkmark:after {
+    left: 8px;
+    top: 4px;
+    width: 5px;
+    height: 10px;
+    border: solid white;
+    border-width: 0 3px 3px 0;
+    -webkit-transform: rotate(45deg);
+    -ms-transform: rotate(45deg);
+    transform: rotate(45deg);
+    }
+</style>
+
+<style> /* href link for telnumber */
+    .telnumber { TEXT-DECORATION:none; color:#000000 }
+    .telnumber hover { TEXT-DECORATION:none; color:#000000 }
+    .telnumber visited { TEXT-DECORATION:none; color:#000000 }
+    .telnumber active { TEXT-DECORATION:none; color:#000000 }  
+</style>
+
+<style rel="stylesheet" type="text/css"> /* Main UI */
+
+    body {
+        background: rgb(231, 149, 83);
+        font-family: Helvetica;
+        margin-top: 2px;
+        margin-bottom: 60px;
+        margin-right: 3px; padding-right: 3px;
+        margin-left: 0px; padding-left: 0px;
+    }
+      
+    #app {
+        background: #fff;
+        border-radius: 12px;
+        padding: 5px;
+        transition: all 0.2s;
+    }
+      
+    li {margin-left: 1px; padding-left: 1px;}
+
+    ol {margin-left: 9px; padding-left: 9px;}
+
+    h2 {
+        font-weight: bold;
+        margin-bottom: 15px;
+    }
+      
+    del {
+        color: rgba(0, 0, 0, 0.3);
+    }
+
+    span {
+        color: rgb(190, 13, 0);
+    }    
+
+</style>
+
+
+<body>
+
+    <div class="site" style="font-family:Meiryo; font-size:2.3rem">
+        <section>
+            <a id="btn_All_of_Buses">旭山動物園 Bus １</a>
+        </section>
+    </div>
+    
+    <label class="container"> 詳細 
+        <input type="checkbox" checked="checked">
+        <span class="checkmark"></span>
+    </label>
+
+    <div id="app">
+        <h3 style="font-size:30px;font-family:Microsoft JhengHei">合計:　大 25　小 9</h3>
+        <div v-for="(todo, index) in todos">
+            <label class="container">
+                <input type="checkbox"
+                    v-on:change="toggle(todo)"
+                    v-bind:checked="todo.done">
+                    <del v-if="todo.done">
+                        {{ todo.text }}
+                    </del>
+                    <span v-else>
+                        {{ todo.text }}
+                    </span>
+                    <span class="checkmark"></span> 
+                <a class=telnumber onclick="event.returnValue=false" v-bind:href="todo.tel"
+                style="font-size:25px;font-family:Microsoft JhengHei">
+                    <b style="font-size:15px">大</b>{{ todo.d }} 
+                    <b style="font-size:15px" v-if="todo.x">小</b>{{ todo.x }}
+                </a>
+            </label>
+        </div>
+    </div>
+        
+    <script type="text/javascript">
+
+        var todos = {};
+        todos[0] = { text: "WONG ASHLEY SHUI L...", tel: "tel://13510002001", d: "2", x: "", done: false };
+        todos[1] = { text: "CHEN TING YU", tel: "tel://13510002002", d: "4", x: "2", done: false };
+        todos[2] = { text: "Chong Yook Foong", tel: "tel://+8613510002003", d: "3", x: "", done: false };
+        todos[3] = { text: "Chow Kit Man", tel: "tel://+85291251996", d: "2", x: "1", done: false };
+        todos[4] = { text: "WWWMMMWWWMMMWWW", tel: "tel://13510002001", d: "2", x: "", done: false };
+        todos[5] = { text: "WWWMMMWWWMM..", tel: "tel://13510002001", d: "2", x: "2", done: false };
+        todos[6] = { text: "Goentoro Erlin Prisilia..", tel: "tel://13510002001", d: "2", x: "2", done: false };
+        todos[7] = { text: "NG HO KWAN IDA..", tel: "tel://13510002001", d: "2", x: "2", done: false };
+        todos[8] = { text: "VERONIQUE CORPUS..", tel: "tel://13510002001", d: "2", x: "2", done: false };
+        todos[9] = { text: "MINGI CHEN..", tel: "tel://13510002001", d: "2", x: "2", done: false };
+        todos[10] = { text: "TAI IN NEI..", tel: "tel://13510002001", d: "2", x: "2", done: false };
+        todos[11] = { text: "Chuang Suting..", tel: "tel://13510002001", d: "2", x: "2", done: false };
+        todos[12] = { text: "Fung Tsz Mei..", tel: "tel://13510002001", d: "2", x: "2", done: false };
+        todos[13] = { text: "Shuk Mai May Chiu..", tel: "tel://13510002001", d: "2", x: "2", done: false };
+        todos[14] = { text: "CHOU CHIAYU..", tel: "tel://13510002001", d: "2", x: "2", done: false };
+        todos[15] = { text: "Mak Kam Sheung..", tel: "tel://13510002001", d: "2", x: "2", done: false };
+        todos[16] = { text: "TAI IN NEI..", tel: "tel://13510002001", d: "2", x: "2", done: false };
+        todos[17] = { text: "Chuang Suting..", tel: "tel://13510002001", d: "2", x: "2", done: false };
+        todos[18] = { text: "Fung Tsz Mei..", tel: "tel://13510002001", d: "2", x: "2", done: false };
+        todos[19] = { text: "Shuk Mai May Chiu..", tel: "tel://13510002001", d: "2", x: "2", done: false };
+        todos[20] = { text: "CHOU CHIAYU..", tel: "tel://13510002001", d: "2", x: "2", done: false };
+        todos[21] = { text: "Mak Kam Sheung..", tel: "tel://13510002001", d: "2", x: "2", done: false };
+
+        var nameList = new Vue({
+            el: "#app",
+            data: todos,
+            methods: {
+                toggle: function(todo){
+                    todo.done = !todo.done
+                }
+            }
+        });
+
+    </script>
+
+
+</body>
+
+</html>

@@ -1,0 +1,345 @@
+<!-- Ver 2019.12.10 from 2019.12.10 -->
+<!DOCTYPE html>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
+<html>
+
+<head>
+    <title>旭山动物园一日游</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.14.1/lodash.min.js"></script>
+</head>
+
+<style> /* Checkbox and Checkmark */
+    /* The label .container begins with a Custom Checkbox */
+    .container {
+    display: block;
+    position: relative;
+    padding-left: 26px;     /* Space to the right of Checkbox */
+    margin-bottom: 12px;
+    font-size: 22px;
+    cursor: pointer;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    }
+
+    /* Hide the browser's default checkbox */
+    .container input {
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+    height: 0;
+    width: 0;
+    }
+
+    /* Create a custom checkbox */
+    .checkmark {
+    position: absolute;
+    top: 6px;
+    left: 0;
+    height: 22px;
+    width: 22px;
+    background-color: #eee;
+    }
+
+    /* On mouse-over, add a grey background color */
+    .container:hover input ~ .checkmark {
+    background-color: #bdf;
+    }
+
+    /* When the checkbox is checked, add a blue background */
+    .container input:checked ~ .checkmark {
+    background-color: #2196F3;
+    }
+
+    /* Create the checkmark/indicator (hidden when not checked) */
+    .checkmark:after {
+    content: "";
+    position: absolute;
+    display: none;
+    }
+
+    /* Show the checkmark when checked */
+    .container input:checked ~ .checkmark:after {
+    display: block;
+    }
+
+    /* Style the checkmark/indicator */
+    .container .checkmark:after {
+    left: 8px;
+    top: 4px;
+    width: 5px;
+    height: 10px;
+    border: solid white;
+    border-width: 0 3px 3px 0;
+    -webkit-transform: rotate(45deg);
+    -ms-transform: rotate(45deg);
+    transform: rotate(45deg);
+    }
+</style>
+
+<style> /* href link for telnumber */
+    .telnumber { TEXT-DECORATION:none; color:#000000 }
+    .telnumber hover { TEXT-DECORATION:none; color:#000000 }
+    .telnumber visited { TEXT-DECORATION:none; color:#000000 }
+    .telnumber active { TEXT-DECORATION:none; color:#000000 }  
+</style>
+
+<style> /* Items Enter/Leave Transition */
+    /* .name-list-1-move {
+        transition: transform 3s;
+    } */
+    .name-list-1-item {
+        transition: all 0.28s;
+        /* display: inline-block; */
+    }
+    .name-list-1-enter, .name-list-1-leave-to {   /* .name-list-1-leave-active for below version 2.1.8 */
+        opacity: 0;
+        transform: translateX(16px);
+    }
+    .name-list-1-leave-active {
+        position: absolute;
+    }
+</style>
+
+<style rel="stylesheet" type="text/css"> /* Main UI */
+
+    [v-cloak] { display: none; }
+
+    body {
+        background: rgba(142, 152, 158, 0.3);
+        font-family: Helvetica;
+        margin-top: 2px;
+        margin-bottom: 60px;
+        margin-right: 0px; padding-right: 0px;
+        margin-left: 0px; padding-left: 0px;
+    }
+      
+    #todoapp {
+        background: #fff;
+        border-radius: 18px;
+        padding: 5px;
+        transition: all 0.2s;
+    }
+    
+    .name-list-1 {
+        list-style: none;
+        margin: 0;          /* 调整行距 */
+        padding: 0;
+    }
+    .name-list-1 li .text {
+        word-break: break-all;
+        padding: 0;
+        color: rgb(190, 13, 0);
+        transition: color 0.2s;
+    }
+    .name-list-1 li.completed .text {
+        color: #c9c9c9;
+        text-decoration: line-through;
+    }
+
+    h2 {
+        font-weight: bold;
+        margin-bottom: 15px;
+    }
+      
+    .footer {
+        padding: 12px 5px;
+        height: 35px;
+        text-align: right;
+        border-top: 2px solid #e6e6e6;
+    }
+
+    .todo-count {
+        color: blue;
+        float: left;
+        text-align: left;
+    }   
+
+    .filters {
+        margin: 9px 4px;
+        padding: 0;
+        list-style: none;
+        position: absolute;
+        right: 0;
+        left: 0;
+    }
+
+    .filters li {
+        display: inline;
+    }
+
+    .filters li a {
+        color: blue;
+        margin: 5px;
+        padding: 6px 10px;
+        text-decoration: none;
+        border: 3px solid transparent;
+        border-radius: 9px;
+    }
+
+    .filters li a:hover {
+        border-width: 3px;
+        border-radius: 9px;
+        border-color: rgba(17, 89, 102, 0.2);
+    }
+
+    .filters li a.selected {
+        border-width: 3px;
+        border-radius: 9px;
+        border-color: rgba(40, 150, 224, 0.8);
+    }    
+
+</style>
+
+
+<body>
+
+    <div class="site" style="font-family:Meiryo; font-size:2.3rem">
+        <section>
+            <a id="btn_All_of_Buses">旭山動物園 Bus １</a>
+        </section>
+    </div>
+    
+    <label class="container">One
+        <input type="checkbox" checked="checked">
+        <span class="checkmark"></span>
+    </label>
+    <label class="container">Two
+        <input type="checkbox">
+        <span class="checkmark"></span>
+    </label>
+
+    <a href="tel://+8618977916644" onclick="event.returnValue=false">电话</a>
+    <br><br>
+
+    <section class="todoapp" id="todoapp" v-cloak>
+
+        <h3 style="font-size:30px;font-family:Microsoft JhengHei">合計:　大 25　小 9</h3>
+
+        <!-- <ul class="name-list-1"> -->
+            <transition-group class="name-list-1" name="name-list-1" tag="ul">
+            <li class="name-list-1-item" :class="{ completed: todo.completed }" 
+                v-for="todo in nowTodos" v-bind:key="todo"> <!-- v-show="!todo.completed" -->
+                <label class="container">
+                    <input type="checkbox"
+                        @change="toggle(todo)"
+                        v-bind:checked="todo.completed">
+                        <span class="checkmark"></span> 
+                        <span class="text" style="font-size:25px;font-weight:500">{{ todo.text }}</span>
+                        <a class="telnumber" onclick="event.returnValue=false" v-bind:href="todo.tel"
+                            style="font-size:25px;font-family:Microsoft JhengHei">
+                            <b style="font-size:15px">大</b>{{ todo.d }} 
+                            <b style="font-size:15px" v-show="todo.x">小</b>{{ todo.x }}
+                        </a>
+                </label>
+            </li>
+            </transition-group>
+        <!-- </ul> -->
+
+        <footer class="footer">
+            <span class="todo-count">有 <b style="font-size:35px">{{ remaining }}</b> 组未到</span>
+            <ul class="filters" v-on:click="filterShuffle">
+                <li><a href="#/active" :class="{ selected: visibility == 'active' }">只看未到</a></li>
+                <li><a href="#/all" :class="{ selected: visibility == 'all' }">看全部</a></li>
+            </ul>
+        </footer>    
+
+    </section>
+        
+    <script type="text/javascript">
+
+        var nameList = [
+            { text: "WONG ASHLEY SHUI L...", tel: "tel://13510002001", d: "2", x: "", completed: false },
+            { text: "CHEN TING YU", tel: "tel://13510002002", d: "4", x: "2", completed: false },
+            { text: "Chong Yook Foong", tel: "tel://+8613510002003", d: "3", x: "", completed: false },
+            { text: "Chow Kit Man", tel: "tel://+85291251996", d: "2", x: "1", completed: false },
+            { text: "WWWMMMWWWMMMWWW", tel: "tel://13510002001", d: "2", x: "", completed: false },
+            { text: "WWWMMMWWWMM..", tel: "tel://13510002001", d: "2", x: "2", completed: false },
+        ];
+
+        // visibility filters
+        var filters = {
+            all: function (todos) {
+                return todos
+            },
+            active: function (todos) {
+                return todos.filter(function (todo) {
+                    return !todo.completed
+                })
+            },
+            completed: function (todos) {
+                return todos.filter(function (todo) {
+                    return todo.completed
+                })
+            }
+        };
+
+        var app1 = new Vue({
+            el: "#todoapp",
+            data: {
+                todos: nameList,
+                nowTodos: nameList,
+                newTodo: '',
+                editedTodo: null,
+                visibility: 'all'
+            },
+            methods: {
+                toggle: function (todo) {
+                    todo.completed = !todo.completed
+                },
+                filterShuffle: function () {
+                    this.nowTodos = this.filteredTodos
+                }
+            },
+            computed: {
+                filteredTodos: function () {
+                    return filters[this.visibility](this.todos)
+                },
+                remaining: function () {
+                    return filters.active(this.todos).length
+                },
+                allDone: {
+                    get: function () {
+                        return this.remaining === 0
+                    },
+                    set: function (value) {
+                        this.todos.forEach(function (todo) {
+                            todo.completed = value
+                        })
+                    }
+                }
+            },
+        });
+
+        function clickFilters() {
+            app1.filterShuffle()
+        }
+        // handle routing
+        function onHashChange () {
+            var visibility = window.location.hash.replace(/#\/?/, '')
+            if (filters[visibility]) {
+                app1.visibility = visibility
+                app1.filterShuffle()
+            } else {
+                window.location.hash = ''
+                app1.visibility = 'all'
+            }
+        }
+        window.addEventListener('hashchange', onHashChange)
+        onHashChange()
+
+    </script>
+
+    <footer class="info">
+        <br>
+        <p>Have A Nice Day !!</p>
+        <p>Provided by JPH Sapporo</p>
+        <p></p>
+    </footer>
+
+</body>
+
+</html>

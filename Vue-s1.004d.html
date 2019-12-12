@@ -516,22 +516,32 @@
                 },
                 filterShuffle: function () {
                     
-                    //把总共需要跨越的高度分成小份，由定时器执行，可达到平滑过渡的效果
                     let distance = document.documentElement.scrollTop || document.body.scrollTop;
-                    let headerMargin = 120;
-                    let step = (distance - headerMargin) / 50;          //headerMargin的距离留给header-title
+                    let headerMargin = 120;         //headerMargin的距离留给header-title
+                    
+                    if (distance > headerMargin) {
+                        document.body.scrollTop = document.documentElement.scrollTop = headerMargin;
+                    }
+                    
+                    setTimeout(() => {
+                        this.nowTodos = this.filteredTodos;
+                    }, 70);
 
-                    const timeTop = setInterval(() => {
+                    //把总共需要跨越的高度分成小份，由定时器执行，可达到平滑过渡的效果
+                    // 在iphone的效果太差了。。
+                    // let distance = document.documentElement.scrollTop || document.body.scrollTop;
+                    // let step = (distance - headerMargin) / 50;          
 
-                        if (distance <= headerMargin) {
-                            clearInterval(timeTop);
-                            this.nowTodos = this.filteredTodos;         //filterShuffle本来只有这一句
-                        } else {
-                            document.body.scrollTop = document.documentElement.scrollTop = distance -= step;
-                        }
+                    // const timeTop = setInterval(() => {
 
-                    }, 2);
+                    //     if (distance <= headerMargin) {
+                    //         clearInterval(timeTop);
+                    //         this.nowTodos = this.filteredTodos;     //filterShuffle本来只有这一句
+                    //     } else {
+                    //         document.body.scrollTop = document.documentElement.scrollTop = distance -= step;
+                    //     }
 
+                    // }, 2);
                 },
             },
             computed: {

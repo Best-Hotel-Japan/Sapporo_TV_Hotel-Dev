@@ -1,0 +1,640 @@
+<!-- Ver 2019.12.12 from 2019.12.12 -->
+<!DOCTYPE html>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
+<html>
+
+<head>
+    <title>旭山动物园一日游</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.14.1/lodash.min.js"></script>
+</head>
+
+<style> /* Checkbox and Checkmark */
+    /* The label .container begins with a Custom Checkbox */
+    .container {
+    display: block;
+    position: relative;
+    padding-left: 26px;     /* Space to the right of Checkbox */
+    margin-bottom: 12px;
+    font-size: 22px;
+    cursor: pointer;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    }
+
+    /* Hide the browser's default checkbox */
+    .container input {
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+    height: 0;
+    width: 0;
+    }
+
+    /* Create a custom checkbox */
+    .checkmark {
+    position: absolute;
+    top: 6px;
+    left: 0;
+    height: 22px;
+    width: 22px;
+    background-color: #eee;
+    }
+
+    /* On mouse-over, add a grey background color */
+    .container:hover input ~ .checkmark {
+    background-color: #bdf;
+    }
+
+    /* When the checkbox is checked, add a blue background */
+    .container input:checked ~ .checkmark {
+    /* background-color: #2196F3; */
+    background-color: #afafaf;
+    }
+
+    /* Create the checkmark/indicator (hidden when not checked) */
+    .checkmark:after {
+    content: "";
+    position: absolute;
+    display: none;
+    }
+
+    /* Show the checkmark when checked */
+    .container input:checked ~ .checkmark:after {
+    display: block;
+    }
+
+    /* Style the checkmark/indicator */
+    .container .checkmark:after {
+    left: 8px;
+    top: 4px;
+    width: 5px;
+    height: 10px;
+    border: solid white;
+    border-width: 0 3px 3px 0;
+    -webkit-transform: rotate(45deg);
+    -ms-transform: rotate(45deg);
+    transform: rotate(45deg);
+    }
+</style>
+
+<style> /* href link for telnumber */
+    .telnumber { TEXT-DECORATION:none; color:#000000 }
+    .telnumber hover { TEXT-DECORATION:none; color:#000000 }
+    .telnumber visited { TEXT-DECORATION:none; color:#000000 }
+    .telnumber active { TEXT-DECORATION:none; color:#000000 }  
+</style>
+
+<style> /* Items Enter/Leave Transition */
+    /* .name-list-1-move {
+        transition: transform 3s;
+    } */
+    .name-list-1-item {
+        transition: all 0.39s;
+        /* display: inline-block; */
+    }
+    .name-list-1-enter, .name-list-1-leave-to {   /* .name-list-1-leave-active for below version 2.1.8 */
+        opacity: 0;
+        transform: translateX(20px);
+    }
+    .name-list-1-leave-active {
+        position: absolute;
+    }
+</style>
+
+<style> /* Modal style */
+
+    .button {
+        border: none;
+        color: #FFF;
+        text-align: right;
+        background: #42b983;
+        appearance: none;
+        /* font: inherit; */
+        font-family: Microsoft Yahei;
+        font-size: 1.1rem;
+        padding: .2em .9em;
+        border-radius: .3em;
+        cursor: pointer;
+    }
+
+    .bus-list {
+        list-style-type: none;
+        text-align: left;
+        margin: 0;
+        padding: 0;
+    }
+
+    .modal {
+        position: absolute;
+        /* position: fixed; */
+        top: 0rem;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        margin: auto;
+        margin-top: 6rem;
+        text-align: center;
+        width: fit-content;
+        height: fit-content;
+        max-width: 90%;
+        padding: 2rem;
+        border-radius: 1rem;
+        box-shadow: 0 9px 9px rgba(0, 0, 0, 0.2);
+        background: #FFF;
+        z-index: 999;
+        transform: none;
+    }
+    .modal h3 {                 /*旭山動物園発車詳情*/
+        margin: 0 0 0.8rem;
+        text-align: left;
+    }
+
+    .modal-overlay {
+        content: '';
+        position: absolute;
+        position: fixed;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        z-index: 998;
+        background: #2c3e50;
+        opacity: 0.6;
+        cursor: pointer;
+    }
+
+    /* ---------------------------------- */
+    .fade-enter-active,
+    .fade-leave-active {
+        transition: opacity .4s linear;
+    }
+
+    .fade-enter,
+    .fade-leave-to {
+        opacity: 0;
+    }
+
+    .pop-enter-active,
+    .pop-leave-active {
+        transition: transform 0.4s cubic-bezier(0.5, 0, 0.5, 1), opacity 0.4s linear;
+    }
+
+    .pop-enter,
+    .pop-leave-to {
+        opacity: 0;
+        transform: scale(0.3) translateY(-50%);
+    }
+
+</style>
+
+<style rel="stylesheet" type="text/css"> /* Main UI */
+
+    [v-cloak] { display: none; }
+
+    body {
+        background: rgba(142, 152, 158, 0.3);
+        font-family: Helvetica;
+        margin-top: 2px;
+        margin-bottom: 60px;
+        margin-right: 0px; padding-right: 0px;
+        margin-left: 0px; padding-left: 0px;
+    }
+      
+    h3 {
+        text-align: left;
+        font-weight: bold;
+        margin: 10px 0px 12px 18px;
+        padding: 0;
+    }
+    .head-title {
+        margin: 15px 18px;
+    }
+
+    p {
+        text-align: center;
+        font-size:15px;
+        color:#646464;
+    }
+    
+    table {
+        border-top: 4px solid rgba(255, 222, 222, 0.9);
+    }
+
+    th {
+        text-align: center;
+        font-weight: bold;
+        /* margin: 15px 20px 15px 5px; */
+        padding: 5px 9px 3px 9px;
+        font-size:45px;
+        background: rgba(255, 222, 222, 0.65);
+        color:#ff8800;
+    }
+    .bus-items {
+        text-align: right;
+        padding-right: 12px;
+        font-size: 15px;
+    }
+    .bus-details {
+        text-align: left;
+        font-size: 15px;
+    }
+    .details-small {
+        font-size: 11px;
+    }
+      
+    .todoapp {
+        background: #fff;
+        border-radius: 18px;
+        padding: 5px;
+        transition: all 0.2s;
+    }
+    .todoapp h3 b {
+        font-size: 24px;
+        color:rgb(8, 75, 121);
+    }
+    
+    .name-list-1 {
+        border-top: 3px solid #e6e6e6;
+        padding-top: 15px;
+        list-style: none;
+        margin: 0;          /* 调整行距 */
+        padding-right: 0;
+        padding-left: 0;
+    }
+    .name-list-1 li .text {
+        word-break: break-all;
+        padding: 0;
+        /* color: rgb(190, 13, 0); */
+        transition: color 0.2s;
+    }
+    .name-list-1 li.completed .text {
+        color: #c9c9c9;
+        text-decoration: line-through;
+    }
+    .name-list-1 span.DJRei {
+        color: rgb(21, 0, 143);
+    }
+    .name-list-1 span.TVtower {
+        color: rgb(129, 9, 0);
+    }
+
+    .footer {
+        margin: 3px 0;
+        padding: 12px 5px;
+        height: 35px;
+        text-align: right;
+        border-top: 3px solid #e6e6e6;
+    }
+
+    .todo-count {
+        color: rgb(14, 104, 163);
+        float: left;
+        text-align: left;
+        margin-left: 6px;
+    }   
+
+    .filters {
+        margin: 10px 16px 9px 0;
+        padding: 0;
+        list-style: none;
+        position: absolute;
+        right: 0;
+        left: 0;
+    }
+
+    .filters li {
+        display: inline;
+    }
+
+    .filters li a {
+        color: rgb(12, 75, 175);
+        margin: 5px;
+        padding: 6px 10px;
+        text-decoration: none;
+        border: 3px solid transparent;
+        border-radius: 9px;
+    }
+
+    .filters li a:hover {
+        border-width: 3px;
+        border-radius: 9px;
+        border-color: rgba(17, 89, 102, 0.2);
+    }
+
+    .filters li a.selected {
+        border-width: 3px;
+        border-radius: 9px;
+        border-color: rgba(40, 150, 224, 0.8);
+    }    
+
+    .img-box {
+        text-align: center;
+    }
+
+    .img-box img{
+        top:0;
+        bottom:0;
+        left:0;
+        right:0;
+        width:100%;
+        max-width: 816px;
+        opacity:0.35;
+        filter:alpha(opacity=40); /*  IE8 及其更早版本 */
+    }
+
+</style>
+
+
+<body>
+
+    <!-- Title and Modal -->
+    <section id="modalapp" v-cloak>
+
+        <section class="todoapp" id="btn_All_Info" @click="showModal = true">
+            <h3 style="font-size:36px;font-family:Microsoft JhengHei" class="head-title">
+                {{buses[myBusN].busN}}<b>号車　</b>{{buses[myBusN].guide}}<b>　(番{{buses[myBusN].busNum}})</b>
+            </h3>
+        </section>
+
+        <transition name="fade" appear>
+            <div class="modal-overlay" 
+                 v-if="showModal" 
+                 @click="showModal = false">
+            </div>
+        </transition>
+        <transition name="pop" appear>
+            <div class="modal" 
+                 role="dialog" 
+                 v-if="showModal">
+                <h3 style="color: #2c5d4faf">旭山動物園発車詳情　　<button @click="showModal = false" class="button">关闭</button></h3>
+                <h3><b style="font-size:32px;font-family:Meiryo">12</b>月 <b 
+                    style="font-size:32px;font-family:Meiryo">10</b>日　. <b 
+                    style="font-size:28px;font-family:Meiryo">火</b>曜日 .</h3>
+                <ul class="bus-list">
+                    <li v-for="bus in buses.slice(1)">
+                        <table border="0">
+                            <tr>
+                                <th rowspan="3" name="bus-N">{{bus.busN}}</th>
+                                <td width="75" class="bus-items">{{bus.guide}}</td><td class="bus-details">{{bus.guideTel}}</td>
+                            </tr>   
+                            <tr>
+                                <td width="75" class="bus-items">{{bus.busCo}}</td>
+                                <td class="bus-details"><span class="details-small">車番</span><b>{{bus.busNum}}</b>　({{bus.Seats}}<span class="details-small">席</span>)</td>
+                            </tr>
+                            <tr>
+                                <td width="75" class="bus-items">{{bus.drive}}</td><td class="bus-details">{{bus.driveTel}}</td>
+                            </tr>
+                        </table>
+                        <br>
+                    </li>
+                </ul>
+
+                <!-- <table border="0">
+                    <tr>
+                        <th rowspan="3" name="bus-2">２</th>
+                        <td width="75" class="bus-items">李芙嘉</td><td class="bus-details">080-9997-2308</td>
+                    </tr>   
+                    <tr>
+                        <td class="bus-items">睡蓮バス</td>
+                        <td class="bus-details"><span class="details-small">車番</span><b>55-00</b>　(45<span class="details-small">席</span>)</td>
+                    </tr>
+                    <tr>
+                        <td class="bus-items">吉田</td><td class="bus-details">080-6091-0798</td>
+                    </tr>
+                </table> -->
+
+            </div>
+        </transition>
+    </section>
+
+    <br>
+
+    <section class="todoapp" id="todoapp" v-cloak>
+
+        <h3 style="font-size:30px;font-family:Microsoft JhengHei">合計:　大 {{ dPeoples }}　小 {{ xPeoples }}</h3>
+
+        <!-- <ul class="name-list-1"> -->
+        <transition-group class="name-list-1" name="name-list-1" tag="ul">
+        <li class="name-list-1-item" :class="{ completed: todo.completed }" 
+            v-for="todo in nowTodos" v-bind:key="todo"> <!-- v-show="!todo.completed" -->
+            <label class="container">
+                <input type="checkbox"
+                    @change="toggle(todo)"
+                    v-bind:checked="todo.completed">
+                    <span class="checkmark"></span> 
+                    <span class="text" style="font-size:25px;font-weight:500"
+                         :class="{ DJRei: todo.geton === '東', TVtower: todo.geton === '札' }">
+                        {{ todo.text }}
+                    </span>
+                    <a class="telnumber" onclick="event.returnValue=false" v-bind:href="todo.tel"
+                        style="font-size:25px;font-family:Microsoft JhengHei">
+                        <b style="font-size:15px">大</b>{{ todo.d }} 
+                        <b style="font-size:15px" v-show="todo.x">小</b>{{ todo.x }}
+                    </a>
+            </label>
+        </li>
+        </transition-group>
+        <!-- </ul> -->
+
+        <footer class="footer">
+            <span class="todo-count">有 <b style="font-size:35px">{{ remaining }}</b> 组未到</span>
+            <ul class="filters" v-on:click="filterShuffle">
+                <li><a href="#/active" :class="{ selected: visibility == 'active' }">只看未到</a></li>
+                <li><a href="#/all" :class="{ selected: visibility == 'all' }">看全部</a></li>
+            </ul>
+        </footer>    
+
+        <!-- <div><label @click="gotoTop">Top</label></div> -->
+    </section>
+
+
+    <script type="text/javascript">
+
+        var busList = [
+            { busN: "０", guide: "导游名", guideTel: "000-0000-0001", busCo: "巴士公司", busNum: "89-64", Seats: "40", drive: "司机名", driveTel: "000-0000-0002"},
+            { busN: "１", guide: "王子扬", guideTel: "080-5360-3890", busCo: "友愛観光", busNum: "1", Seats: "49", drive: "ヤマダ", driveTel: "090-2692-2126"},
+            { busN: "２", guide: "李芙嘉", guideTel: "080-9997-2308", busCo: "睡蓮バス", busNum: "55-00", Seats: "45", drive: "吉田", driveTel: "080-6091-0798"},
+            { busN: "３", guide: "李择忠", guideTel: "090-7656-7778", busCo: "睡蓮バス", busNum: "111", Seats: "45", drive: "菊池", driveTel: "090-3398-0073"},
+            { busN: "４", guide: "邢鑫阳", guideTel: "090-6993-5888", busCo: "札蘭バス", busNum: "8888", Seats: "49", drive: "牧野", driveTel: "090-1640-8295"},
+            { busN: "５", guide: "佐藤", guideTel: "080-6096-9877", busCo: "札蘭バス", busNum: "666", Seats: "45", drive: "漆原", driveTel: "080-3239-1177"},
+            { busN: "６", guide: "王世爽", guideTel: "090-8359-8666", busCo: "友愛観光", busNum: "5", Seats: "49", drive: "タカギ", driveTel: "090-9084-7118"},
+            { busN: "７", guide: "孙其东", guideTel: "080-4442-8655", busCo: "睡蓮バス", busNum: "99-00", Seats: "40", drive: "荒木", driveTel: "090-9086-1864"},
+        ];
+        
+        var myBusN = 2;
+        var nameList = [
+
+{ text: "Meow Ling Tan", tel: "tel://6598427759", d: "4", x: "", geton: "東", completed: false },
+{ text: "Thipparat Supaporn", tel: "tel://66956546562", d: "1", x: "", geton: "東", completed: false },
+{ text: "Dokkaew Methawut", tel: "tel://66955698987", d: "3", x: "", geton: "東", completed: false },
+{ text: "towisess sukanya", tel: "tel://66869363235", d: "1", x: "1", geton: "東", completed: false },
+{ text: "Seddhakhan Towis..", tel: "tel://66923169410", d: "1", x: "1", geton: "東", completed: false },
+{ text: "Bee Chian Lim", tel: "tel://60166269770", d: "3", x: "", geton: "札", completed: false },
+{ text: "CHEONG LAI LING", tel: "tel://60176117599", d: "2", x: "", geton: "札", completed: false },
+{ text: "Tay Soon Cheong", tel: "tel://60124318938", d: "4", x: "", geton: "札", completed: false },
+{ text: "Lim Wei Young", tel: "tel://60164563355", d: "2", x: "2", geton: "札", completed: false },
+{ text: "Tan Kian Han", tel: "tel://60196438912", d: "2", x: "", geton: "札", completed: false },
+{ text: "sanjayaputeri este..", tel: "tel://6281616064721", d: "2", x: "", geton: "札", completed: false },
+{ text: "Novianto Andi", tel: "tel://6282134242111", d: "2", x: "", geton: "札", completed: false },
+{ text: "tinawati phu", tel: "tel://62811921789", d: "4", x: "", geton: "札", completed: false },
+{ text: "Alegre Erica grace", tel: "tel://639228246549", d: "5", x: "", geton: "札", completed: false },
+
+        
+
+        ];
+
+        // visibility filters
+        var filters = {
+            all: function (todos) {
+                return todos
+            },
+            active: function (todos) {
+                return todos.filter(function (todo) {
+                    return !todo.completed
+                })
+            },
+            completed: function (todos) {
+                return todos.filter(function (todo) {
+                    return todo.completed
+                })
+            }
+        };
+
+        var app1 = new Vue({
+            el: "#todoapp",
+            data: {
+                todos: nameList,
+                nowTodos: nameList,
+                newTodo: '',
+                editedTodo: null,
+                visibility: 'all'
+            },
+            methods: {
+                toggle: function (todo) {
+                    todo.completed = !todo.completed
+                },
+                filterShuffle: function () {
+                    
+                    let distance = document.documentElement.scrollTop || document.body.scrollTop;
+                    let headerMargin = 120;         //headerMargin的距离留给header-title
+                    
+                    if (distance > headerMargin) {
+                        document.body.scrollTop = document.documentElement.scrollTop = headerMargin;
+                    }
+                    
+                    setTimeout(() => {
+                        this.nowTodos = this.filteredTodos;
+                    }, 100);
+
+                    //把总共需要跨越的高度分成小份，由定时器执行，可达到平滑过渡的效果
+                    // 在iphone的效果太差了。。
+                    // let distance = document.documentElement.scrollTop || document.body.scrollTop;
+                    // let step = (distance - headerMargin) / 50;          
+
+                    // const timeTop = setInterval(() => {
+
+                    //     if (distance <= headerMargin) {
+                    //         clearInterval(timeTop);
+                    //         this.nowTodos = this.filteredTodos;     //filterShuffle本来只有这一句
+                    //     } else {
+                    //         document.body.scrollTop = document.documentElement.scrollTop = distance -= step;
+                    //     }
+
+                    // }, 2);
+                },
+            },
+            computed: {
+                filteredTodos: function () {
+                    return filters[this.visibility](this.todos)
+                },
+                remaining: function () {
+                    return filters.active(this.todos).length
+                },
+                dPeoples: function () {     //大人人数求和
+                    var count_dPeoples = 0;
+                    for(var i = 0, len = this.todos.length; i < len; i++){
+                        count_dPeoples = count_dPeoples + (parseInt(this.todos[i].d) ? parseInt(this.todos[i].d) : 0);
+                    }
+                    return count_dPeoples
+                },
+                xPeoples: function () {     //小人人数求和
+                    var count_xPeoples = 0;
+                    for(var i = 0, len = this.todos.length; i < len; i++){
+                        count_xPeoples = count_xPeoples + (parseInt(this.todos[i].x) ? parseInt(this.todos[i].x) : 0);
+                    }
+                    return count_xPeoples
+                },
+                allDone: {
+                    get: function () {
+                        return this.remaining === 0
+                    },
+                    set: function (value) {
+                        this.todos.forEach(function (todo) {
+                            todo.completed = value
+                        })
+                    }
+                }
+            },
+        });
+
+        // handle routing
+        function onHashChange () {
+            var visibility = window.location.hash.replace(/#\/?/, '')
+            if (filters[visibility]) {
+                app1.visibility = visibility
+                app1.filterShuffle()
+            } else {
+                window.location.hash = ''
+                app1.visibility = 'all'
+            }
+        }
+        window.addEventListener('hashchange', onHashChange)
+        onHashChange()
+
+        var app2 = new Vue({
+            el: '#modalapp',
+
+            // data() {
+            //     return {
+            //         showModal: true
+            //     }
+            // }
+
+            data: {
+                showModal: true,
+                buses: busList,
+                myBusN: myBusN
+            }
+
+            // data: 
+            //     function () {
+            //         return {
+            //             showModal: true
+            //         }
+            //     }
+            
+        });
+
+
+    </script>
+
+    <footer class="footer-info">
+        <br><br><br><br><br><br><br><br><br>
+        <p>Have A Nice Day !!</p>
+        <p>Provided by ® Alibaba Group</p>
+        <br>
+
+        <div class="img-box">
+            <img src="zoo6new.gif" alt="ASAHIYAMA ZOO"/>
+        </div>
+    
+    </footer>
+
+
+</body>
+
+</html>

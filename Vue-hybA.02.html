@@ -1,0 +1,382 @@
+<!-- Ver 2019.12.4 from 2019.12.4 -->
+<!DOCTYPE html>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
+<html>
+
+<head>
+    <title>12/16 旭山ツアー 車号查询</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+</head>
+    
+<style> /* href link for telnumber */
+
+  a.DJRei {
+    color: rgb(21, 0, 143);
+  }
+  a.TVtower {
+    color: rgb(129, 9, 0);
+  }
+
+  .telnumber { TEXT-DECORATION:none }
+  .telnumber hover { TEXT-DECORATION:none }
+  .telnumber visited { TEXT-DECORATION:none }
+  .telnumber active { TEXT-DECORATION:none }  
+
+</style>
+
+<style rel="stylesheet" type="text/css">
+
+  [v-cloak] { display: none; }
+
+  body {
+    margin: 0;
+    padding: 0px 0px 0px 0px;
+    /* font-family: Helvetica Neue, Arial, sans-serif; */
+    font-family: Helvetica;
+    font-size: 14px;
+    color: #444;
+  }
+
+  .search-form {
+    margin: 0px;
+    padding: 0px 40px 30px 40px;
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: #4279b9;
+    background: #FFF;
+    /* position:fixed;  */
+    width:100%;
+  }
+  /* .search-form-back {
+    margin: 0px;
+    padding: 0px 40px 30px 40px;
+    font-size: 1.2rem;
+    font-weight: 700;
+    background: #FFF;
+    width:100%;
+  } */
+
+  table {
+    border: 2px solid #4279b9;
+    border-radius: 3px;
+    background-color: #fff;
+  }
+
+  th {
+    background-color: #4279b9;
+    color: rgba(255,255,255,0.5);
+    cursor: pointer;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+  }
+  th {
+    font-size: 1.0rem;
+    padding: 6px 2px;
+    font-family: Microsoft Yahei;
+  }
+  td {
+    font-size: 1.1rem;
+    padding: 6px 2px;
+    font-family: Helvetica;
+    /* background-color: #f9f9f9; */
+  }
+
+  tr.DJRei {
+    color: rgb(21, 0, 143);
+    background-color: rgba(21, 0, 143, 0.05);
+  }
+  tr.TVtower {
+    color: rgb(129, 9, 0);
+    background-color: rgba(129, 9, 0, 0.05);
+  }
+  td.busNumber {
+    width: 10%;
+    min-width: 12px;
+    font-size: 1.3rem;
+    font-family: Meiryo;
+    text-align: center;
+  }
+  td.adult {
+    width: 6%;
+    /* min-width: 9px; */
+    font-size: 1.0rem;
+    text-align: center;
+    color: #000;
+  }
+  td.child {
+    width: 6%;
+    /* min-width: 9px; */
+    font-size: 1.0rem;
+    text-align: center;
+    color: #000;
+  }
+
+
+  th.active {
+    color: #fff;
+  }
+
+  th.active .arrow {
+    opacity: 1;
+  }
+
+  .arrow {
+    display: inline-block;
+    vertical-align: middle;
+    width: 0;
+    height: 0;
+    margin-left: 5px;
+    opacity: 0.66;
+  }
+
+  .arrow.asc {
+    border-left: 9px solid transparent;
+    border-right: 9px solid transparent;
+    border-bottom: 9px solid #fff;
+  }
+
+  .arrow.dsc {
+    border-left: 9px solid transparent;
+    border-right: 9px solid transparent;
+    border-top: 9px solid #fff;
+  }
+
+</style>
+
+<!-- component template -->
+<script type="text/x-template" id="grid-template">
+  <table>
+
+    <thead>
+      <tr>
+        <th v-for="key in columns"
+          @click="sortBy(key)"
+          :class="{ active: sortKey == key }">
+          <!-- {{ key | convert | capitalize }} -->
+          {{ key | convert }}
+          <span class="arrow" :class="sortOrders[key] > 0 ? 'asc' : 'dsc'">
+          </span>
+        </th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <tr v-for="result in filteredHeroes"
+        :class="{ DJRei: result.geton == '東', TVtower: result.geton == '札' }">
+        <td v-for="key in columns"
+          :class="{ busNumber: key == 'busX', adult: key == 'd', child: key == 'x' }">
+          <a class="telnumber" onclick="event.returnValue=false" v-bind:href="result.tel" 
+            :class="{ DJRei: result.geton == '東', TVtower: result.geton == '札' }"
+            v-if=" key == 'name' ">
+            {{ result[key] }}
+          </a>
+          <a v-else>
+            {{ result[key] }}
+          </a>
+        </td>
+      </tr>
+    </tbody>
+    
+  </table>
+</script>
+  
+<!-- demo root element -->
+<div id="demo">
+
+  <form class="search-form" id="search">
+    <br>
+    Search <input name="query" v-model="searchQuery">
+  </form>
+
+  <demo-grid
+    :heroes="gridData"
+    :columns="gridColumns"
+    :filter-key="searchQuery">
+  </demo-grid>
+
+</div>
+
+<script type="text/javascript">
+
+  // namelist data
+  var todos = [
+
+    { name: "Mohamad Nor Idzmil Haf..", tel: "tel://60123665191", d: "2", x: "", geton: "東", completed: false, busX: 1 },
+    { name: "loo chun siang", tel: "tel://60193748895", d: "6", x: "1", geton: "東", completed: false, busX: 1 },
+    { name: "SATHASIVAM PRISTHIBARN", tel: "tel://60124900196", d: "2", x: "", geton: "東", completed: false, busX: 1 },
+    { name: "PAT SOON WEI", tel: "tel://60105636567", d: "2", x: "", geton: "東", completed: false, busX: 1 },
+    { name: "Pricilla Tan Siaw Hu..", tel: "tel://60146888221", d: "5", x: "1", geton: "東", completed: false, busX: 1 },
+    { name: "Chandra Kezia Thirza", tel: "tel://6289506287881", d: "6", x: "", geton: "東", completed: false, busX: 1 },
+    { name: "Tai Siew Wei", tel: "tel://639178743077", d: "1", x: "", geton: "東", completed: false, busX: 1 },
+    { name: "Oplado Jeffrey", tel: "tel://639953097993", d: "1", x: "", geton: "東", completed: false, busX: 1 },
+    { name: "Peck Hui Ping", tel: "tel://6597994945", d: "6", x: "6", geton: "東", completed: false, busX: 1 },
+    { name: "YIN YE SUO", tel: "tel://112150828", d: "3", x: "3", geton: "東", completed: false, busX: 1 },
+    { name: "Meow Ling Tan", tel: "tel://6598427759", d: "4", x: "", geton: "東", completed: false, busX: 2 },
+    { name: "Thipparat Supaporn", tel: "tel://66956546562", d: "1", x: "", geton: "東", completed: false, busX: 2 },
+    { name: "Dokkaew Methawut", tel: "tel://66955698987", d: "3", x: "", geton: "東", completed: false, busX: 2 },
+    { name: "towisess sukanya", tel: "tel://66869363235", d: "1", x: "1", geton: "東", completed: false, busX: 2 },
+    { name: "Seddhakhan Towisess", tel: "tel://66923169410", d: "1", x: "1", geton: "東", completed: false, busX: 2 },
+    { name: "Bee Chian Lim", tel: "tel://60166269770", d: "3", x: "", geton: "札", completed: false, busX: 2 },
+    { name: "CHEONG LAI LING", tel: "tel://60176117599", d: "2", x: "", geton: "札", completed: false, busX: 2 },
+    { name: "Tay Soon Cheong", tel: "tel://60124318938", d: "4", x: "", geton: "札", completed: false, busX: 2 },
+    { name: "Lim Wei Young", tel: "tel://60164563355", d: "2", x: "2", geton: "札", completed: false, busX: 2 },
+    { name: "Tan Kian Han", tel: "tel://60196438912", d: "2", x: "", geton: "札", completed: false, busX: 2 },
+    { name: "sanjayaputeri ester", tel: "tel://6281616064721", d: "2", x: "", geton: "札", completed: false, busX: 2 },
+    { name: "Novianto Andi", tel: "tel://6282134242111", d: "2", x: "", geton: "札", completed: false, busX: 2 },
+    { name: "tinawati phu", tel: "tel://62811921789", d: "4", x: "", geton: "札", completed: false, busX: 2 },
+    { name: "Alegre Erica grace", tel: "tel://639228246549", d: "5", x: "", geton: "札", completed: false, busX: 2 },
+    { name: "marshella serly", tel: "tel://62811710628", d: "3", x: "", geton: "札", completed: false, busX: 3 },
+    { name: "Peh Soh Hoon Jaslyn", tel: "tel://6591451500", d: "2", x: "", geton: "札", completed: false, busX: 3 },
+    { name: "SOEYARLY JULIUS", tel: "tel://6598150097", d: "2", x: "2", geton: "札", completed: false, busX: 3 },
+    { name: "YAP FEIMAY", tel: "tel://6590305571", d: "6", x: "", geton: "札", completed: false, busX: 3 },
+    { name: "Yuen Chee Long", tel: "tel://6591005274", d: "3", x: "1", geton: "札", completed: false, busX: 3 },
+    { name: "Sahassananda Suthira", tel: "tel://66866004194", d: "4", x: "", geton: "札", completed: false, busX: 3 },
+    { name: "Intrapintuwat Ratiya", tel: "tel://66929944787", d: "2", x: "", geton: "札", completed: false, busX: 3 },
+    { name: "somboonphol siwa", tel: "tel://66655742774", d: "6", x: "", geton: "札", completed: false, busX: 3 },
+    { name: "Lau Sze Man Esther", tel: "tel://85290526431", d: "3", x: "", geton: "札", completed: false, busX: 3 },
+    { name: "Li sim Lioe", tel: "tel://85213661310", d: "1", x: "", geton: "札", completed: false, busX: 3 },
+    { name: "pangki yusuf joe", tel: "tel://85213661310", d: "1", x: "", geton: "札", completed: false, busX: 3 },
+    { name: "PUTRA EDDY", tel: "tel://6593826804", d: "2", x: "2", geton: "札", completed: false, busX: 3 },
+    { name: "Wong Wai Yan", tel: "tel://85266457186", d: "2", x: "", geton: "東", completed: false, busX: 4 },
+    { name: "HUI WAI MEI", tel: "tel://85297740885", d: "2", x: "", geton: "東", completed: false, busX: 4 },
+    { name: "shum Kim hung", tel: "tel://85290964270", d: "8", x: "", geton: "東", completed: false, busX: 4 },
+    { name: "Yiu Suet yeee", tel: "tel://85294094451", d: "2", x: "", geton: "東", completed: false, busX: 4 },
+    { name: "lee kathy", tel: "tel://85261282627", d: "2", x: "", geton: "東", completed: false, busX: 4 },
+    { name: "KO PO CHONG", tel: "tel://85263138040", d: "2", x: "", geton: "東", completed: false, busX: 4 },
+    { name: "Ho Yan Ting Joyce", tel: "tel://85267779351", d: "1", x: "", geton: "東", completed: false, busX: 4 },
+    { name: "ZHENG YU SHENG", tel: "tel://886919980340", d: "2", x: "", geton: "東", completed: false, busX: 4 },
+    { name: "LO CHIEH JU", tel: "tel://886919980340", d: "2", x: "", geton: "東", completed: false, busX: 4 },
+    { name: "Tingfang Cheng", tel: "tel://886932149098", d: "2", x: "", geton: "東", completed: false, busX: 4 },
+    { name: "CHIEN WEILING", tel: "tel://886916078943", d: "3", x: "", geton: "東", completed: false, busX: 4 },
+    { name: "LIN PEICHEN", tel: "tel://886911847577", d: "3", x: "", geton: "東", completed: false, busX: 4 },
+    { name: "YOU WEI YA", tel: "tel://886919980340", d: "6", x: "1", geton: "東", completed: false, busX: 4 },
+    { name: "CHEN WEI YU", tel: "tel://886928633248", d: "2", x: "", geton: "東", completed: false, busX: 5 },
+    { name: "CHIA-HUA LU", tel: "tel://886928642091", d: "2", x: "", geton: "東", completed: false, busX: 5 },
+    { name: "WEN HSIAO CHUN", tel: "tel://886921059852", d: "2", x: "", geton: "東", completed: false, busX: 5 },
+    { name: "LI Hsuan Ning", tel: "tel://886984258368", d: "2", x: "", geton: "東", completed: false, busX: 5 },
+    { name: "LI Yuchen", tel: "tel://886937409047", d: "1", x: "", geton: "東", completed: false, busX: 5 },
+    { name: "马澜溢", tel: "tel://8613520689771", d: "2", x: "", geton: "東", completed: false, busX: 5 },
+    { name: "蔡园园", tel: "tel://8618064412919", d: "2", x: "", geton: "東", completed: false, busX: 5 },
+    { name: "殷舒怡", tel: "tel://8615851983181", d: "4", x: "", geton: "東", completed: false, busX: 5 },
+    { name: "林玉冰", tel: "tel://85296523307", d: "2", x: "", geton: "札", completed: false, busX: 5 },
+    { name: "Yip Season", tel: "tel://85261826965", d: "7", x: "", geton: "札", completed: false, busX: 5 },
+    { name: "Li siu pang", tel: "tel://85264099294", d: "2", x: "", geton: "札", completed: false, busX: 5 },
+    { name: "Lam Yik Ki", tel: "tel://85261759513", d: "2", x: "", geton: "札", completed: false, busX: 5 },
+    { name: "Wai Man Lo", tel: "tel://85296946818", d: "2", x: "", geton: "札", completed: false, busX: 5 },
+    { name: "Ho Ka Yu", tel: "tel://85291601976", d: "2", x: "", geton: "札", completed: false, busX: 5 },
+    { name: "Kwok Ka Hung", tel: "tel://85291934852", d: "2", x: "", geton: "札", completed: false, busX: 5 },
+    { name: "谭杰文", tel: "tel://86-13377137029", d: "2", x: "", geton: "札", completed: false, busX: 5 },
+    { name: "MOK WAI HUNG HARRY", tel: "tel://85251818274", d: "2", x: "", geton: "札", completed: false, busX: 6 },
+    { name: "SIU PANG MOK", tel: "tel://85254249181", d: "2", x: "", geton: "札", completed: false, busX: 6 },
+    { name: "Wong Siu Yuen", tel: "tel://85251373400", d: "6", x: "", geton: "札", completed: false, busX: 6 },
+    { name: "LIOU SZ JEN", tel: "tel://886955280001", d: "2", x: "", geton: "札", completed: false, busX: 6 },
+    { name: "LIN YENAN", tel: "tel://886981479500", d: "2", x: "", geton: "札", completed: false, busX: 6 },
+    { name: "CHUANG WEITING", tel: "tel://886921369831", d: "1", x: "", geton: "札", completed: false, busX: 6 },
+    { name: "LI YOU LING", tel: "tel://886931661681", d: "2", x: "", geton: "札", completed: false, busX: 6 },
+    { name: "CHOU YEN CHUN", tel: "tel://886986824218", d: "4", x: "", geton: "札", completed: false, busX: 6 },
+    { name: "LIU CHIAHUA", tel: "tel://886921369831", d: "1", x: "", geton: "札", completed: false, busX: 6 },
+    { name: "CHUANG TSUNGHAN", tel: "tel://886921369831", d: "1", x: "", geton: "札", completed: false, busX: 6 },
+    { name: "Yang Mei Hui", tel: "tel://886937050007", d: "4", x: "", geton: "札", completed: false, busX: 6 },
+    { name: "Chen CHAO YIN", tel: "tel://886963937448", d: "2", x: "", geton: "札", completed: false, busX: 6 },
+    { name: "Chien Yu Lun", tel: "tel://886981557106", d: "1", x: "", geton: "札", completed: false, busX: 6 },
+    { name: "LIU TSUNG KUN YEH SHU ..", tel: "tel://886958595800", d: "4", x: "", geton: "札", completed: false, busX: 6 },
+    { name: "Su Ming Jung", tel: "tel://886933018492", d: "4", x: "", geton: "札", completed: false, busX: 7 },
+    { name: "CHEN YI", tel: "tel://886970952095", d: "2", x: "", geton: "札", completed: false, busX: 7 },
+    { name: "CHEN KUANYU", tel: "tel://886919158601", d: "5", x: "", geton: "札", completed: false, busX: 7 },
+    { name: "Chen Hongyi", tel: "tel://817043373073", d: "4", x: "", geton: "札", completed: false, busX: 7 },
+    { name: "杨锦", tel: "tel://8615308985179", d: "2", x: "", geton: "札", completed: false, busX: 7 },
+    { name: "PAN YING HSIU", tel: "tel://8615533443011", d: "2", x: "", geton: "札", completed: false, busX: 7 },
+    { name: "孙蓉", tel: "tel://8613901919535", d: "2", x: "", geton: "札", completed: false, busX: 7 },
+    { name: "史海亮", tel: "tel://8613429850030", d: "2", x: "", geton: "札", completed: false, busX: 7 },
+    { name: "常潇涵", tel: "tel://8618610488930", d: "3", x: "", geton: "札", completed: false, busX: 7 },
+    { name: "郑裔慧", tel: "tel://8613958075289", d: "2", x: "", geton: "札", completed: false, busX: 7 },
+    { name: "钟婕", tel: "tel://8615685978811", d: "2", x: "", geton: "札", completed: false, busX: 7 },
+    { name: "钟新秀", tel: "tel://8618682361610", d: "2", x: "", geton: "札", completed: false, busX: 7 },
+    { name: "季晋沙", tel: "tel://8618278394376", d: "2", x: "", geton: "札", completed: false, busX: 7 },
+    { name: "丁丽新", tel: "tel://818095281209", d: "1", x: "", geton: "札", completed: false, busX: 7 },
+
+
+
+
+
+  ];
+
+  // register the grid component
+  Vue.component('demo-grid', {
+    template: '#grid-template',
+    props: {
+      heroes: Array,
+      columns: Array,
+      filterKey: String
+    },
+    data: function () {
+      var sortOrders = {}
+      this.columns.forEach(function (key) {
+        sortOrders[key] = 1
+      })
+      return {
+        sortKey: '',
+        sortOrders: sortOrders
+      }
+    },
+    computed: {
+      filteredHeroes: function () {
+        var sortKey = this.sortKey
+        var filterKey = this.filterKey && this.filterKey.toLowerCase()
+        var order = this.sortOrders[sortKey] || 1
+        var heroes = this.heroes
+        if (filterKey) {
+          heroes = heroes.filter(function (row) {
+            return Object.keys(row).some(function (key) {
+              return String(row[key]).toLowerCase().indexOf(filterKey) > -1
+            })
+          })
+        }
+        if (sortKey) {
+          heroes = heroes.slice().sort(function (a, b) {
+            a = a[sortKey]
+            b = b[sortKey]
+            return (a === b ? 0 : a > b ? 1 : -1) * order
+          })
+        }
+        return heroes
+      }
+    },
+    filters: {
+      capitalize: function (str) {
+        return str.charAt(0).toUpperCase() + str.slice(1)
+      },
+      convert: function (str) {
+        if (str == "name") { return "代表者名　";
+        } else if (str == "d") { return "大";
+        } else if (str == "x") { return "小";
+        } else if (str == "busX") { return "車";
+        } else {
+          return str;
+        }
+      }
+    },
+    methods: {
+      sortBy: function (key) {
+        this.sortKey = key
+        this.sortOrders[key] = this.sortOrders[key] * -1
+      }
+    }
+  })
+
+  // bootstrap the demo
+  var demo = new Vue({
+    el: '#demo',
+    data: {
+      gridData: todos,
+      gridColumns: ['busX', 'name', 'd', 'x'],
+      searchQuery: '',
+    }
+  })
+
+</script>
+
+</html>

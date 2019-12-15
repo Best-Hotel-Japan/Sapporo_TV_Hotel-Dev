@@ -442,7 +442,7 @@
       </ul>
 
       <br><br><br>
-      <button @click="showModal = false" class="button2">いいね🎅</button>
+      <button @click="clickLikeit" class="button2">いいね🎅</button>
 
     </div>
   </transition>
@@ -779,7 +779,7 @@
         clickLikeit: function () {
 
           this.showModal = false;
-          document.body.scrollTop = document.documentElement.scrollTop = 0;
+          document.body.scrollTop = document.documentElement.scrollTop = 1;
 
         }
       }

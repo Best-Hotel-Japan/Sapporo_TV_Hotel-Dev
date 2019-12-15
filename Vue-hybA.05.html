@@ -123,14 +123,14 @@
   .bus-items {
     text-align: right;
     padding-right: 0px;
-    font-size: 1rem;
+    font-size: 1.1rem;
   }
   .bus-details {
     text-align: left;
     font-size: 0.9rem;
   }
   .details-small {
-    font-size: 0.7px;
+    font-size: 0.7rem;
   }
 
 
@@ -386,8 +386,8 @@
 
       <h3 style="color: #2c5d4faf">旭山動物園発車詳情　　<button @click="showModal = false" class="button">关闭</button></h3>
       <h3><b style="font-size:32px;font-family:Meiryo">12</b>月 <b 
-              style="font-size:32px;font-family:Meiryo">10</b>日　. <b 
-              style="font-size:28px;font-family:Meiryo">火</b>曜日 .
+              style="font-size:32px;font-family:Meiryo">16</b>日　. <b 
+              style="font-size:28px;font-family:Meiryo">月</b>曜日 .
       </h3>
       
       <ul class="bus-list">
@@ -397,7 +397,7 @@
             <tr>
               <th class="modal-th" rowspan="3" name="bus-N" @click="showModal = false">{{bus.busN}}
               </th>
-              <td class="bus-items" width="71">
+              <td class="bus-items" width="73">
                 <a class="telnumber" v-bind:href="bus.callGuide">{{bus.guide}}</a>
               </td>
               <td class="bus-details">
@@ -405,11 +405,11 @@
               </td>
             </tr>   
             <tr>
-              <td class="bus-items" width="71">{{bus.busCo}}</td>
+              <td class="bus-items" width="73">{{bus.busCo}}</td>
               <td class="bus-details"><span class="details-small">車番</span><b>{{bus.busNum}}</b>　({{bus.Seats}}<span class="details-small">席</span>)</td>
             </tr>
             <tr>
-              <td class="bus-items" width="71">
+              <td class="bus-items" width="73">
                 <a class="telnumber" v-bind:href="bus.callDrive">{{bus.drive}}</a>
               </td>
               <td class="bus-details">

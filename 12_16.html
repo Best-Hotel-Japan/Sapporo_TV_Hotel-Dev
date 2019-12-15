@@ -1,0 +1,737 @@
+<!-- Ver 2019.12.4 from 2019.12.4 -->
+<!DOCTYPE html>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
+<html>
+
+<head>
+    <title>12/16 旭山ツアー車号速查</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+</head>
+    
+<style> /* Modal Transition */
+
+  .button {
+    border: none;
+    color: #FFF;
+    text-align: right;
+    background: #42b983;
+    appearance: none;
+    /* font: inherit; */
+    font-family: Microsoft Yahei;
+    font-size: 1.1rem;
+    padding: .2em .9em;
+    border-radius: .3em;
+    cursor: pointer;
+  }
+
+  .bus-list {
+    list-style-type: none;
+    text-align: left;
+    margin: 0;
+    padding: 0;
+  }
+
+  .modal {
+    position: absolute;
+    /* position: fixed; */
+    top: 0rem;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    margin: auto;
+    margin-top: 6rem;
+    text-align: center;
+    width: fit-content;
+    height: fit-content;
+    max-width: 80%;
+    padding: 2rem;
+    border-radius: 1rem;
+    box-shadow: 0 9px 9px rgba(0, 0, 0, 0.2);
+    background: #FFF;
+    z-index: 999;
+    transform: none;
+  }
+  .modal h3 {                 /*旭山動物園発車詳情*/
+    margin: 0 0 0.8rem;
+    text-align: left;
+  }
+
+  .modal-overlay {
+    content: '';
+    position: absolute;
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 998;
+    background: #2c3e50;
+    opacity: 0.6;
+    cursor: pointer;
+  }
+
+  /* ---------------------------------- */
+  .fade-enter-active,
+  .fade-leave-active {
+    transition: opacity .4s linear;
+  }
+
+  .fade-enter,
+  .fade-leave-to {
+    opacity: 0;
+  }
+
+  .pop-enter-active,
+  .pop-leave-active {
+    transition: transform 0.4s cubic-bezier(0.5, 0, 0.5, 1), opacity 0.4s linear;
+  }
+
+  .pop-enter,
+  .pop-leave-to {
+    opacity: 0;
+    transform: scale(0.3) translateY(-50%);
+  }
+
+</style>
+
+<style> /* Modal table UI */
+
+  .modal-table {
+    border: none;
+    border-top: 4px solid rgba(255, 222, 222, 0.9);
+  }
+
+  .modal-th {
+    text-align: center;
+    vertical-align: middle;
+    font-weight: bold;
+    /* margin: 15px 20px 15px 5px; */
+    padding: 4px 6px 3px 6px;
+    font-size:40px;
+    background: rgba(255, 222, 222, 0.65);
+    color:#ff8800;
+  }
+
+  .modal-table td {
+    /* font-size: 1.0rem; */
+    padding: 2px 6px;
+    font-family: Microsoft Yahei, Helvetica;
+    /* background-color: #f9f9f9; */
+  }
+
+  .bus-items {
+    text-align: right;
+    padding-right: 0px;
+    font-size: 1.1rem;
+  }
+  .bus-details {
+    text-align: left;
+    font-size: 1.0rem;
+  }
+  .details-small {
+    font-size: 0.7rem;
+  }
+
+
+</style>
+
+<style rel="stylesheet" type="text/css"> /* Main UI */
+
+  [v-cloak] { display: none; }
+
+  body {
+    margin: 0px 0px 135px 0px;
+    padding: 0px 0px 0px 0px;
+
+    /* font-family: Helvetica Neue, Arial, sans-serif; */
+    font-family: Helvetica;
+    font-size: 16px;
+    color: #444;
+  }
+
+  .search-form {
+    margin: 0;
+    padding: 0px 0px 8px 0px;
+    font-size: 1.2rem;
+    /* font-weight: 700; */
+    color: #4279b9;
+    background: #FFF;
+    width:100%;
+    /* position:fixed;  */
+  }
+  .search-form img {
+    margin: 6px 4px 0px 6px;
+    padding: 0;
+    width: 30px;
+    height: auto;
+    opacity: 0.77;
+  }
+  .search-form a img {
+    vertical-align: top;
+    margin: 4px 0px 0px 5px;
+    padding: 0;
+    padding-left: 10px; 
+    width: 35px;
+  }
+
+  .search-form input {
+    width: 65%;
+    vertical-align: top;
+    margin: 6px 0px 0px 0px;
+    padding: 0px 12px;
+    padding-top: 0;
+    height: 27px;
+    /* box-sizing: border-box; */
+    display: inline-block;
+    border: 2px solid #4279b9;
+    border-radius: 5px;
+    outline: none;
+  }
+  input:focus {
+    background-color: rgba(167, 90, 255, 0.2);
+  }
+
+  table {
+    border: 2px solid #4279b9e7;
+    border-radius: 3px;
+    background-color: #fff;
+  }
+
+  th {
+    background-color: #4279b9da;
+    color: rgba(255,255,255,0.5);
+    cursor: pointer;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+  }
+  th {
+    font-size: 1.0rem;
+    padding: 6px 2px;
+    font-family: Microsoft Yahei;
+  }
+  td {
+    font-size: 1.3rem;
+    padding: 5px 2px;
+    font-family: Helvetica;
+    /* background-color: #f9f9f9; */
+  }
+
+  tr.DJRei {
+    color: rgb(21, 0, 143);
+    background-color: rgba(21, 0, 143, 0.08);
+  }
+  tr.TVtower {
+    color: rgb(129, 9, 0);
+    background-color: rgba(129, 9, 0, 0.05);
+  }
+  td.busNumber {
+    width: 10%;
+    min-width: 12px;
+    font-size: 1.4rem;
+    font-weight: bolder;
+    font-family: 'ヒラギノ角ゴ Pro W8', 'Hiragino Kaku Gothic Pro', Meiryo;
+    text-align: center;
+  }
+  td.adult {
+    width: 6%;
+    /* min-width: 9px; */
+    font-size: 1.2rem;
+    text-align: center;
+    color: #000;
+  }
+  td.child {
+    width: 6%;
+    /* min-width: 9px; */
+    font-size: 1.2rem;
+    text-align: center;
+    color: #000;
+  }
+
+  th.noresult {
+    width: 20%;
+  }
+
+  th.active {
+    color: #fff;
+  }
+
+  th.active .arrow {
+    opacity: 1;
+  }
+
+  .arrow {
+    display: inline-block;
+    vertical-align: middle;
+    width: 0;
+    height: 0;
+    margin-left: 5px;
+    opacity: 0.6;
+  }
+
+  .arrow.asc {
+    border-left: 9px solid transparent;
+    border-right: 9px solid transparent;
+    border-bottom: 9px solid #fff;
+  }
+
+  .arrow.dsc {
+    border-left: 9px solid transparent;
+    border-right: 9px solid transparent;
+    border-top: 9px solid #fff;
+  }
+
+  .bold {
+    font-weight: bold;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  p {
+    text-align: center;
+    font-size:15px;
+    color:#646464;
+  }
+
+  .img-box {
+    text-align: center;
+  }
+
+  .img-box img {
+    top:0;
+    bottom:0;
+    left:0;
+    right:0;
+    width:100%;
+    max-width: 816px;
+    opacity:0.35;
+    filter:alpha(opacity=40); /*  IE8 及其更早版本 */
+  }
+
+</style>
+
+<style> /* href link for telnumber */
+
+  .telnumber { TEXT-DECORATION:none }
+  .telnumber hover { TEXT-DECORATION:none }
+  .telnumber visited { TEXT-DECORATION:none }
+  .telnumber active { TEXT-DECORATION:none }  
+
+  a {
+    color: #000;
+  }
+  a.DJRei {
+    color: rgb(21, 0, 143);
+  }
+  a.TVtower {
+    color: rgb(129, 9, 0);
+  }
+
+</style>
+
+<!-- component template -->
+<script type="text/x-template" id="grid-template">
+  <table>
+
+    <thead>
+      <tr>
+        <th v-for="key in columns"
+          @click="sortBy(key)"
+          :class="{ active: sortKey == key , noresult: filteredHeroes.length == 0 }">
+          <!-- {{ key | convert | capitalize }} -->
+          {{ key | convert }}
+          <span class="arrow" :class="sortOrders[key] > 0 ? 'asc' : 'dsc'">
+          </span>
+        </th>
+      </tr>
+    </thead>
+    
+    <tbody>
+      <tr v-for="result in filteredHeroes"
+        :class="{ DJRei: result.geton == '東', TVtower: result.geton == '札' }">
+        <td v-for="key in columns"
+          :class="{ busNumber: key == 'busX', adult: key == 'd', child: key == 'x' }">
+          <a class="telnumber" 
+            :class="{ DJRei: result.geton == '東', TVtower: result.geton == '札' }"
+            v-bind:href="result.tel" 
+            v-if=" key == 'name' "> <!-- onclick="event.returnValue=false" -->
+            {{ result[key] }}
+          </a>
+          <a v-else>
+            {{ result[key] }}
+          </a>
+        </td>
+      </tr>
+    </tbody>
+    
+  </table>
+</script>
+
+<body>
+
+<!-- Modal -->
+<section id="modalapp" v-cloak>
+
+  <transition name="fade" appear>
+    <div class="modal-overlay" 
+      v-if="showModal" 
+      @click="showModal = false">
+    </div>
+  </transition>
+
+  <transition name="pop" appear>
+    <div class="modal" 
+          role="dialog" 
+          v-if="showModal">
+
+      <h3 style="color: #2c5d4faf">旭山動物園発車詳情　　<button @click="showModal = false" class="button">关闭</button></h3>
+      <h3><b style="font-size:32px;font-family:Meiryo">12</b>月 <b 
+              style="font-size:32px;font-family:Meiryo">16</b>日　. <b 
+              style="font-size:28px;font-family:Meiryo">月</b>曜日 .
+      </h3>
+      
+      <ul class="bus-list">
+        <li v-for="bus in buses.slice(1)">
+
+          <table class="modal-table" border="0">
+            <tr>
+              <th class="modal-th" rowspan="3" name="bus-N" @click="showModal = false">{{bus.busN}}
+              </th>
+              <td class="bus-items" width="73">
+                <a class="telnumber" v-bind:href="bus.callGuide">{{bus.guide}}</a>
+              </td>
+              <td class="bus-details">
+                <a class="telnumber" v-bind:href="bus.callGuide">{{bus.guideTel}}</a>
+              </td>
+            </tr>   
+            <tr>
+              <td class="bus-items" width="73">{{bus.busCo}}</td>
+              <td class="bus-details"><span class="details-small">車番</span><b>{{bus.busNum}}</b>　({{bus.Seats}}<span class="details-small">席</span>)</td>
+            </tr>
+            <tr>
+              <td class="bus-items" width="73">
+                <a class="telnumber" v-bind:href="bus.callDrive">{{bus.drive}}</a>
+              </td>
+              <td class="bus-details">
+                <a class="telnumber" v-bind:href="bus.callDrive">{{bus.driveTel}}</a>
+              </td>
+            </tr>
+          </table>
+
+          <br>
+        </li>
+      </ul>
+
+
+    </div>
+  </transition>
+</section>
+  
+<!-- demo root element -->
+<div id="demo">
+
+  <form class="search-form" id="search">
+    <img src="searchicon.gif" alt="search_icon"/><input name="query" v-model="searchQuery">
+    <a onclick="imgGuideClick();">
+      <img src="guideicon.gif" alt="guide_icon" class="guide-icon"/>
+    </a>
+  </form>
+
+  <demo-grid
+    :heroes="gridData"
+    :columns="gridColumns"
+    :filter-key="searchQuery">
+  </demo-grid>
+
+</div>
+
+</body>
+
+
+<script type="text/javascript">
+
+  // 巴士导游信息
+  var busList = [
+
+{ busN: "０", guide: "导游名", guideTel: "000-0000-0001", callGuide: "tel://00000000001", busCo: "巴士公司", busNum: "89-64", Seats: "40", drive: "司机名", driveTel: "000-0000-0002", callDrive: "tel://00000000002"},
+{ busN: "１", guide: "前鼻", guideTel: "090-3390-9821", callGuide: "tel://09033909821", busCo: "睡蓮バス", busNum: "1-11", Seats: "45", drive: "鎌塚", driveTel: "090-8427-0229", callDrive: "tel://09084270229"},
+{ busN: "２", guide: "王子扬", guideTel: "080-5360-3890", callGuide: "tel://08053603890", busCo: "睡蓮バス", busNum: "70-77", Seats: "45", drive: "小笠原", driveTel: "090-1640-5090", callDrive: "tel://09016405090"},
+{ busN: "３", guide: "李择忠", guideTel: "090-7656-7778", callGuide: "tel://09076567778", busCo: "睡蓮バス", busNum: "7-77", Seats: "45", drive: "野田", driveTel: "090-2077-2147", callDrive: "tel://09020772147"},
+{ busN: "４", guide: "李芙嘉", guideTel: "080-9997-2308", callGuide: "tel://08099972308", busCo: "睡蓮バス", busNum: "66-00", Seats: "45", drive: "里見", driveTel: "090-9086-1864", callDrive: "tel://09090861864"},
+{ busN: "５", guide: "芦浩", guideTel: "080-8696-4555", callGuide: "tel://08086964555", busCo: "札蘭バス", busNum: "555", Seats: "42", drive: "石垣", driveTel: "090-8373-1221", callDrive: "tel://09083731221"},
+{ busN: "６", guide: "陶明浩", guideTel: "‭080-4045-3399", callGuide: "tel://‭08040453399", busCo: "札蘭バス", busNum: "111", Seats: "45", drive: "庄司", driveTel: "090-8907-7356", callDrive: "tel://09089077356"},
+{ busN: "７", guide: "邢鑫阳", guideTel: "090-6993-5888", callGuide: "tel://09069935888", busCo: "札蘭代車", busNum: "112", Seats: "40", drive: "巻渕", driveTel: "090-2075-8460", callDrive: "tel://09020758460"},
+{ busN: "８", guide: "孙其东", guideTel: "080-4442-8655", callGuide: "tel://08044428655", busCo: "友愛観光", busNum: "18", Seats: "49", drive: "マツザワ", driveTel: "090-8428-9056", callDrive: "tel://09084289056"},
+{ busN: "９", guide: "張雅丽", guideTel: "080-3230-8926", callGuide: "tel://08032308926", busCo: "友愛観光", busNum: "1", Seats: "49", drive: "ヤマダ", driveTel: "090-2692-2126", callDrive: "tel://09026922126"},
+{ busN: "10", guide: "王世爽", guideTel: "090-8359-8666", callGuide: "tel://09083598666", busCo: "友愛観光", busNum: "28", Seats: "49", drive: "イワタ", driveTel: "090-5982-9139", callDrive: "tel://09059829139"},
+{ busN: "11", guide: "佐藤", guideTel: "080-6096-9877", callGuide: "tel://08060969877", busCo: "てんてつ", busNum: "6666", Seats: "40", drive: "滝口", driveTel: "090-8633-8525", callDrive: "tel://09086338525"},
+
+  
+
+
+  ];
+  var myBusN = 0;
+
+  // namelist data
+  var todos = [
+
+
+{ name: "MAT RABI FADHLINA BINTI", tel: "tel://60194138204", d: "8", x: "1", geton: "東", completed: false, busX: 1 },
+{ name: "Loh Xue Ping", tel: "tel://6598513264", d: "2", x: "2", geton: "東", completed: false, busX: 1 },
+{ name: "Ng Caroline", tel: "tel://6585889833", d: "2", x: "", geton: "東", completed: false, busX: 1 },
+{ name: "CHOONG PEK YEAN", tel: "tel://60162927668", d: "2", x: "2", geton: "東", completed: false, busX: 1 },
+{ name: "Tan Kian Sing", tel: "tel://6596830324", d: "2", x: "2", geton: "東", completed: false, busX: 1 },
+{ name: "Chan li lian", tel: "tel://4496516586", d: "3", x: "1", geton: "東", completed: false, busX: 1 },
+{ name: "Shu Xin Choong", tel: "tel://60187730100", d: "3", x: "", geton: "東", completed: false, busX: 1 },
+{ name: "Soh Margaret yong lee", tel: "tel://6597456630", d: "2", x: "", geton: "東", completed: false, busX: 1 },
+{ name: "ANG LI SZE", tel: "tel://6597972766", d: "2", x: "1", geton: "東", completed: false, busX: 1 },
+{ name: "Omar Rury Narita Binte", tel: "tel://6593838274", d: "2", x: "", geton: "東", completed: false, busX: 1 },
+{ name: "Tie Hieng Kai", tel: "tel://60122121863", d: "3", x: "1", geton: "東", completed: false, busX: 1 },
+{ name: "Hong Frangky", tel: "tel://6581275678", d: "3", x: "", geton: "東", completed: false, busX: 2 },
+{ name: "Koh Wei Lin Joey", tel: "tel://6597921502", d: "2", x: "", geton: "東", completed: false, busX: 2 },
+{ name: "Chia Xiao Lian", tel: "tel://6591720635", d: "1", x: "", geton: "東", completed: false, busX: 2 },
+{ name: "Chia Xiao Lian", tel: "tel://6597843821", d: "1", x: "", geton: "東", completed: false, busX: 2 },
+{ name: "Chia Xiao Lian", tel: "tel://6597843821", d: "1", x: "", geton: "東", completed: false, busX: 2 },
+{ name: "Lim Michele Siew Peng", tel: "tel://6592726038", d: "1", x: "2", geton: "東", completed: false, busX: 2 },
+{ name: "Yoong Chin Kong", tel: "tel://60162765769", d: "1", x: "", geton: "東", completed: false, busX: 2 },
+{ name: "Yoong Chin Kong", tel: "tel://60162765769", d: "1", x: "", geton: "東", completed: false, busX: 2 },
+{ name: "Terence tan", tel: "tel://115119111", d: "3", x: "2", geton: "東", completed: false, busX: 2 },
+{ name: "Sulijanto Liebig", tel: "tel://6281318155888", d: "4", x: "", geton: "東", completed: false, busX: 2 },
+{ name: "ONG JULITA", tel: "tel://6281297066103", d: "3", x: "1", geton: "東", completed: false, busX: 2 },
+{ name: "Jonathan kevin", tel: "tel://62817139321", d: "2", x: "3", geton: "東", completed: false, busX: 2 },
+{ name: "Anekboon piyapat", tel: "tel://66994596963", d: "2", x: "", geton: "東", completed: false, busX: 2 },
+{ name: "Limantara Hana Monalisa", tel: "tel://628111010371", d: "7", x: "1", geton: "東", completed: false, busX: 2 },
+{ name: "Ng Chee Kiong", tel: "tel://6596882879", d: "2", x: "2", geton: "札", completed: false, busX: 3 },
+{ name: "Wong Jennifer", tel: "tel://6596997700", d: "2", x: "1", geton: "札", completed: false, busX: 3 },
+{ name: "Chin Huey Yen", tel: "tel://60123343900", d: "2", x: "2", geton: "札", completed: false, busX: 3 },
+{ name: "Gwee Karen", tel: "tel://6596916416", d: "2", x: "1", geton: "札", completed: false, busX: 3 },
+{ name: "Lim Kwee Hwa", tel: "tel://6598280196", d: "2", x: "", geton: "札", completed: false, busX: 3 },
+{ name: "CHONG YONG HIYONG", tel: "tel://60123344341", d: "6", x: "", geton: "札", completed: false, busX: 3 },
+{ name: "CHOW FIEW SAN", tel: "tel://60127076543", d: "2", x: "1", geton: "札", completed: false, busX: 3 },
+{ name: "Cheah Sing yee", tel: "tel://6592481589", d: "4", x: "", geton: "札", completed: false, busX: 3 },
+{ name: "Leong Yin Pei", tel: "tel://61410130686", d: "2", x: "", geton: "札", completed: false, busX: 3 },
+{ name: "Tan Lisa", tel: "tel://6596890785", d: "2", x: "1", geton: "札", completed: false, busX: 3 },
+{ name: "KOH CHENG KIAT", tel: "tel://6596897127", d: "3", x: "1", geton: "札", completed: false, busX: 3 },
+{ name: "Ng Thiam Huat", tel: "tel://6597500423", d: "2", x: "1", geton: "札", completed: false, busX: 3 },
+{ name: "Fong Jieling Jasmine", tel: "tel://6590223422", d: "4", x: "1", geton: "札", completed: false, busX: 4 },
+{ name: "YEW HONG BENSON KONG", tel: "tel://6593677315", d: "4", x: "1", geton: "札", completed: false, busX: 4 },
+{ name: "Ng chee ching", tel: "tel://6598787004", d: "7", x: "", geton: "札", completed: false, busX: 4 },
+{ name: "Ng Pearline Sin Hui", tel: "tel://6598293128", d: "12", x: "", geton: "札", completed: false, busX: 4 },
+{ name: "Goh Cai Yun", tel: "tel://6591521388", d: "4", x: "3", geton: "札", completed: false, busX: 4 },
+{ name: "PHILIP DON LOW PENG YEOW", tel: "tel://6598163686", d: "2", x: "", geton: "札", completed: false, busX: 4 },
+{ name: "PANYAKAEW ANONGNART", tel: "tel://66926167126", d: "1", x: "", geton: "札", completed: false, busX: 4 },
+{ name: "Patraplapibul Panita", tel: "tel://66814561532", d: "2", x: "", geton: "札", completed: false, busX: 4 },
+{ name: "The Imelda", tel: "tel://62818114635", d: "3", x: "1", geton: "東", completed: false, busX: 5 },
+{ name: "Tran Thi Kim Hieu", tel: "tel://840775872404", d: "1", x: "", geton: "東", completed: false, busX: 5 },
+{ name: "zhee yoon koh", tel: "tel://60123950262", d: "2", x: "2", geton: "東", completed: false, busX: 5 },
+{ name: "Canti Canti", tel: "tel://6281908124004", d: "2", x: "1", geton: "札", completed: false, busX: 5 },
+{ name: "Canti Canti", tel: "tel://6285217177017", d: "2", x: "1", geton: "札", completed: false, busX: 5 },
+{ name: "gunawan hadi", tel: "tel://6281311881300", d: "2", x: "2", geton: "札", completed: false, busX: 5 },
+{ name: "Tanuwijaya Henny", tel: "tel://628170091489", d: "2", x: "1", geton: "札", completed: false, busX: 5 },
+{ name: "Charoenwongjongdee Watcharapon", tel: "tel://66818694084", d: "1", x: "", geton: "札", completed: false, busX: 5 },
+{ name: "Wattanakulboonlert Nipat", tel: "tel://6666819226261", d: "2", x: "2", geton: "札", completed: false, busX: 5 },
+{ name: "Yodpimai panissara", tel: "tel://660843148557", d: "4", x: "", geton: "札", completed: false, busX: 5 },
+{ name: "JANE KAO", tel: "tel://817042877059", d: "2", x: "", geton: "札", completed: false, busX: 5 },
+{ name: "Cruz Simon Ferdz Benrick", tel: "tel://639054620865", d: "2", x: "", geton: "札", completed: false, busX: 5 },
+{ name: "KHOO CHING EONG", tel: "tel://60124585941", d: "2", x: "", geton: "札", completed: false, busX: 5 },
+{ name: "WONG POH KEAY", tel: "tel://60163350599", d: "2", x: "", geton: "札", completed: false, busX: 5 },
+{ name: "ONG SYR CHIEH", tel: "tel://60163350599", d: "3", x: "", geton: "札", completed: false, busX: 5 },
+{ name: "lun lai heung", tel: "tel://85292057422", d: "3", x: "", geton: "東", completed: false, busX: 6 },
+{ name: "Shum siuhung", tel: "tel://85292057422", d: "3", x: "", geton: "東", completed: false, busX: 6 },
+{ name: "shum siuhung", tel: "tel://85292764820", d: "3", x: "", geton: "東", completed: false, busX: 6 },
+{ name: "lee kam chuen", tel: "tel://8529800625449", d: "4", x: "", geton: "東", completed: false, busX: 6 },
+{ name: "Hui Kam Man", tel: "tel://85261052872", d: "4", x: "", geton: "東", completed: false, busX: 6 },
+{ name: "胡創盛 Wu Chong Shing", tel: "tel://85262061130", d: "2", x: "", geton: "東", completed: false, busX: 6 },
+{ name: "HO SHU WAN", tel: "tel://85290790300", d: "2", x: "1", geton: "東", completed: false, busX: 6 },
+{ name: "YAU HON CHUNG", tel: "tel://85292527273", d: "2", x: "", geton: "東", completed: false, busX: 6 },
+{ name: "Wong Hiu Man", tel: "tel://85260905797", d: "2", x: "", geton: "東", completed: false, busX: 6 },
+{ name: "huang fengju", tel: "tel://886922889192", d: "1", x: "1", geton: "東", completed: false, busX: 6 },
+{ name: "hung chenhsiang", tel: "tel://8860979997996", d: "2", x: "", geton: "東", completed: false, busX: 6 },
+{ name: "BAO JHENG-EN", tel: "tel://8860910494826", d: "2", x: "", geton: "東", completed: false, busX: 6 },
+{ name: "LO YUFENG", tel: "tel://886932007080", d: "2", x: "", geton: "東", completed: false, busX: 6 },
+{ name: "王岳程 Wang YueCheng", tel: "tel://8615103276612", d: "1", x: "", geton: "東", completed: false, busX: 6 },
+{ name: "刘佳烨 Liu JiaYe", tel: "tel://8615103276612", d: "1", x: "", geton: "東", completed: false, busX: 6 },
+{ name: "胡一鸣 Hu YiMing", tel: "tel://8615103276612", d: "1", x: "", geton: "東", completed: false, busX: 6 },
+{ name: "Tam Wing On", tel: "tel://85263334861", d: "2", x: "", geton: "札", completed: false, busX: 7 },
+{ name: "Wu Chung Ho", tel: "tel://85265498634", d: "2", x: "", geton: "札", completed: false, busX: 7 },
+{ name: "Woo Kin Sang", tel: "tel://85270725755", d: "3", x: "", geton: "札", completed: false, busX: 7 },
+{ name: "Lai Yuk Ha", tel: "tel://85291348414", d: "2", x: "", geton: "札", completed: false, busX: 7 },
+{ name: "Pang Yeung Luk", tel: "tel://85290983141", d: "2", x: "", geton: "札", completed: false, busX: 7 },
+{ name: "Winnie Chan", tel: "tel://85260717207", d: "4", x: "", geton: "札", completed: false, busX: 7 },
+{ name: "Tsang Sin ki", tel: "tel://85297838146", d: "2", x: "", geton: "札", completed: false, busX: 7 },
+{ name: "Wong Yee Ting", tel: "tel://85267716670", d: "2", x: "", geton: "札", completed: false, busX: 7 },
+{ name: "Yen Kwok", tel: "tel://85296856925", d: "1", x: "", geton: "札", completed: false, busX: 7 },
+{ name: "Yen Kwok", tel: "tel://85296856925", d: "1", x: "", geton: "札", completed: false, busX: 7 },
+{ name: "LAU WING SZE", tel: "tel://85262879120", d: "2", x: "", geton: "札", completed: false, busX: 7 },
+{ name: "Chiu Ming hei jeremy", tel: "tel://85262231613", d: "4", x: "", geton: "札", completed: false, busX: 7 },
+{ name: "FONG KA YAN", tel: "tel://85298670687", d: "3", x: "", geton: "札", completed: false, busX: 7 },
+{ name: "Michael Morgan Lam", tel: "tel://85262932206", d: "2", x: "", geton: "札", completed: false, busX: 7 },
+{ name: "Huang fengju", tel: "tel://886922889192", d: "3", x: "", geton: "東", completed: false, busX: 8 },
+{ name: "Huang fengju", tel: "tel://886922889192", d: "2", x: "1", geton: "東", completed: false, busX: 8 },
+{ name: "Chang Shihchieh", tel: "tel://886988361429", d: "3", x: "", geton: "東", completed: false, busX: 8 },
+{ name: "Chang Shihchieh", tel: "tel://886988361429", d: "3", x: "", geton: "東", completed: false, busX: 8 },
+{ name: "CHEN MEI CHUN", tel: "tel://886911768265", d: "5", x: "", geton: "東", completed: false, busX: 8 },
+{ name: "CHEN MEI CHUN", tel: "tel://886911768265", d: "1", x: "", geton: "東", completed: false, busX: 8 },
+{ name: "Liu Hui Ling", tel: "tel://886926250877", d: "2", x: "", geton: "東", completed: false, busX: 8 },
+{ name: "YuHsuan Huang", tel: "tel://886917555656", d: "2", x: "", geton: "東", completed: false, busX: 8 },
+{ name: "WANG TING YI", tel: "tel://887000000000", d: "4", x: "", geton: "東", completed: false, busX: 8 },
+{ name: "YICHEN kuo", tel: "tel://886927153617", d: "3", x: "1", geton: "東", completed: false, busX: 8 },
+{ name: "LEE YI CHEN", tel: "tel://886968455926", d: "2", x: "", geton: "東", completed: false, busX: 8 },
+{ name: "LAN HSIAO HAN", tel: "tel://886921685316", d: "5", x: "", geton: "東", completed: false, busX: 9 },
+{ name: "Huang WanLing", tel: "tel://886907110138", d: "6", x: "", geton: "東", completed: false, busX: 9 },
+{ name: "JIAN YU CIH", tel: "tel://886933258366", d: "4", x: "", geton: "東", completed: false, busX: 9 },
+{ name: "Peihua Lee", tel: "tel://886970472785", d: "2", x: "", geton: "東", completed: false, busX: 9 },
+{ name: "LIN YUTE", tel: "tel://886912472463", d: "6", x: "", geton: "東", completed: false, busX: 9 },
+{ name: "YU KUAN WEI", tel: "tel://886937988523", d: "2", x: "", geton: "東", completed: false, busX: 9 },
+{ name: "Kuo Szu Wen", tel: "tel://886930851973", d: "2", x: "1", geton: "東", completed: false, busX: 9 },
+{ name: "Wu jessie", tel: "tel://886920088565", d: "2", x: "", geton: "東", completed: false, busX: 9 },
+{ name: "LIEN KUAN TING", tel: "tel://886922201000", d: "2", x: "", geton: "東", completed: false, busX: 9 },
+{ name: "WANG WEIHAN", tel: "tel://81048753786", d: "2", x: "", geton: "東", completed: false, busX: 9 },
+{ name: "王丽君 Wang LiJun", tel: "tel://8613386703469", d: "4", x: "", geton: "東", completed: false, busX: 9 },
+{ name: "Tseng Ting ya", tel: "tel://886978229986", d: "1", x: "", geton: "札", completed: false, busX: 10 },
+{ name: "Luis  REN HUANG", tel: "tel://886968334698", d: "1", x: "", geton: "札", completed: false, busX: 10 },
+{ name: "Song Yun Chen", tel: "tel://886976253269", d: "2", x: "", geton: "札", completed: false, busX: 10 },
+{ name: "Tai Yu tang", tel: "tel://886986514330", d: "1", x: "", geton: "札", completed: false, busX: 10 },
+{ name: "Chen Yi yun", tel: "tel://886925255536", d: "1", x: "", geton: "札", completed: false, busX: 10 },
+{ name: "Chen chenwei", tel: "tel://886955254406", d: "1", x: "", geton: "札", completed: false, busX: 10 },
+{ name: "Huang Shu Yu", tel: "tel://886970257400", d: "1", x: "", geton: "札", completed: false, busX: 10 },
+{ name: "Chien Yu Wen", tel: "tel://886912202231", d: "3", x: "1", geton: "札", completed: false, busX: 10 },
+{ name: "CHOU AN YU", tel: "tel://886936903693", d: "2", x: "1", geton: "札", completed: false, busX: 10 },
+{ name: "Chien Yao Long", tel: "tel://8860912202231", d: "1", x: "", geton: "札", completed: false, busX: 10 },
+{ name: "HSIEH TUNG YEN", tel: "tel://887000000000", d: "2", x: "", geton: "札", completed: false, busX: 10 },
+{ name: "Chen Yu Chiang", tel: "tel://886963268898", d: "2", x: "", geton: "札", completed: false, busX: 10 },
+{ name: "Shih Yuan Wang", tel: "tel://886989108089", d: "2", x: "", geton: "札", completed: false, busX: 10 },
+{ name: "Hsiang CHIEH", tel: "tel://887000000000", d: "2", x: "", geton: "札", completed: false, busX: 10 },
+{ name: "Wu Hung Chih", tel: "tel://886917946455", d: "2", x: "", geton: "札", completed: false, busX: 10 },
+{ name: "王怡璇 Wang YiXuan", tel: "tel://8613585547199", d: "2", x: "", geton: "札", completed: false, busX: 10 },
+{ name: "钱晶 Qian Jing", tel: "tel://8613701877056", d: "2", x: "", geton: "札", completed: false, busX: 10 },
+{ name: "郭恒铚 Guo HengZhi", tel: "tel://8615810572480", d: "3", x: "", geton: "札", completed: false, busX: 10 },
+{ name: "TSENG  HSU HUEI", tel: "tel://886926692991", d: "1", x: "", geton: "東", completed: false, busX: 11 },
+{ name: "CHEN PIN CHEN, CHEN CHI CHENG", tel: "tel://8860973538606", d: "2", x: "1", geton: "東", completed: false, busX: 11 },
+{ name: "HSU YUAN HAN", tel: "tel://886910005933", d: "2", x: "", geton: "東", completed: false, busX: 11 },
+{ name: "LIN MEI LING", tel: "tel://886955685185", d: "2", x: "1", geton: "東", completed: false, busX: 11 },
+{ name: "Li Yu hao", tel: "tel://886958872056", d: "2", x: "", geton: "東", completed: false, busX: 11 },
+{ name: "施天颖 Shi TianYing", tel: "tel://8613916518983", d: "4", x: "1", geton: "東", completed: false, busX: 11 },
+{ name: "刘畅 Liu Chang", tel: "tel://8613065427430", d: "2", x: "", geton: "東", completed: false, busX: 11 },
+{ name: "耿可欣 Geng KeXin", tel: "tel://86166210777989", d: "1", x: "", geton: "東", completed: false, busX: 11 },
+{ name: "张雪芸 Zhang XueYun", tel: "tel://8615815325980", d: "2", x: "", geton: "札", completed: false, busX: 11 },
+{ name: "崔航 Cui Hang", tel: "tel://8613818199902", d: "2", x: "", geton: "札", completed: false, busX: 11 },
+{ name: "张维映 Zhang WeiYing", tel: "tel://8618278394376", d: "2", x: "", geton: "札", completed: false, busX: 11 },
+{ name: "陈旻婧 Chen Jing", tel: "tel://8613957990137", d: "2", x: "", geton: "札", completed: false, busX: 11 },
+{ name: "杨淑铮 Yang ShuZheng", tel: "tel://8613266845152", d: "2", x: "1", geton: "札", completed: false, busX: 11 },
+{ name: "敬泽金 Jing ZeJin", tel: "tel://8613585828961", d: "2", x: "", geton: "札", completed: false, busX: 11 },
+  
+
+
+
+
+  ];
+
+  // register the grid component
+  Vue.component('demo-grid', {
+    template: '#grid-template',
+    props: {
+      heroes: Array,
+      columns: Array,
+      filterKey: String
+    },
+    data: function () {
+      var sortOrders = {}
+      this.columns.forEach(function (key) {
+        sortOrders[key] = 1
+      })
+      return {
+        sortKey: '',
+        sortOrders: sortOrders
+      }
+    },
+    computed: {
+      filteredHeroes: function () {
+        var sortKey = this.sortKey
+        var filterKey = this.filterKey && this.filterKey.toLowerCase()
+        var order = this.sortOrders[sortKey] || 1
+        var heroes = this.heroes
+        if (filterKey) {
+          heroes = heroes.filter(function (row) {
+            return Object.keys(row).some(function (key) {
+              return String(row[key]).toLowerCase().indexOf(filterKey) > -1
+            })
+          })
+        }
+        if (sortKey) {
+          heroes = heroes.slice().sort(function (a, b) {
+            a = a[sortKey]
+            b = b[sortKey]
+            return (a === b ? 0 : a > b ? 1 : -1) * order
+          })
+        }
+        return heroes
+      }
+    },
+    filters: {
+      capitalize: function (str) {
+        return str.charAt(0).toUpperCase() + str.slice(1)
+      },
+      convert: function (str) {
+        if (str == "name") { return "代表者名　";
+        } else if (str == "d") { return "大";
+        } else if (str == "x") { return "小";
+        } else if (str == "busX") { return "車";
+        } else {
+          return str;
+        }
+      }
+    },
+    methods: {
+      sortBy: function (key) {
+        this.sortKey = key
+        this.sortOrders[key] = this.sortOrders[key] * -1
+      }
+    }
+  })
+
+  // bootstrap the demo
+  var demo = new Vue({
+
+    el: '#demo',
+
+    data: {
+      gridData: todos,
+      gridColumns: ['busX', 'name', 'd', 'x'],
+      searchQuery: '',
+    }
+
+  });
+
+  var app2 = new Vue({
+
+      el: '#modalapp',
+
+      data: {
+          showModal: false,
+          buses: busList,
+          myBusN: myBusN
+      }
+      
+  });
+  
+  function imgGuideClick() {
+    app2.showModal = true;
+  }
+
+</script>
+
+<footer class="footer-info">
+  <br><br><br><br><br><br><br><br>
+  <p>Have A Nice Day !!</p>
+  <p>Supported by ® Alibaba Group</p>
+  <br>
+
+  <div class="img-box">
+    <img src="zoo6new.gif" alt="ASAHIYAMA ZOO"/>
+  </div>
+
+</footer>
+
+</html>

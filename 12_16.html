@@ -1,4 +1,4 @@
-<!-- Ver 2019.12.19 from 2019.12.4 -->
+<!-- Ver 2019.12.16 from 2019.12.4 -->
 <!DOCTYPE html>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
@@ -72,7 +72,7 @@
 
   .geton-list td {
     text-align: center;
-    vertical-align: bottom;
+    vertical-align: middle;
     font-size: 1.1rem;
     margin: 0;
     padding: 4px 0 0 0;
@@ -127,8 +127,9 @@
   }
   .modal2 h3 {
     color: #2c5d4faf;
-    margin: 0 0 0.2rem 0;
+    margin: 0 0 0.2rem 0rem;
     text-align: left;
+    display:inline;
   }
   .modal2 .sum {                 
     color: #2c5d4fe1;
@@ -537,25 +538,27 @@
       role="dialog" 
       v-if="showModal">
 
-      <h3 @click="showModal = false">
-        　{{aboutThisBusX}}号車合計:　大 <b class="sum">{{ demo.dPeoples(aboutThisBusX) }}</b>　小 <b class="sum">{{ demo.xPeoples(aboutThisBusX) }}</b class="sum">
-        <!-- <button @click="showModal = false">🔙</button> -->
+      <!-- <button text-align="left" @click="showModal = false">🔙</button> -->
+      <!-- <h3 @click="showModal = false">
+        　{{aboutThisBusX}}号車: 总人数　大 <b class="sum">{{ demo.dPeoples(aboutThisBusX) }}</b> 小 <b class="sum">{{ demo.xPeoples(aboutThisBusX) }}</b>
+      </h3> -->
+
+      <h3>{{aboutThisBusX}}号車:
+        <a class="telnumber" v-bind:href="buses[aboutThisBusX].callGuide">{{ buses[aboutThisBusX].guide }}　</a>
       </h3>
-      
+      <h3><span @click="showModal = false">車番: <b class="sum">{{ buses[aboutThisBusX].busNum }}</b></span>
+      </h3>
+      <hr style="border-color:rgba(128, 128, 128, 0.35)">
+      <br>
+
       <!-- 当前选中車号 -->
-      <ul class="bus-list">
+      <!-- <ul class="bus-list">
         <li v-for="bus in buses.slice(1)" v-if="bus.busX == aboutThisBusX">
 
           <table class="modal-table" border="0">
             <tr>
               <th class="modal-th" rowspan="3" name="bus-N" @click="clickBusN(bus.busN)">{{bus.busN}}
               </th>
-              <!-- <td class="bus-items" width="73">
-                <a class="telnumber" v-bind:href="bus.callGuide">{{bus.guide}}</a>
-              </td>
-              <td class="bus-details">
-                <a class="telnumber" v-bind:href="bus.callGuide">{{bus.guideTel}}</a>
-              </td> -->
             </tr>   
             <tr>
               <td class="bus-items" width="73">{{bus.busCo}}</td>
@@ -573,7 +576,7 @@
 
           <br>
         </li>
-      </ul>
+      </ul> -->
 
       <!-- 筛选 & 呼叫 -->
       <ul class="geton-list">
@@ -611,7 +614,7 @@
             </tr>   
           </table>
 
-        </li
+        </li>
       </ul>
 
 
@@ -625,7 +628,7 @@
 
   <form class="search-form" id="search">
     <a @click="iconSearchClick"><img src="searchicon.gif" alt="search_icon" class="search-icon"/></a>
-    <input name="query" v-model="searchQuery" placeholder="　　搜索：使用英文键盘、不区分大小写">
+    <input name="query" v-model="searchQuery" placeholder="　搜索：使用英文键盘、不区分大小写">
     <a @click="iconGuideClick"><img src="guideicon.gif" alt="guide_icon" class="guide-icon"/></a>
   </form>
 

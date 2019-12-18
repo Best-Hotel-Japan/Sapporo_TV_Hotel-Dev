@@ -6,7 +6,7 @@
 
 <head>
     <title>12/16 旭山ツアー車号速查</title>
-    <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.10/dist/vue.min.js"></script>
 </head>
     
 <style> /* Modal Transition */
@@ -38,12 +38,46 @@
     cursor: pointer;
   }
 
-
   .bus-list {
     list-style-type: none;
     text-align: left;
     margin: 0;
     padding: 0;
+  }
+
+  .geton-list {
+    list-style-type: none;
+    border: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .geton-list table {
+    border: 1px solid #ddd;
+    border-radius: 6px;
+  }
+
+  /* .geton-list tr:nth-child(odd) {
+    background-color: #eee;
+  } */
+
+  .geton-list th {
+    text-align: center;
+    background-color: #eee;
+    color: #2c5d4f9f;
+    margin: 0;
+    padding: 0;
+    border: 1px #fff;
+  }
+
+  .geton-list td {
+    text-align: center;
+    vertical-align: bottom;
+    font-size: 1rem;
+    margin: 0;
+    padding: 4px 0 0 0;
+    border: 1px #fff;
+    border-top: 1.5px dashed #ccc;
   }
 
   .modal {
@@ -67,9 +101,40 @@
     transform: none;
   }
   .modal h3 {                 /*旭山動物園発車詳情*/
+    color: #2c5d4faf;
     margin: 0 0 0.8rem;
     text-align: left;
   }
+
+  .modal2 {
+    /* position: absolute; */
+    position: fixed;
+    top: 0rem;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    margin: auto;
+    padding: 1.2rem 1.3rem 1.9rem 1.3rem;
+    text-align: center;
+    width: fit-content;
+    height: fit-content;
+    max-width: 80%;
+    border-radius: 1rem;
+    box-shadow: 0 9px 9px rgba(0, 0, 0, 0.2);
+    background: #FFF;
+    z-index: 998;
+    transform: none;
+  }
+  .modal2 h3 {
+    color: #2c5d4faf;
+    margin: 0 0 0.8rem;
+    text-align: left;
+  }
+  .modal2 .sum {                 
+    color: #2c5d4fe1;
+    font-size: 1.9rem;
+  }
+
 
   .modal-overlay {
     content: '';
@@ -162,6 +227,11 @@
     font-family: Helvetica;
     font-size: 16px;
     color: #444;
+  }
+
+  ::placeholder {
+    color: #AAA;
+    opacity: 0.8; 
   }
 
   .search-form {
@@ -369,7 +439,9 @@
       <tr v-for="result in filteredHeroes" v-if="filteredBus == 0 || result.busX == filteredBus"
         :class="{ DJRei: result.geton == '東', TVtower: result.geton == '札' }">
         <td v-for="key in columns"
+          @click="showDetailBy(key, result[key])"
           :class="{ busNumber: key == 'busX', adult: key == 'd', child: key == 'x' }">
+
           <a class="telnumber" 
             :class="{ DJRei: result.geton == '東', TVtower: result.geton == '札' }"
             v-bind:href="result.tel" 
@@ -379,6 +451,7 @@
           <a v-else>
             {{ result[key] }}
           </a>
+
         </td>
       </tr>
     </tbody>
@@ -386,9 +459,10 @@
   </table>
 </script>
 
+
 <body>
 
-<!-- Modal -->
+<!-- Modal on GuideIcon -->
 <section id="modalapp" v-cloak>
 
   <transition name="fade" appear>
@@ -403,10 +477,10 @@
           role="dialog" 
           v-if="showModal">
 
-      <h3 style="color: #2c5d4faf">旭山動物園発車詳情　　<button @click="showModal = false" class="button">关闭</button></h3>
+      <h3>旭山動物園発車詳情　　<button @click="showModal = false" class="button">关闭</button></h3>
       <h3><b style="font-size:32px;font-family:Meiryo">12</b>月 <b 
-              style="font-size:32px;font-family:Meiryo">16</b>日　. <b 
-              style="font-size:28px;font-family:Meiryo">月</b>曜日 .
+             style="font-size:32px;font-family:Meiryo">16</b>日　. <b 
+             style="font-size:28px;font-family:Meiryo">月</b>曜日 .
       </h3>
       
       <ul class="bus-list">
@@ -425,7 +499,7 @@
             </tr>   
             <tr>
               <td class="bus-items" width="73">{{bus.busCo}}</td>
-              <td class="bus-details"><span class="details-small">車番</span><b>{{bus.busNum}}</b>　({{bus.Seats}}<span class="details-small">席</span>)</td>
+              <td class="bus-details"><span class="details-small">車番</span><b>{{bus.busNum}}</b>　({{bus.seats}}<span class="details-small">席</span>)</td>
             </tr>
             <tr>
               <td class="bus-items" width="73">
@@ -447,14 +521,112 @@
     </div>
   </transition>
 </section>
-  
+
+<!-- Modal on BusNumber -->
+<section id="modal2" v-cloak>
+
+  <transition name="fade" appear>
+    <div class="modal-overlay" 
+      v-if="showModal" 
+      @click="showModal = false">
+    </div>
+  </transition>
+
+  <transition name="pop" appear>
+    <div class="modal2" 
+      role="dialog" 
+      v-if="showModal">
+
+      <h3 @click="showModal = false">
+        　{{aboutThisBusX}}号車合計:　大 <b class="sum">{{ demo.dPeoples(aboutThisBusX) }}</b>　小 <b class="sum">{{ demo.xPeoples(aboutThisBusX) }}</b class="sum">
+        <!-- <button @click="showModal = false">🔙</button> -->
+      </h3>
+      
+      <!-- 当前选中車号 -->
+      <ul class="bus-list">
+        <li v-for="bus in buses.slice(1)" v-if="bus.busX == aboutThisBusX">
+
+          <table class="modal-table" border="0">
+            <tr>
+              <th class="modal-th" rowspan="3" name="bus-N" @click="clickBusN(bus.busN)">{{bus.busN}}
+              </th>
+              <td class="bus-items" width="73">
+                <a class="telnumber" v-bind:href="bus.callGuide">{{bus.guide}}</a>
+              </td>
+              <td class="bus-details">
+                <a class="telnumber" v-bind:href="bus.callGuide">{{bus.guideTel}}</a>
+              </td>
+            </tr>   
+            <tr>
+              <td class="bus-items" width="73">{{bus.busCo}}</td>
+              <td class="bus-details"><span class="details-small">車番</span><b>{{bus.busNum}}</b>　({{bus.seats}}<span class="details-small">席</span>)</td>
+            </tr>
+            <tr>
+              <td class="bus-items" width="73">
+                <a class="telnumber" v-bind:href="bus.callDrive">{{bus.drive}}</a>
+              </td>
+              <td class="bus-details">
+                <a class="telnumber" v-bind:href="bus.callDrive">{{bus.driveTel}}</a>
+              </td>
+            </tr>
+          </table>
+
+          <br>
+        </li>
+      </ul>
+
+      <!-- 筛选 & 呼叫 -->
+      <ul class="geton-list">
+        <li>
+
+          <table border="0">
+            <tr>
+              <th width="35">車<br>号</th>
+              <th width="62">导游<br>(Call)</th>
+              <th width="66">東急Rei<br>上車</th> 
+              <th width="66">电视塔<br>上車</th>
+              <th width="45">空余<br>座位</th>
+            </tr>
+
+            <tr v-for="bus in buses.slice(1)">
+              <td @click="clickBusN(bus.busN)">
+                <strong>{{ bus.busN }}</strong>
+              </td>
+              <td>
+                <a class="telnumber" v-bind:href="bus.callGuide">{{ bus.guide }}</a>
+              </td>
+              <td>
+                <span v-show="demo.sumDJRei(bus.busX)">
+                  {{ demo.sumDJRei(bus.busX) }} <span class="details-small">人</span>
+                </span>
+              </td>
+              <td>
+                <span v-show="demo.sumTVtower(bus.busX)">
+                  {{ demo.sumTVtower(bus.busX) }} <span class="details-small">人</span>
+                </span>
+              </td>
+              <td style="color:rgba(255, 0, 0, 0.7)">
+                {{ busSeats[bus.busX] - demo.sumDJRei(bus.busX) - demo.sumTVtower(bus.busX) }}
+              </td>
+            </tr>   
+          </table>
+
+        </li
+      </ul>
+
+
+    </div>
+  </transition>
+</section>
+
+
 <!-- demo root element -->
 <div id="demo">
 
   <form class="search-form" id="search">
-    <a @click="clearFilterBus"><img src="searchicon.gif" alt="search_icon" class="search-icon"/></a>
-    <input name="query" v-model="searchQuery">
-    <a onclick="imgGuideClick();"><img src="guideicon.gif" alt="guide_icon" class="guide-icon"/></a>
+    <a @click="iconSearchClick"><img src="searchicon.gif" alt="search_icon" class="search-icon"/></a>
+    <input name="query" v-model="searchQuery" placeholder=" 搜索：使用英文键盘、不区分大小写">
+    <a @click="iconGuideClick"><img src="guideicon.gif" alt="guide_icon" class="guide-icon"/></a>
   </form>
 
   <demo-grid
@@ -474,18 +646,18 @@
   // 巴士导游信息
   var busList = [
 
-{ busN: "０", guide: "导游名", guideTel: "000-0000-0001", callGuide: "tel://00000000001", busCo: "巴士公司", busNum: "89-64", Seats: "40", drive: "司机名", driveTel: "000-0000-0002", callDrive: "tel://00000000002"},
-{ busN: "１", guide: "前鼻", guideTel: "090-3390-9821", callGuide: "tel://09033909821", busCo: "睡蓮バス", busNum: "1-11", Seats: "45", drive: "鎌塚", driveTel: "090-8427-0229", callDrive: "tel://09084270229"},
-{ busN: "２", guide: "王子扬", guideTel: "080-5360-3890", callGuide: "tel://08053603890", busCo: "睡蓮バス", busNum: "70-77", Seats: "45", drive: "小笠原", driveTel: "090-1640-5090", callDrive: "tel://09016405090"},
-{ busN: "３", guide: "李择忠", guideTel: "090-7656-7778", callGuide: "tel://09076567778", busCo: "睡蓮バス", busNum: "7-77", Seats: "45", drive: "野田", driveTel: "090-2077-2147", callDrive: "tel://09020772147"},
-{ busN: "４", guide: "李芙嘉", guideTel: "080-9997-2308", callGuide: "tel://08099972308", busCo: "睡蓮バス", busNum: "66-00", Seats: "45", drive: "里見", driveTel: "090-9086-1864", callDrive: "tel://09090861864"},
-{ busN: "５", guide: "芦浩", guideTel: "080-8696-4555", callGuide: "tel://08086964555", busCo: "札蘭バス", busNum: "555", Seats: "42", drive: "石垣", driveTel: "090-8373-1221", callDrive: "tel://09083731221"},
-{ busN: "６", guide: "陶明浩", guideTel: "‭080-4045-3399", callGuide: "tel://‭08040453399", busCo: "札蘭バス", busNum: "111", Seats: "45", drive: "庄司", driveTel: "090-8907-7356", callDrive: "tel://09089077356"},
-{ busN: "７", guide: "邢鑫阳", guideTel: "090-6993-5888", callGuide: "tel://09069935888", busCo: "札蘭代車", busNum: "112", Seats: "40", drive: "巻渕", driveTel: "090-2075-8460", callDrive: "tel://09020758460"},
-{ busN: "８", guide: "孙其东", guideTel: "080-4442-8655", callGuide: "tel://08044428655", busCo: "友愛観光", busNum: "18", Seats: "49", drive: "マツザワ", driveTel: "090-8428-9056", callDrive: "tel://09084289056"},
-{ busN: "９", guide: "張雅丽", guideTel: "080-3230-8926", callGuide: "tel://08032308926", busCo: "友愛観光", busNum: "1", Seats: "49", drive: "ヤマダ", driveTel: "090-2692-2126", callDrive: "tel://09026922126"},
-{ busN: "10", guide: "王世爽", guideTel: "090-8359-8666", callGuide: "tel://09083598666", busCo: "友愛観光", busNum: "28", Seats: "49", drive: "イワタ", driveTel: "090-5982-9139", callDrive: "tel://09059829139"},
-{ busN: "11", guide: "佐藤", guideTel: "080-6096-9877", callGuide: "tel://08060969877", busCo: "てんてつ", busNum: "6666", Seats: "40", drive: "滝口", driveTel: "090-8633-8525", callDrive: "tel://09086338525"},
+{ busX: 0, sumD: 0, sumX: 0, busN: "０", guide: "导游名", guideTel: "000-0000-0001", callGuide: "tel://00000000001", busCo: "巴士公司", busNum: "89-64", seats: "40", drive: "司机名", driveTel: "000-0000-0002", callDrive: "tel://00000000002"},
+{ busX: 1, sumD: 31, sumX: 10, busN: "１", guide: "前鼻", guideTel: "090-3390-9821", callGuide: "tel://09033909821", busCo: "睡蓮バス", busNum: "1-11", seats: "45", drive: "鎌塚", driveTel: "090-8427-0229", callDrive: "tel://09084270229"},
+{ busX: 2, sumD: 32, sumX: 9, busN: "２", guide: "王子扬", guideTel: "080-5360-3890", callGuide: "tel://08053603890", busCo: "睡蓮バス", busNum: "70-77", seats: "45", drive: "小笠原", driveTel: "090-1640-5090", callDrive: "tel://09016405090"},
+{ busX: 3, sumD: 31, sumX: 10, busN: "３", guide: "李择忠", guideTel: "090-7656-7778", callGuide: "tel://09076567778", busCo: "睡蓮バス", busNum: "7-77", seats: "45", drive: "野田", driveTel: "090-2077-2147", callDrive: "tel://09020772147"},
+{ busX: 4, sumD: 36, sumX: 5, busN: "４", guide: "李芙嘉", guideTel: "080-9997-2308", callGuide: "tel://08099972308", busCo: "睡蓮バス", busNum: "66-00", seats: "45", drive: "里見", driveTel: "090-9086-1864", callDrive: "tel://09090861864"},
+{ busX: 5, sumD: 32, sumX: 10, busN: "５", guide: "芦浩", guideTel: "080-8696-4555", callGuide: "tel://08086964555", busCo: "札蘭バス", busNum: "555", seats: "42", drive: "石垣", driveTel: "090-8373-1221", callDrive: "tel://09083731221"},
+{ busX: 6, sumD: 32, sumX: 2, busN: "６", guide: "陶明浩", guideTel: "‭080-4045-3399", callGuide: "tel://‭08040453399", busCo: "札蘭バス", busNum: "111", seats: "45", drive: "庄司", driveTel: "090-8907-7356", callDrive: "tel://09089077356"},
+{ busX: 7, sumD: 32, sumX: 0, busN: "７", guide: "邢鑫阳", guideTel: "090-6993-5888", callGuide: "tel://09069935888", busCo: "札蘭代車", busNum: "112", seats: "40", drive: "巻渕", driveTel: "090-2075-8460", callDrive: "tel://09020758460"},
+{ busX: 8, sumD: 30, sumX: 2, busN: "８", guide: "孙其东", guideTel: "080-4442-8655", callGuide: "tel://08044428655", busCo: "友愛観光", busNum: "18", seats: "49", drive: "マツザワ", driveTel: "090-8428-9056", callDrive: "tel://09084289056"},
+{ busX: 9, sumD: 33, sumX: 1, busN: "９", guide: "張雅丽", guideTel: "080-3230-8926", callGuide: "tel://08032308926", busCo: "友愛観光", busNum: "1", seats: "49", drive: "ヤマダ", driveTel: "090-2692-2126", callDrive: "tel://09026922126"},
+{ busX: 10, sumD: 31, sumX: 2, busN: "10", guide: "王世爽", guideTel: "090-8359-8666", callGuide: "tel://09083598666", busCo: "友愛観光", busNum: "28", seats: "49", drive: "イワタ", driveTel: "090-5982-9139", callDrive: "tel://09059829139"},
+{ busX: 11, sumD: 32, sumX: 4, busN: "11", guide: "佐藤", guideTel: "080-6096-9877", callGuide: "tel://08060969877", busCo: "てんてつ", busNum: "6666", seats: "40", drive: "滝口", driveTel: "090-8633-8525", callDrive: "tel://09086338525"},
 
   
 
@@ -493,7 +665,7 @@
   ];
   var myBusN = 0;
   // namelist data
-  var todos = [
+  var nameList = [
 
 
 { name: "MAT RABI FADHLINA BINTI", tel: "tel://60194138204", d: "8", x: "1", geton: "東", completed: false, busX: 1 },
@@ -700,8 +872,7 @@
         } else if (str == "d") { return "大";
         } else if (str == "x") { return "小";
         } else if (str == "busX") { return "車";
-        } else {
-          return str;
+        } else { return str;
         }
       }
     },
@@ -709,6 +880,12 @@
       sortBy: function (key) {
         this.sortKey = key
         this.sortOrders[key] = this.sortOrders[key] * -1
+      },
+      showDetailBy: function (key, content) {
+        if (key == "busX") {
+          app3.aboutThisBusX = content
+          app3.showModal = true
+        }
       }
     }
   })
@@ -719,7 +896,7 @@
     el: '#demo',
 
     data: {
-      gridData: todos,
+      gridData: nameList,
       gridColumns: ['busX', 'name', 'd', 'x'],
       searchQuery: '',
       filterBus: 0,
@@ -729,67 +906,178 @@
       // setFilterBus: function () {
       //   this.filterBus = 0;
       // },
-      clearFilterBus: function () {
+      iconSearchClick: function () {
         this.filterBus = 0;
         this.searchQuery = '';
       },
+      iconGuideClick: function () {
+        app2.showModal = true;
+      },
+
+      //computed: { 　//计算属性不能传值, ！！但是这里返回一系列数组，就可以满足需求了。
+      dPeoples: function (bus) {     //大人人数求和
+        var count_dPeoples = 0
+        for(var i = 0, len = this.gridData.length; i < len; i++){
+          if(this.gridData[i].busX == bus){
+            count_dPeoples = count_dPeoples + (parseInt(this.gridData[i].d) ? parseInt(this.gridData[i].d) : 0);
+          }
+        }
+        return count_dPeoples
+      },
+      xPeoples: function (bus) {     //小人人数求和
+        var count_xPeoples = 0
+        for(var i = 0, len = this.gridData.length; i < len; i++){
+          if(this.gridData[i].busX == bus){
+            count_xPeoples = count_xPeoples + (parseInt(this.gridData[i].x) ? parseInt(this.gridData[i].x) : 0);
+          }
+        }
+        return count_xPeoples
+      },
+      sumDJRei: function (bus) {      //"東"上车人数合计
+        var count_DJRei = 0
+        for(var i = 0, len = this.gridData.length; i < len; i++){
+          if(this.gridData[i].busX == bus){
+            count_DJRei = count_DJRei + 
+              ((this.gridData[i].geton == "東") ? 
+                parseInt(this.gridData[i].d) + 
+                (parseInt(this.gridData[i].x) ? parseInt(this.gridData[i].x) : 0) : 0);
+          }
+        }
+        return count_DJRei
+      },
+      sumTVtower: function (bus) {    //"札"上车人数合计  
+        var count_TVtower = 0
+        for(var i = 0, len = this.gridData.length; i < len; i++){
+          if(this.gridData[i].busX == bus){
+            count_TVtower = count_TVtower + 
+              ((this.gridData[i].geton == "札") ? 
+                parseInt(this.gridData[i].d) + 
+                (parseInt(this.gridData[i].x) ? parseInt(this.gridData[i].x) : 0) : 0);
+          }
+        }
+        return count_TVtower
+      }
     }
 
   });
 
+  //弹窗应用：旭山動物園発車詳情
   var app2 = new Vue({
 
-      el: '#modalapp',
+    el: '#modalapp',
 
-      data: {
-          showModal: false,
-          buses: busList,
-          myBusN: myBusN
+    data: {
+      showModal: false,
+      buses: busList,
+      myBusN: myBusN
+    },
+
+    methods: {
+
+      clickBusN: function (busN) {
+
+        this.showModal = false;
+
+        var busNum = 0;
+        switch (busN) {
+          case '１': busNum = 1; break;
+          case '２': busNum = 2; break;
+          case '３': busNum = 3; break;
+          case '４': busNum = 4; break;
+          case '５': busNum = 5; break;
+          case '６': busNum = 6; break;
+          case '７': busNum = 7; break;
+          case '８': busNum = 8; break;
+          case '９': busNum = 9; break;
+          case '10': busNum = 10; break;
+          case '11': busNum = 11; break;
+          case '12': busNum = 12; break;
+          case '13': busNum = 13; break;
+          case '14': busNum = 14; break;
+          case '15': busNum = 15; break;
+          default: busNum = 0;
+        } 
+        demo.filterBus = busNum;
+        demo.searchQuery = '';
+
+        document.body.scrollTop = document.documentElement.scrollTop = 51;
+        
       },
 
-      methods: {
-        clickBusN: function (busN) {
+      clickLikeit: function () {
 
-          this.showModal = false;
+        this.showModal = false;
+        document.body.scrollTop = document.documentElement.scrollTop = 1;
 
-          var busNum = 0;
-          switch (busN) {
-            case '１': busNum = 1; break;
-            case '２': busNum = 2; break;
-            case '３': busNum = 3; break;
-            case '４': busNum = 4; break;
-            case '５': busNum = 5; break;
-            case '６': busNum = 6; break;
-            case '７': busNum = 7; break;
-            case '８': busNum = 8; break;
-            case '９': busNum = 9; break;
-            case '10': busNum = 10; break;
-            case '11': busNum = 11; break;
-            case '12': busNum = 12; break;
-            case '13': busNum = 13; break;
-            case '14': busNum = 14; break;
-            case '15': busNum = 15; break;
-            default: busNum = 0;
-          } 
-          demo.filterBus = busNum;
-          demo.searchQuery = '';
+      },
 
-          document.body.scrollTop = document.documentElement.scrollTop = 51;
-          
-        },
-        clickLikeit: function () {
-
-          this.showModal = false;
-          document.body.scrollTop = document.documentElement.scrollTop = 1;
-
-        }
-      }
+    }
       
   });
   
-  function imgGuideClick() {
-    app2.showModal = true;
-  }
+  //弹窗应用：筛选与呼叫
+  var app3 = new Vue({
+
+    el: '#modal2',
+
+    data: {
+      showModal: false,
+      buses: busList,
+      myBusN: myBusN,
+      aboutThisBusX: 0,
+    },
+
+    methods: {
+
+      clickBusN: function (busN) {
+
+        this.showModal = false;
+
+        var busNum = 0;
+        switch (busN) {
+          case '１': busNum = 1; break;
+          case '２': busNum = 2; break;
+          case '３': busNum = 3; break;
+          case '４': busNum = 4; break;
+          case '５': busNum = 5; break;
+          case '６': busNum = 6; break;
+          case '７': busNum = 7; break;
+          case '８': busNum = 8; break;
+          case '９': busNum = 9; break;
+          case '10': busNum = 10; break;
+          case '11': busNum = 11; break;
+          case '12': busNum = 12; break;
+          case '13': busNum = 13; break;
+          case '14': busNum = 14; break;
+          case '15': busNum = 15; break;
+          default: busNum = 0;
+        } 
+        demo.filterBus = busNum;
+        demo.searchQuery = '';
+
+        document.body.scrollTop = document.documentElement.scrollTop = 51;
+        
+      },
+
+    },
+
+    computed: {
+
+      busSeats: function () {
+        var seatNum = []
+        for(var i = 0, len = this.buses.length; i < len; i++){
+          seatNum[i] = parseInt(this.buses[i].seats)
+        }
+        return seatNum
+      },
+
+    }
+      
+  });
+  
+  // function iconGuideClick() {
+  //   app2.showModal = true;
+  // }
 
 </script>
 

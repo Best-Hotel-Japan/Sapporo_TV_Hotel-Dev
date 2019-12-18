@@ -1,4 +1,4 @@
-<!-- Ver 2019.12.16 from 2019.12.4 -->
+<!-- Ver 2019.12.19 from 2019.12.4 -->
 <!DOCTYPE html>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
@@ -73,7 +73,7 @@
   .geton-list td {
     text-align: center;
     vertical-align: bottom;
-    font-size: 1rem;
+    font-size: 1.1rem;
     margin: 0;
     padding: 4px 0 0 0;
     border: 1px #fff;
@@ -127,12 +127,12 @@
   }
   .modal2 h3 {
     color: #2c5d4faf;
-    margin: 0 0 0.8rem;
+    margin: 0 0 0.2rem 0;
     text-align: left;
   }
   .modal2 .sum {                 
     color: #2c5d4fe1;
-    font-size: 1.9rem;
+    font-size: 1.7rem;
   }
 
 
@@ -186,7 +186,7 @@
     vertical-align: middle;
     font-weight: bold;
     /* margin: 15px 20px 15px 5px; */
-    padding: 4px 6px 3px 6px;
+    padding: 0px 6px;
     font-size:40px;
     background: rgba(255, 222, 222, 0.65);
     color:#ff8800;
@@ -550,12 +550,12 @@
             <tr>
               <th class="modal-th" rowspan="3" name="bus-N" @click="clickBusN(bus.busN)">{{bus.busN}}
               </th>
-              <td class="bus-items" width="73">
+              <!-- <td class="bus-items" width="73">
                 <a class="telnumber" v-bind:href="bus.callGuide">{{bus.guide}}</a>
               </td>
               <td class="bus-details">
                 <a class="telnumber" v-bind:href="bus.callGuide">{{bus.guideTel}}</a>
-              </td>
+              </td> -->
             </tr>   
             <tr>
               <td class="bus-items" width="73">{{bus.busCo}}</td>
@@ -590,7 +590,7 @@
 
             <tr v-for="bus in buses.slice(1)">
               <td @click="clickBusN(bus.busN)">
-                <strong>{{ bus.busN }}</strong>
+                <strong>{{ bus.busX }}</strong>
               </td>
               <td>
                 <a class="telnumber" v-bind:href="bus.callGuide">{{ bus.guide }}</a>
@@ -625,7 +625,7 @@
 
   <form class="search-form" id="search">
     <a @click="iconSearchClick"><img src="searchicon.gif" alt="search_icon" class="search-icon"/></a>
-    <input name="query" v-model="searchQuery" placeholder=" 搜索：使用英文键盘、不区分大小写">
+    <input name="query" v-model="searchQuery" placeholder="　　搜索：使用英文键盘、不区分大小写">
     <a @click="iconGuideClick"><img src="guideicon.gif" alt="guide_icon" class="guide-icon"/></a>
   </form>
 

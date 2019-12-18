@@ -548,8 +548,11 @@
       </h3>
       <h3><span @click="showModal = false">車番: <b class="sum">{{ buses[aboutThisBusX].busNum }}</b></span>
       </h3>
-      <hr style="border-color:rgba(128, 128, 128, 0.35)">
-      <br>
+
+      <div @click="showModal = false">
+        <hr style="border-color:rgba(128, 128, 128, 0.32)">
+        <br>
+      </div>
 
       <!-- 当前选中車号 -->
       <!-- <ul class="bus-list">
@@ -598,17 +601,17 @@
               <td>
                 <a class="telnumber" v-bind:href="bus.callGuide">{{ bus.guide }}</a>
               </td>
-              <td>
+              <td @click="clickBusN(bus.busN)">
                 <span v-show="demo.sumDJRei(bus.busX)">
                   {{ demo.sumDJRei(bus.busX) }} <span class="details-small">人</span>
                 </span>
               </td>
-              <td>
+              <td @click="clickBusN(bus.busN)">
                 <span v-show="demo.sumTVtower(bus.busX)">
                   {{ demo.sumTVtower(bus.busX) }} <span class="details-small">人</span>
                 </span>
               </td>
-              <td style="color:rgba(255, 0, 0, 0.7)">
+              <td @click="clickBusN(bus.busN)" style="color:rgba(255, 0, 0, 0.7)">
                 {{ busSeats[bus.busX] - demo.sumDJRei(bus.busX) - demo.sumTVtower(bus.busX) }}
               </td>
             </tr>   
